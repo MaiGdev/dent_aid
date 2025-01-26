@@ -1,110 +1,70 @@
-/* import React, { useState } from "react";
+import { ArrowBack } from "@mui/icons-material";
+import { Box, Button, Divider, Grid2, InputLabel } from "@mui/material";
+import React, { useState } from "react";
+import { Link } from "react-router";
+import { FormProvider } from "../../context/FormProvider";
+import { PatientStepForm, StepperForm } from "./components/";
 
-function RegisterPage() {
-  const [step, setStep] = useState(1); // Paso actual
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  // Función para actualizar los datos del formulario
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Función para avanzar al siguiente paso
-  const nextStep = () => {
-    setStep((prevStep) => prevStep + 1);
-  };
-
-  // Función para retroceder al paso anterior
-  const prevStep = () => {
-    setStep((prevStep) => prevStep - 1);
-  };
-
-  // Función para enviar el formulario (cuando se llegue al último paso)
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Formulario enviado:", formData);
-  };
-
-  // Dependiendo del paso, mostrar diferentes formularios
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return (
-          <div>
-            <label>
-              Nombre:
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-        );
-      case 2:
-        return (
-          <div>
-            <label>
-              Correo Electrónico:
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-        );
-      case 3:
-        return (
-          <div>
-            <label>
-              Contraseña:
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-        );
-      default:
-        return <div>Formulario completado</div>;
-    }
-  };
+export const RegisterPage = () => {
+  const [step, setStep] = useState(1);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Paso {step}</h2>
-      {renderStep()}
+    <FormProvider>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          margin: "0 auto",
+        }}
+      >
+        <Grid2 container className="p-5">
+          <Grid2 xs={12} className="flex items-center gap-4">
+            <Link
+              to="/auth/login"
+              style={{
+                textDecoration: "none",
+              }}
+            >
+              <Button
+                startIcon={<ArrowBack />}
+                sx={{
+                  width: "50px",
+                  height: "44px",
+                  color: "#fff",
+                  backgroundColor: "#2A3E54",
+                  borderRadius: "4rem",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  "& .MuiSvgIcon-root": {
+                    fontSize: "1.7rem",
+                  },
+                }}
+              />
+            </Link>
 
-      <div>
-        {step > 1 && (
-          <button type="button" onClick={prevStep}>
-            Anterior
-          </button>
-        )}
+            <InputLabel sx={{ color: "#000", fontSize: "1.2em" }}>
+              Sign In
+            </InputLabel>
+          </Grid2>
+        </Grid2>
+        <Divider />
 
-        {step < 3 ? (
-          <button type="button" onClick={nextStep}>
-            Siguiente
-          </button>
-        ) : (
-          <button type="submit">Enviar</button>
-        )}
-      </div>
-    </form>
+        <Grid2
+          container
+          direction="column"
+          className="flex-1 flex items-center justify-center"
+        >
+          <Grid2
+            sx={{ width: "100%", paddingBottom: "50px" }}
+            className=" flex items-center justify-center flex-col"
+          >
+            <StepperForm step={step} setStep={setStep} />
+          </Grid2>
+          <PatientStepForm step={step} setStep={setStep} />
+        </Grid2>
+      </Box>
+    </FormProvider>
   );
-}
-
-export default RegisterPage;
- */
+};

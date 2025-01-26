@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
+html,
+body,
 #root {
-  max-width: 1512px;
-  margin: 0 auto;
-  padding: 2rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
   text-align: center;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   z-index: 1000000;
 }
 
-body {
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+span {
+  margin: 0 !important;
 }
 
 button {

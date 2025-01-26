@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-import { AuthRoutes } from "../Auth/router/AuthRouter";
+import { AuthRoutes } from "../auth/router/AuthRouter";
 
 export const AppRouter = () => {
   return (
