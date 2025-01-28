@@ -12,6 +12,8 @@ export const FormStepPersonalInformation = () => {
     genre,
     city,
     addressLine,
+    emergencyContact,
+    phoneNumber,
     onInputChange,
   } = useContext(FormContext);
   return (
@@ -134,8 +136,9 @@ export const FormStepPersonalInformation = () => {
                   height: "2.063rem",
                   borderRadius: ".5rem",
                   border: "1px solid #cccccc",
-                  padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
+                  color: "#5A6474",
+                  textAlign: "left",
 
                   "& .MuiOutlinedInput-notchedOutline": {
                     border: "none",
@@ -154,10 +157,71 @@ export const FormStepPersonalInformation = () => {
                 <MenuItem value="preferNotToSay">Prefer Not to Say</MenuItem>
               </Select>
             </Grid2>
+            <Grid2 size={12}>
+              <Input
+                id="phoneNumber"
+                placeholder="Phone Number"
+                type="text"
+                name="phoneNumber"
+                value={phoneNumber}
+                onChange={onInputChange}
+                variant="filled"
+                fullWidth
+                sx={{
+                  fontSize: "0.875rem",
+                  height: "2.063rem",
+                  borderRadius: ".5rem",
+                  border: "1px solid #cccccc",
+                  padding: "0.5rem 1rem",
+                  marginTop: "0.5rem",
+
+                  "&::before, &::after": {
+                    borderBottom: "none !important",
+                  },
+                  "&:hover:not(.Mui-disabled):before": {
+                    borderBottom: "none !important",
+                  },
+                  "&:focus": {
+                    borderColor: "#2A3E54",
+                  },
+                }}
+              />
+            </Grid2>
+            <Grid2 size={12}>
+              <Input
+                id="emergencyContact"
+                placeholder="Emergency Contact"
+                type="text"
+                name="emergencyContact"
+                value={emergencyContact}
+                onChange={onInputChange}
+                variant="filled"
+                fullWidth
+                sx={{
+                  fontSize: "0.875rem",
+                  height: "2.063rem",
+                  borderRadius: ".5rem",
+                  border: "1px solid #cccccc",
+                  padding: "0.5rem 1rem",
+                  marginTop: "0.5rem",
+
+                  "&::before, &::after": {
+                    borderBottom: "none !important",
+                  },
+                  "&:hover:not(.Mui-disabled):before": {
+                    borderBottom: "none !important",
+                  },
+                  "&:focus": {
+                    borderColor: "#2A3E54",
+                  },
+                }}
+              />
+            </Grid2>
+
             <InputLabel
               sx={{
                 fontSize: "1.145rem",
-                fontWeight: "500", 
+                fontWeight: "500",
                 color: "#404D61",
                 position: "static",
                 textAlign: "left",

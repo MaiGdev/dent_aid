@@ -55,7 +55,7 @@ export const StepperForm = ({ step = 1, setStep }) => {
   }
   return (
     <>
-      <Stack sx={{ width: "46%"}}>
+      <Stack sx={{ width: "36%"}}>
         <Stepper
     
           activeStep={step - 1}

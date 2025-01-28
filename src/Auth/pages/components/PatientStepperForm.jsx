@@ -1,17 +1,32 @@
 import { motion } from "framer-motion";
 import React, { useContext } from "react";
 
-import { ArrowForward } from "@mui/icons-material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
+import { useNavigate } from "react-router";
 import { FormContext } from "../../../context/FormContext";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
-import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
 import { FormStepHealthInformation } from "../ui/FormStepHealthInformation";
-export const PatientStepForm = ({ step = 1, setStep }) => {
+import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
+export const PatientStepperForm = ({
+  step = 1,
+  setStep,
+  setIsUserSelected,
+}) => {
+  const navigate = useNavigate();
+
   const nextStep = () => {
-    setStep((prevStep) => prevStep + 1);
+
+/*     console.log(formState) */
+
+    step === 3
+      ? navigate("/dentaid/dashboard")
+      : setStep((prevStep) => prevStep + 1);
   };
-  const { formState, onInputChange } = useContext(FormContext);
+  const prevStep = () => {
+    step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
+  };
+  const { formState } = useContext(FormContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +40,7 @@ export const PatientStepForm = ({ step = 1, setStep }) => {
 
   return (
     <>
-      <Grid2 xs={12} md={12} lg={12} xl={12}>
+      <Grid2 xs={12} md={12} lg={12} xl={12}  paddingBottom="84px">
         <motion.div
           key={step}
           initial="hidden"
@@ -38,18 +53,19 @@ export const PatientStepForm = ({ step = 1, setStep }) => {
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepHealthInformation />}
 
-            {step < 3 ? (
+            <Grid2>
               <Button
                 endIcon={<ArrowForward />}
                 onClick={nextStep}
                 fullWidth
                 sx={{
-                  backgroundColor: "#2A3E54",
+                  backgroundColor: "#01448A",
                   color: "white",
                   fontSize: "0.875rem",
                   fontWeight: "600",
                   borderRadius: "1.5rem",
                   marginTop: "40px",
+                  textTransform: "none",
 
                   "&:hover": {
                     backgroundColor: "#4A5D72",
@@ -58,10 +74,9 @@ export const PatientStepForm = ({ step = 1, setStep }) => {
               >
                 Continue
               </Button>
-            ) : (
               <Button
-                endIcon={<ArrowForward />}
-                onClick={handleSubmit}
+                startIcon={<ArrowBack />}
+                onClick={prevStep}
                 fullWidth
                 sx={{
                   backgroundColor: "#2A3E54",
@@ -69,16 +84,17 @@ export const PatientStepForm = ({ step = 1, setStep }) => {
                   fontSize: "0.875rem",
                   fontWeight: "600",
                   borderRadius: "1.5rem",
-                  marginTop: "40px",
+                  marginTop: "16px",
+                  textTransform: "none",
 
                   "&:hover": {
                     backgroundColor: "#4A5D72",
                   },
                 }}
               >
-                Finish
+                Back
               </Button>
-            )}
+            </Grid2>
           </form>
         </motion.div>
       </Grid2>

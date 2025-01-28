@@ -1,10 +1,25 @@
 import { Box, Button, Grid2, Input, InputLabel } from "@mui/material";
-import { Link } from "react-router";
+import { flushSync } from "react-dom";
+import { Link, useNavigate } from "react-router";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const handleSignUp = (e) => {
+    if (!document.startViewTransition) {
+      navigate("/auth/register");
+      return;
+    }
+    document.startViewTransition(() => {
+      flushSync(() => navigate("/auth/register"));
+    });
+  };
+
   return (
     <>
-      <Box sx={{ display: "flex",placeItems: "center", height: "100vh"}}>
+      <Box
+        sx={{ display: "flex", placeItems: "center", height: "100vh" }}
+      >
         <Box className="flex justify-center items-center w-[950px] h-[656px] mx-auto loginDiv rounded-3xl ">
           <div className="flex justify-center items-center flex-col text-center bg-[#ECF5FF] h-[656px] w-full rounded-l-3xl ">
             <div className="w-[363.3px] flex justify-center items-center flex-col gap-[20px] ">
@@ -113,7 +128,7 @@ export const LoginPage = () => {
             <div className="w-[338.58px] max-w-md px-4 text-left gap-5 flex flex-col">
               <Box>
                 <Grid2 container direction="column" spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 xs={12} sm={6}>
                     <InputLabel
                       htmlFor="email-input"
                       sx={{
@@ -145,7 +160,7 @@ export const LoginPage = () => {
                       }}
                     />
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 xs={12} sm={6}>
                     <InputLabel
                       htmlFor="email-input"
                       sx={{
@@ -196,30 +211,41 @@ export const LoginPage = () => {
                     </Link>
                   </Grid2>
 
-                  <Button
-                    sx={{
-                      backgroundColor: "#2A3E54",
-                      color: "white",
-                      fontSize: "0.875rem", // 14px
-                      fontWeight: "600",
-                      borderRadius: "1.5rem",
-                      boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.1)",
-                      "&:hover": {
-                        backgroundColor: "#4A5D72", // Cambio en el hover
-                      },
-                      "&:focus": {
-                        outline: "1px solid white",
-                      },
-                    }}
-                  >
-                    Login
-                  </Button>
+                  <Grid2>
+                    <Link
+                      to="/dentaid/dashboard"
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Button
+                        fullWidth
+                        sx={{
+                          backgroundColor: "#2A3E54",
+                          color: "white",
+                          fontSize: "0.875rem",
+                          fontWeight: "600",
+                          borderRadius: "1.5rem",
+                          boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.1)",
+                          "&:hover": {
+                            backgroundColor: "#4A5D72",
+                          },
+                          "&:focus": {
+                            outline: "1px solid white",
+                          },
+                        }}
+                      >
+                        Login
+                      </Button>
+                    </Link>
+                  </Grid2>
                 </Grid2>
               </Box>
 
               <Grid2 container direction="row" justifyContent="start" size={12}>
-                <Link
-                  to={"/auth/register"}
+                {/* <Link to={"/auth/register"}>   */}
+                <Button
+                  onClick={handleSignUp}
                   sx={{
                     fontSize: "0.8rem", // 14px
                     fontWeight: "500",
@@ -229,7 +255,8 @@ export const LoginPage = () => {
                   }}
                 >
                   No account yet? Sign Up
-                </Link>
+                </Button>
+                {/*   </Link> */}
               </Grid2>
             </div>
           </div>

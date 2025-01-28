@@ -1,3 +1,3 @@
 export * from "./blood-type";
 export * from "./known-allergies";
-export * from "./medical-conditions";
+export * from "./dental-medical-conditions";

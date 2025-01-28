@@ -1,2 +1,2 @@
-export * from "./PatientStepForm";
+export * from "./PatientStepperForm";
 export * from "../ui/StepperForm";

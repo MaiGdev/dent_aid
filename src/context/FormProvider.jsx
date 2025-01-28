@@ -1,21 +1,26 @@
 import dayjs from "dayjs";
 import { useForm } from "../hooks/useForm";
-import { FormContext } from "./FormContext"; 
+import { FormContext } from "./FormContext";
 
 const formData = {
-  email: "",
-  password: "",
-  fullName: "",
-  genre: "genre",
+  addressLine: "",
+  bloodType: [],
+  city: "",
   dateOfBirth: new dayjs(),
   dateOfBirthFormated: new Date(),
-  identification: "",
-  city: "",
-  addressLine: "",
-  medicalConditions: [],
-  knownAllergies: [],
-  bloodType: [],
+  email: "",
   emergencyContact: "",
+  fullName: "",
+  genre: "genre",
+  identification: "",
+  knownAllergies: [],
+  medicalConditions: [],
+  medicalLicenseNumber: "",
+  password: "",
+  phoneNumber: "",
+  university: "",
+  workplace: "",
+  yearsOfExperience: "",
 };
 
 export const FormProvider = ({ children }) => {
