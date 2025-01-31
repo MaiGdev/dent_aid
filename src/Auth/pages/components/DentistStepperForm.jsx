@@ -3,28 +3,98 @@ import React, { useContext } from "react";
 
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
 import { FormStepProfessionalInformation } from "../ui/FormStepProfessionalInformation";
-export const DentistStepperForm = ({ step = 1, setStep, setIsUserSelected }) => {
+export const DentistStepperForm = ({
+  step = 1,
+  setStep,
+  setIsUserSelected,
+}) => {
   const navigate = useNavigate();
+  const {
+    fullName,
+    email,
+    password,
+    gender,
+    identification,
+    phoneNumber,
+    emergencyPhoneNumber,
+    address,
+    dateOfBirthFormated,
+    medicalLicenseNumber,
+    university,
+    workplace,
+    yearsOfExperience,
+    speciality,
+    formState,
+  } = useContext(FormContext);
+  const { startRegisterUser, startRegisterDentist } = useAuthStore();
+  const {} = useSelector((state) => state.authSlice);
 
   const nextStep = () => {
-    console.log(formState)
-    step === 3
-      ? navigate("/dentaid/dashboard")
-      : setStep((prevStep) => prevStep + 1);
+    setStep((prevStep) => prevStep + 1);
   };
   const prevStep = () => {
     step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
   };
-  const { formState } = useContext(FormContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado:", formState);
+
+    const user = await startRegisterUser({
+      fullName,
+      email,
+      password,
+      gender,
+      identification,
+      phoneNumber,
+      emergencyPhoneNumber,
+      address,
+      dateOfBirth: dateOfBirthFormated,
+      role: "DENTIST_ROLE",
+    });
+
+    if (user) {
+      const filteredSpeciality = speciality.map((x) => {
+        return x.value;
+      });
+
+      const dentist = await startRegisterDentist({
+        medicalLicenseNumber,
+        filteredSpeciality,
+        university,
+        workplace,
+        yearsOfExperience,
+        user,
+      });
+      if (user && dentist) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title:
+            "You're all set! Dive into your dashboard and start exploring.",
+        });
+
+        navigate("/dentaid/dashboard");
+      }
+    }
   };
 
   const stepVariants = {
@@ -47,48 +117,94 @@ export const DentistStepperForm = ({ step = 1, setStep, setIsUserSelected }) => 
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepProfessionalInformation />}
 
-            <Grid2>
-              <Button
-                endIcon={<ArrowForward />}
-                onClick={nextStep}
-                fullWidth
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "40px",
-                  textTransform: "none",
+            {step === 1 || step === 2 ? (
+              <Grid2>
+                <Button
+                  endIcon={<ArrowForward />}
+                  onClick={nextStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#01448A",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
 
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-              >
-                Continue
-              </Button>
-              <Button
-                startIcon={<ArrowBack />}
-                onClick={prevStep}
-                fullWidth
-                sx={{
-                  backgroundColor: "#2A3E54",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "16px",
-                  textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Continue
+                </Button>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#2A3E54",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "16px",
+                    textTransform: "none",
 
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-              >
-                Back
-              </Button>
-            </Grid2>
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
+              </Grid2>
+            ) : (
+              <Grid2>
+                <Button
+                  endIcon={<ArrowForward />}
+                  onClick={handleSubmit}
+                  type="submit"
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#01448A",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Continue
+                </Button>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#2A3E54",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "16px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
+              </Grid2>
+            )}
           </form>
         </motion.div>
       </Grid2>

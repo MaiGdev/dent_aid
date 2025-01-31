@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { FormProvider } from "../../context/FormProvider";
-import { PatientStepperForm, StepperForm } from "./components/";
+import { PatientStepperForm } from "./components/";
 import { DentistStepperForm } from "./components/DentistStepperForm";
 import { flushSync } from "react-dom";
 import { useNavigate } from "react-router";
@@ -50,7 +50,7 @@ export const RegisterPage = () => {
           margin: "0 auto",
         }}
       >
-        <Grid2 container className="p-5">
+        <Grid2 container sx={{ padding: "1.25rem" }}>
           <Grid2 xs={12} className="flex items-center gap-4">
             {/*  <Link to="/auth/login" style={{ textDecoration: "none" }}> */}
             <Button
@@ -98,10 +98,9 @@ export const RegisterPage = () => {
               </InputLabel>
               <Grid2>
                 <Select
-                  name="genre"
+                  name="gender"
                   fullWidth
                   value={typeUser}
-                  /*      label="genre" */
                   onChange={(e) => handleUserTypeChange(e.target.value)}
                   sx={{
                     fontSize: "0.875rem",

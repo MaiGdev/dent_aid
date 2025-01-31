@@ -19,7 +19,7 @@ export const FormStepHealthInformation = () => {
     medicalConditions,
     knownAllergies,
     bloodType,
-    emergencyContact,
+    emergencyPhoneNumber,
     onMultipleSelectChange,
     onInputChange,
   } = useContext(FormContext);
@@ -125,14 +125,14 @@ export const FormStepHealthInformation = () => {
               options={bloodTypeOptions}
               value={bloodType}
               onChange={(event, newValue) => {
-                onMultipleSelectChange({
+                onInputChange({
                   target: {
                     name: "bloodType",
                     value: newValue,
                   },
                 });
               }}
-              multiple
+              
               renderInput={(params) => (
                 <TextField
                   {...params}

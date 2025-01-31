@@ -5,6 +5,7 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router";
 import { FormContext } from "../../../context/FormContext";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepHealthInformation } from "../ui/FormStepHealthInformation";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
@@ -15,13 +16,12 @@ export const PatientStepperForm = ({
 }) => {
   const navigate = useNavigate();
 
+
+
   const nextStep = () => {
-
-/*     console.log(formState) */
-
-    step === 3
+/*     step === 3
       ? navigate("/dentaid/dashboard")
-      : setStep((prevStep) => prevStep + 1);
+      : setStep((prevStep) => prevStep + 1); */
   };
   const prevStep = () => {
     step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
@@ -31,6 +31,7 @@ export const PatientStepperForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Formulario enviado:", formState);
+/*     startLogin(formState.email, formState.password); */
   };
 
   const stepVariants = {
@@ -40,7 +41,7 @@ export const PatientStepperForm = ({
 
   return (
     <>
-      <Grid2 xs={12} md={12} lg={12} xl={12}  paddingBottom="84px">
+      <Grid2 xs={12} md={12} lg={12} xl={12} paddingBottom="84px">
         <motion.div
           key={step}
           initial="hidden"
@@ -53,48 +54,94 @@ export const PatientStepperForm = ({
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepHealthInformation />}
 
-            <Grid2>
-              <Button
-                endIcon={<ArrowForward />}
-                onClick={nextStep}
-                fullWidth
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "40px",
-                  textTransform: "none",
+            {(step === 1 || step === 2) && (
+              <Grid2>
+                <Button
+                  endIcon={<ArrowForward />}
+                  onClick={nextStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#01448A",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
 
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-              >
-                Continue
-              </Button>
-              <Button
-                startIcon={<ArrowBack />}
-                onClick={prevStep}
-                fullWidth
-                sx={{
-                  backgroundColor: "#2A3E54",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "16px",
-                  textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Continue
+                </Button>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#2A3E54",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "16px",
+                    textTransform: "none",
 
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-              >
-                Back
-              </Button>
-            </Grid2>
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
+              </Grid2>
+            )}
+            {(step === 3) && (
+              <Grid2>
+                <Button
+                  endIcon={<ArrowForward />}
+                  onClick={handleSubmit}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#01448A",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Continue
+                </Button>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#2A3E54",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "16px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
+              </Grid2>
+            )}
           </form>
         </motion.div>
       </Grid2>

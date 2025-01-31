@@ -3,21 +3,25 @@ import { useForm } from "../hooks/useForm";
 import { FormContext } from "./FormContext";
 
 const formData = {
-  addressLine: "",
-  bloodType: [],
+  /* Generic user */
+  email: "",
+  password: "",
+  identification: "",
+  fullName: "",
   city: "",
+  address: "",
+  phoneNumber: "",
+  emergencyPhoneNumber: "",
   dateOfBirth: new dayjs(),
   dateOfBirthFormated: new Date(),
-  email: "",
-  emergencyContact: "",
-  fullName: "",
-  genre: "genre",
-  identification: "",
+  /* Patient */
+  bloodType: "",
+  gender: "gender",
   knownAllergies: [],
   medicalConditions: [],
+  /* Doctor */
   medicalLicenseNumber: "",
-  password: "",
-  phoneNumber: "",
+  speciality: [],
   university: "",
   workplace: "",
   yearsOfExperience: "",

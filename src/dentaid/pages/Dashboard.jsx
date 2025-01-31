@@ -5,7 +5,7 @@ export const DashBoard = () => {
   return (
     <DentAidLayout>
       <Box
-        sx={{ backgroundColor: "#fff", minHeight: "90vh", borderRadius: "3rem" }}
+        sx={{ backgroundColor: "#fff", minHeight: "91vh", borderRadius: "3rem" }}
       >
         <h1>Hello from the dashboard</h1>
       </Box>

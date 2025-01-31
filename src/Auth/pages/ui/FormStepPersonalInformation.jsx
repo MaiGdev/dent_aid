@@ -9,10 +9,10 @@ export const FormStepPersonalInformation = () => {
     fullName,
     identification,
     dateOfBirth,
-    genre,
+    gender,
     city,
-    addressLine,
-    emergencyContact,
+    address,
+    emergencyPhoneNumber,
     phoneNumber,
     onInputChange,
   } = useContext(FormContext);
@@ -122,14 +122,14 @@ export const FormStepPersonalInformation = () => {
             </Grid2>
             <Grid2 size={6} sx={{ paddingLeft: ".5rem" }}>
               <Select
-                labelId="genre-select-label"
-                id="genre"
-                value={genre}
-                label="Genre"
+                labelId="gender-select-label"
+                id="gender"
+                value={gender}
+                label="Gender"
                 onChange={({ target: { value } }) =>
-                  onInputChange({ target: { name: "genre", value } })
+                  onInputChange({ target: { name: "gender", value } })
                 }
-                name="genre"
+                name="gender"
                 fullWidth
                 sx={{
                   fontSize: "0.875rem",
@@ -145,9 +145,9 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               >
-                {genre === "genre" && (
-                  <MenuItem value="genre" disabled>
-                    Genre
+                {gender === "gender" && (
+                  <MenuItem value="gender" disabled>
+                    Gender
                   </MenuItem>
                 )}
 
@@ -189,11 +189,11 @@ export const FormStepPersonalInformation = () => {
             </Grid2>
             <Grid2 size={12}>
               <Input
-                id="emergencyContact"
+                id="emergencyPhoneNumber"
                 placeholder="Emergency Contact"
                 type="text"
-                name="emergencyContact"
-                value={emergencyContact}
+                name="emergencyPhoneNumber"
+                value={emergencyPhoneNumber}
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
@@ -262,11 +262,11 @@ export const FormStepPersonalInformation = () => {
             </Grid2>
             <Grid2 size={12}>
               <Input
-                id="addressLine"
+                id="address"
                 placeholder="Address Line"
                 type="text"
-                name="addressLine"
-                value={addressLine}
+                name="address"
+                value={address}
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth

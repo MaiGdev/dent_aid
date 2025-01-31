@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-html,
+/* html,
 body,
 #root {
   height: 100%;
@@ -8,8 +8,26 @@ body,
   padding: 0;
 }
 
+
 #root {
   text-align: center;
+  font-family: "Poppins", sans-serif !important;
+  z-index: 1000000;
+} */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* body {
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100vh;
+} */
+
+#root {
   font-family: "Poppins", sans-serif !important;
   z-index: 1000000;
 }

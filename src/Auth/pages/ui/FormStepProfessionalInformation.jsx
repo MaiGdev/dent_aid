@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
-import { dentistSpecialtyOptions } from "./constants/dentist-speciaty";
+import { dentistSpecialityOptions } from "./constants/dentist-speciaty";
 
 export const FormStepProfessionalInformation = () => {
   const {
@@ -16,7 +16,7 @@ export const FormStepProfessionalInformation = () => {
     yearsOfExperience,
     university,
     workplace,
-    specialty,
+    speciality,
     onInputChange,
     onMultipleSelectChange,
   } = useContext(FormContext);
@@ -76,12 +76,12 @@ export const FormStepProfessionalInformation = () => {
               }}
               fullWidth
               disablePortal
-              options={dentistSpecialtyOptions}
-              value={specialty}
+              options={dentistSpecialityOptions}
+              value={speciality}
               onChange={(event, newValue) => {
                 onMultipleSelectChange({
                   target: {
-                    name: "knownAllergies",
+                    name: "speciality",
                     value: newValue,
                   },
                 });
@@ -90,7 +90,7 @@ export const FormStepProfessionalInformation = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Specialty"
+                  label="Speciality"
                   InputLabelProps={{
                     style: {
                       top: "-9px",
@@ -111,7 +111,7 @@ export const FormStepProfessionalInformation = () => {
               min="0"
               onChange={(e) => {
                 if (e.target.value >= 0) {
-                  onInputChange(e)
+                  onInputChange(e);
                 }
               }}
               variant="filled"

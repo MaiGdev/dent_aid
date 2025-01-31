@@ -4,6 +4,8 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { DentAidApp } from "./DentAidApp.jsx";
 import "./index.css";
+import { Provider } from "react-redux";
+import { store } from "./store/store.js";
 
 const theme = createTheme({
   typography: {
@@ -14,9 +16,11 @@ const theme = createTheme({
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
+      <Provider store={store}>
       <BrowserRouter>
         <DentAidApp />
       </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   </StrictMode>
 );

@@ -1,6 +1,10 @@
 import { Box, Button, Grid2, Input, InputLabel } from "@mui/material";
+import { useContext } from "react";
 import { flushSync } from "react-dom";
 import { Link, useNavigate } from "react-router";
+import { FormContext } from "../../context/FormContext";
+import { FormProvider } from "../../context/FormProvider";
+import { LoginForm } from "./components/LoginForm";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,10 +19,17 @@ export const LoginPage = () => {
     });
   };
 
+
+
   return (
-    <>
+    <FormProvider>
       <Box
-        sx={{ display: "flex", placeItems: "center", height: "100vh" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
       >
         <Box className="flex justify-center items-center w-[950px] h-[656px] mx-auto loginDiv rounded-3xl ">
           <div className="flex justify-center items-center flex-col text-center bg-[#ECF5FF] h-[656px] w-full rounded-l-3xl ">
@@ -126,128 +137,13 @@ export const LoginPage = () => {
             </div>
 
             <div className="w-[338.58px] max-w-md px-4 text-left gap-5 flex flex-col">
-              <Box>
-                <Grid2 container direction="column" spacing={2}>
-                  <Grid2 xs={12} sm={6}>
-                    <InputLabel
-                      htmlFor="email-input"
-                      sx={{
-                        fontSize: "0.875rem", // 14px
-                        fontWeight: "600",
-                        color: "#979797",
-                        position: "static",
-                      }}
-                    >
-                      Email
-                    </InputLabel>
-                    <Input
-                      id="email-input"
-                      placeholder="Email"
-                      type="email"
-                      variant="filled"
-                      fullWidth
-                      sx={{
-                        fontSize: "0.875rem", // 14px
-
-                        borderRadius: ".5rem",
-                        border: "1px solid #cccccc",
-                        padding: "0.5rem 1rem",
-                        marginTop: "0.5rem",
-                        position: "static",
-                        "&:focus": {
-                          borderColor: "#2A3E54",
-                        },
-                      }}
-                    />
-                  </Grid2>
-                  <Grid2 xs={12} sm={6}>
-                    <InputLabel
-                      htmlFor="email-input"
-                      sx={{
-                        fontSize: "0.875rem", // 14px
-                        fontWeight: "600",
-                        color: "#979797",
-                        position: "static",
-                      }}
-                    >
-                      Password
-                    </InputLabel>
-                    <Input
-                      id="password-input"
-                      placeholder="********"
-                      type="text"
-                      variant="filled"
-                      fullWidth
-                      sx={{
-                        fontSize: "0.875rem", // 14px
-
-                        borderRadius: ".5rem",
-                        border: "1px solid #cccccc",
-                        padding: "0.5rem 1rem",
-                        marginTop: "0.5rem",
-                        position: "static",
-                        "&:focus": {
-                          borderColor: "#2A3E54",
-                        },
-                      }}
-                    />
-                  </Grid2>
-                  <Grid2
-                    container
-                    direction="row"
-                    justifyContent="end"
-                    size={12}
-                  >
-                    <Link
-                      sx={{
-                        fontSize: "0.8rem", // 14px
-                        fontWeight: "500",
-                        color: "#979797",
-                        position: "static",
-                        textAlign: "right",
-                      }}
-                    >
-                      Can't access your account?
-                    </Link>
-                  </Grid2>
-
-                  <Grid2>
-                    <Link
-                      to="/dentaid/dashboard"
-                      style={{
-                        textDecoration: "none",
-                      }}
-                    >
-                      <Button
-                        fullWidth
-                        sx={{
-                          backgroundColor: "#2A3E54",
-                          color: "white",
-                          fontSize: "0.875rem",
-                          fontWeight: "600",
-                          borderRadius: "1.5rem",
-                          boxShadow: "inset 0 0 10px rgba(255, 255, 255, 0.1)",
-                          "&:hover": {
-                            backgroundColor: "#4A5D72",
-                          },
-                          "&:focus": {
-                            outline: "1px solid white",
-                          },
-                        }}
-                      >
-                        Login
-                      </Button>
-                    </Link>
-                  </Grid2>
-                </Grid2>
-              </Box>
+              <LoginForm />
 
               <Grid2 container direction="row" justifyContent="start" size={12}>
-                {/* <Link to={"/auth/register"}>   */}
                 <Button
                   onClick={handleSignUp}
                   sx={{
-                    fontSize: "0.8rem", // 14px
+                    fontSize: "0.75rem",
                     fontWeight: "500",
                     color: "#979797",
                     position: "static",
@@ -256,12 +152,11 @@ export const LoginPage = () => {
                 >
                   No account yet? Sign Up
                 </Button>
-                {/*   </Link> */}
               </Grid2>
             </div>
           </div>
         </Box>
       </Box>
-    </>
+    </FormProvider>
   );
 };

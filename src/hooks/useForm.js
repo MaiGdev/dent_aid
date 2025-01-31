@@ -7,12 +7,21 @@ export const useForm = (initialForm = {}) => {
   const onInputChange = (eventOrValue) => {
     if (eventOrValue.target) {
       const { name, value } = eventOrValue.target;
+
+      if (value instanceof Object) {
+        setFormState({
+          ...formState,
+          [name]: value.value,
+        });
+        return;
+      }
+
       setFormState({
         ...formState,
         [name]: value,
       });
     } else {
-      const formattedDate = eventOrValue.toDate();
+      const formattedDate = eventOrValue.toDate().toISOString();;
       setFormState({
         ...formState,
         dateOfBirth: eventOrValue,
@@ -22,14 +31,14 @@ export const useForm = (initialForm = {}) => {
   };
 
   const onMultipleSelectChange = (event) => {
-    const { name, value } = event.target; 
+    const { name, value } = event.target;
 
     const filteredValue = [
       ...new Map(value.map((item) => [item.value, item])).values(),
     ];
     setFormState({
       ...formState,
-      [name]: filteredValue, 
+      [name]: filteredValue,
     });
   };
 
