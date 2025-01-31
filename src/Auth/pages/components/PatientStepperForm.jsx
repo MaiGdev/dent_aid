@@ -16,22 +16,82 @@ export const PatientStepperForm = ({
 }) => {
   const navigate = useNavigate();
 
+  const { startRegisterUser, startRegisterPatient } = useAuthStore();
 
+  const {
+    fullName,
+    email,
+    password,
+    gender,
+    identification,
+    phoneNumber,
+    emergencyPhoneNumber,
+    address,
+    dateOfBirthFormated,
+    /* Patient */
+    bloodType,
+    genre,
+    knownAllergies,
+    medicalConditions,
+  } = useContext(FormContext);
 
   const nextStep = () => {
-/*     step === 3
-      ? navigate("/dentaid/dashboard")
-      : setStep((prevStep) => prevStep + 1); */
+    setStep((prevStep) => prevStep + 1);
   };
   const prevStep = () => {
     step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
   };
   const { formState } = useContext(FormContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado:", formState);
-/*     startLogin(formState.email, formState.password); */
+
+    const filteredKnownAllergies = knownAllergies.map((x) => {
+      return x.value;
+    });
+    const filteredMedicalConditions = medicalConditions.map((x) => {
+      return x.value;
+    });
+
+    try {
+      const user = await startRegisterUser({
+        fullName,
+        email,
+        password,
+        gender,
+        identification,
+        phoneNumber,
+        emergencyPhoneNumber,
+        address,
+        dateOfBirth: dateOfBirthFormated,
+        role: "PATIENT_ROLE",
+        bloodType,
+        genre,
+        filteredKnownAllergies,
+        filteredMedicalConditions,
+      });
+
+      if (user) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title:
+            "You're all set! Dive into your dashboard and start exploring.",
+        });
+      }
+    } catch (error) {}
   };
 
   const stepVariants = {
@@ -98,7 +158,7 @@ export const PatientStepperForm = ({
                 </Button>
               </Grid2>
             )}
-            {(step === 3) && (
+            {step === 3 && (
               <Grid2>
                 <Button
                   endIcon={<ArrowForward />}

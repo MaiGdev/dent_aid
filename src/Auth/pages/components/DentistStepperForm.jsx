@@ -3,13 +3,13 @@ import React, { useContext } from "react";
 
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { FormContext } from "../../../context/FormContext";
 import { useAuthStore } from "../../../hooks/useAuthStore";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
 import { FormStepProfessionalInformation } from "../ui/FormStepProfessionalInformation";
+import Swal from "sweetalert2";
 export const DentistStepperForm = ({
   step = 1,
   setStep,
@@ -33,8 +33,7 @@ export const DentistStepperForm = ({
     speciality,
     formState,
   } = useContext(FormContext);
-  const { startRegisterUser, startRegisterDentist } = useAuthStore();
-  const {} = useSelector((state) => state.authSlice);
+  const { startRegisterUser } = useAuthStore();
 
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
@@ -52,28 +51,26 @@ export const DentistStepperForm = ({
     });
 
     try {
-      const [user, dentist] = await Promise.all([
-        startRegisterUser({
-          fullName,
-          email,
-          password,
-          gender,
-          identification,
-          phoneNumber,
-          emergencyPhoneNumber,
-          address,
-          dateOfBirth: dateOfBirthFormated,
-          role: "DENTIST_ROLE",
-        }),
-        startRegisterDentist({
-          medicalLicenseNumber,
-          filteredSpeciality,
-          university,
-          workplace,
-          yearsOfExperience,
-        }),
-      ]);
-      if (user && dentist) {
+      const user = await startRegisterUser({
+        fullName,
+        email,
+        password,
+        gender,
+        identification,
+        phoneNumber,
+        emergencyPhoneNumber,
+        address,
+        dateOfBirth: dateOfBirthFormated,
+        role: "DENTIST_ROLE",
+        /* Dentist */
+        medicalLicenseNumber,
+        filteredSpeciality,
+        university,
+        workplace,
+        yearsOfExperience,
+      });
+
+      if (user) {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -92,7 +89,7 @@ export const DentistStepperForm = ({
             "You're all set! Dive into your dashboard and start exploring.",
         });
 
-        navigate("/dentaid/dashboard");
+        /*  navigate("/dentaid/dashboard"); */
       }
     } catch (error) {
       Swal.fire({

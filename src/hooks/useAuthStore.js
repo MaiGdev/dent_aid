@@ -18,11 +18,32 @@ export const useAuthStore = () => {
         password,
       });
       localStorage.setItem("token", data.token);
+
+      if (data.user.patientId) {
+        dispatch(
+          onLogin({
+            email: email,
+            id: data.user.id,
+            name: data.user.name,
+            patientId: data.user.patientId,
+          })
+        );
+      }
+      if (data.user.dentistId) {
+        dispatch(
+          onLogin({
+            email: email,
+            id: data.user.id,
+            name: data.user.name,
+            dentistId: data.user.dentistId,
+          })
+        );
+      }
       dispatch(
         onLogin({
           email: email,
-          id: data.existingUser.id,
-          name: data.existingUser.fullName,
+          id: data.user.id,
+          name: data.user.name,
         })
       );
 
@@ -40,6 +61,7 @@ export const useAuthStore = () => {
           title: "Error",
           text: "Something went wrong. Please try again later.",
         });
+        console.log(error);
       }
 
       dispatch(onLogout({ message: error.message }));
@@ -62,21 +84,50 @@ export const useAuthStore = () => {
     address,
     dateOfBirth,
     role,
+    /* Dentist */
+    medicalLicenseNumber = undefined,
+    filteredSpeciality: speciality = undefined,
+    university = undefined,
+    workplace = undefined,
+    yearsOfExperience = undefined,
+    /* Pacient */
+    bloodType = undefined,
+    genre = undefined,
+    filteredKnownAllergies: knownAllergies = undefined,
+    filteredMedicalConditions: medicalConditions = undefined,
   }) => {
     dispatch(onChecking());
+
+    const userData = {
+      fullName,
+      email,
+      password,
+      gender,
+      identification,
+      phoneNumber,
+      emergencyPhoneNumber,
+      address,
+      dateOfBirth,
+      role,
+      /* Dentist */
+      medicalLicenseNumber,
+      speciality,
+      university,
+      workplace,
+      yearsOfExperience,
+      /* Pacient */
+      bloodType,
+      genre,
+      knownAllergies,
+      medicalConditions,
+    };
+
     try {
-      const { data } = await dentaidApi.post("/auth/register", {
-        fullName,
-        email,
-        password,
-        gender,
-        identification,
-        phoneNumber,
-        emergencyPhoneNumber,
-        address,
-        dateOfBirth,
-        role,
-      });
+      const filteredData = Object.fromEntries(
+        Object.entries(userData).filter(([_, value]) => value !== undefined)
+      );
+      const { data } = await dentaidApi.post("/auth/register", filteredData);
+
       localStorage.setItem("token", data.token);
       dispatch(
         onLogin({
@@ -85,7 +136,7 @@ export const useAuthStore = () => {
           name: data.user.name,
         })
       );
-      return data.user.id;
+      return true;
     } catch (error) {
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
@@ -95,39 +146,9 @@ export const useAuthStore = () => {
         });
       }
       dispatch(onLogout({ message: error.message }));
+      return false;
     }
   };
-  const startRegisterDentist = async ({
-    medicalLicenseNumber,
-    filteredSpeciality: speciality,
-    university,
-    workplace,
-    yearsOfExperience,
-    user,
-  }) => {
-    try {
-      const { data } = await dentaidApi.post("/user/dentist", {
-        medicalLicenseNumber,
-        speciality,
-        university,
-        workplace,
-        yearsOfExperience,
-        user,
-      });
-      dispatch(onLogin({ dentistId: data.dentist.user }));
-      return data.dentist.user;
-    } catch (error) {
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Network Error",
-          text: "Cannot reach the server. Please check your connection or contact support.",
-        });
-      }
-      dispatch(onLogout({ message: error.message }));
-    }
-  };
-  const startRegisterPatient = () => {};
 
   const checkAuthToken = async () => {
     const token = localStorage.getItem("token");
@@ -138,22 +159,36 @@ export const useAuthStore = () => {
         const { data } = await dentaidApi.post("auth/renew", {
           token,
         });
-        console.log(data);
 
         if (data?.token) {
           localStorage.setItem("token", data.token);
           dispatch(
-            onLogin({ email: data.email, name: data.name, id: data.id })
+            onLogin({
+              email: data.user.email,
+              name: data.user.name,
+              id: data.user.id,
+            })
           );
           return;
         }
         return;
       } catch (error) {
-        console.error("Error renewing token:", error);
+        if (error.code === "ERR_NETWORK") {
+          Swal.fire({
+            icon: "error",
+            title: "Network Error",
+            text: "Cannot reach the server to reload your session. Please check your connection or contact support.",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Something went wrong reloading your session. Please try again later.",
+          });
+        }
+        dispatch(onLogout());
       }
     }
-
-    dispatch(onLogout());
   };
 
   return {
@@ -165,8 +200,6 @@ export const useAuthStore = () => {
     startLogin,
     startLogout,
     startRegisterUser,
-    startRegisterDentist,
-    startRegisterPatient,
     checkAuthToken,
   };
 };

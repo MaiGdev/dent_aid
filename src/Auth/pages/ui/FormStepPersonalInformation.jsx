@@ -151,10 +151,10 @@ export const FormStepPersonalInformation = () => {
                   </MenuItem>
                 )}
 
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="female">Female</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
-                <MenuItem value="preferNotToSay">Prefer Not to Say</MenuItem>
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+                <MenuItem value="Prefer Not to Say">Prefer Not to Say</MenuItem>
               </Select>
             </Grid2>
             <Grid2 size={12}>
