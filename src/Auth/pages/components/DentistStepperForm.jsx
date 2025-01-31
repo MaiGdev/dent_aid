@@ -5,7 +5,6 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
 import { useAuthStore } from "../../../hooks/useAuthStore";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
@@ -48,32 +47,32 @@ export const DentistStepperForm = ({
     e.preventDefault();
     console.log("Formulario enviado:", formState);
 
-    const user = await startRegisterUser({
-      fullName,
-      email,
-      password,
-      gender,
-      identification,
-      phoneNumber,
-      emergencyPhoneNumber,
-      address,
-      dateOfBirth: dateOfBirthFormated,
-      role: "DENTIST_ROLE",
+    const filteredSpeciality = speciality.map((x) => {
+      return x.value;
     });
 
-    if (user) {
-      const filteredSpeciality = speciality.map((x) => {
-        return x.value;
-      });
-
-      const dentist = await startRegisterDentist({
-        medicalLicenseNumber,
-        filteredSpeciality,
-        university,
-        workplace,
-        yearsOfExperience,
-        user,
-      });
+    try {
+      const [user, dentist] = await Promise.all([
+        startRegisterUser({
+          fullName,
+          email,
+          password,
+          gender,
+          identification,
+          phoneNumber,
+          emergencyPhoneNumber,
+          address,
+          dateOfBirth: dateOfBirthFormated,
+          role: "DENTIST_ROLE",
+        }),
+        startRegisterDentist({
+          medicalLicenseNumber,
+          filteredSpeciality,
+          university,
+          workplace,
+          yearsOfExperience,
+        }),
+      ]);
       if (user && dentist) {
         const Toast = Swal.mixin({
           toast: true,
@@ -86,6 +85,7 @@ export const DentistStepperForm = ({
             toast.onmouseleave = Swal.resumeTimer;
           },
         });
+
         Toast.fire({
           icon: "success",
           title:
@@ -94,6 +94,12 @@ export const DentistStepperForm = ({
 
         navigate("/dentaid/dashboard");
       }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong on our side. Please try again later or contact support.",
+      });
     }
   };
 

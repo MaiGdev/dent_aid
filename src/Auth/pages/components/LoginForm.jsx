@@ -7,25 +7,32 @@ import { useAuthStore } from "../../../hooks/useAuthStore";
 export const LoginForm = () => {
   const { email, password, onInputChange } = useContext(FormContext);
   const { startLogin } = useAuthStore();
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log("handleLogin");
     console.log({ email: email, password: password });
-    startLogin({ email: email, password: password });
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
-    Toast.fire({
-      icon: "success",
-      title: "Good to see you again! Enjoy your session.",
-    });
+
+    try {
+      const login = await startLogin({ email: email, password: password });
+      if (login) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Good to see you again! Enjoy your session.",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>

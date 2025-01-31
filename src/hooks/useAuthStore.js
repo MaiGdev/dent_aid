@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { dentaidApi } from "../api/dentaidApi";
 import { onChecking, onLogin, onLogout } from "../store";
 
@@ -24,9 +25,24 @@ export const useAuthStore = () => {
           name: data.existingUser.fullName,
         })
       );
+
+      return true;
     } catch (error) {
-      console.error(error);
-      dispatch(onLogout(error));
+      if (error.code === "ERR_NETWORK") {
+        Swal.fire({
+          icon: "error",
+          title: "Network Error",
+          text: "Cannot reach the server. Please check your connection or contact support.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Something went wrong. Please try again later.",
+        });
+      }
+
+      dispatch(onLogout({ message: error.message }));
     }
   };
 
@@ -71,8 +87,14 @@ export const useAuthStore = () => {
       );
       return data.user.id;
     } catch (error) {
-      console.error(error);
-      dispatch(onLogout(error));
+      if (error.code === "ERR_NETWORK") {
+        Swal.fire({
+          icon: "error",
+          title: "Network Error",
+          text: "Cannot reach the server. Please check your connection or contact support.",
+        });
+      }
+      dispatch(onLogout({ message: error.message }));
     }
   };
   const startRegisterDentist = async ({
@@ -92,12 +114,18 @@ export const useAuthStore = () => {
         yearsOfExperience,
         user,
       });
+      dispatch(onLogin({ dentistId: data.dentist.user }));
       return data.dentist.user;
     } catch (error) {
-      console.error(error);
+      if (error.code === "ERR_NETWORK") {
+        Swal.fire({
+          icon: "error",
+          title: "Network Error",
+          text: "Cannot reach the server. Please check your connection or contact support.",
+        });
+      }
+      dispatch(onLogout({ message: error.message }));
     }
-
-    dispatch(onLogin({ dentistId: data.dentist.user }));
   };
   const startRegisterPatient = () => {};
 
@@ -107,7 +135,7 @@ export const useAuthStore = () => {
     if (token) {
       try {
         dispatch(onChecking());
-        const data = await dentaidApi.post("auth/renew", {
+        const { data } = await dentaidApi.post("auth/renew", {
           token,
         });
         console.log(data);
