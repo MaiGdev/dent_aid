@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Box,
-  Grid2,
-  Input,
-  InputLabel,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Grid2, Input, TextField } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 import { dentistSpecialityOptions } from "./constants/dentist-speciaty";
@@ -24,7 +17,8 @@ export const FormStepProfessionalInformation = () => {
     <>
       <Box sx={{ width: "558.31px" }}>
         <Grid2 container direction="column" spacing={2}>
-          <InputLabel
+          <Typography
+            variant="h2"
             sx={{
               fontSize: "1.145rem",
               fontWeight: "500",
@@ -34,7 +28,7 @@ export const FormStepProfessionalInformation = () => {
             }}
           >
             Professional Information
-          </InputLabel>
+          </Typography>
           <Grid2 xs={12} sm={6}>
             <Input
               id="medicalLicenseNumber"

@@ -22,7 +22,6 @@ export const PatientStepperForm = ({
     fullName,
     email,
     password,
-    gender,
     identification,
     phoneNumber,
     emergencyPhoneNumber,
@@ -30,7 +29,7 @@ export const PatientStepperForm = ({
     dateOfBirthFormated,
     /* Patient */
     bloodType,
-    genre,
+    gender,
     knownAllergies,
     medicalConditions,
   } = useContext(FormContext);
@@ -67,7 +66,6 @@ export const PatientStepperForm = ({
         dateOfBirth: dateOfBirthFormated,
         role: "PATIENT_ROLE",
         bloodType,
-        genre,
         filteredKnownAllergies,
         filteredMedicalConditions,
       });

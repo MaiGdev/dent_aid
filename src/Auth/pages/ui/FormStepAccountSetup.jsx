@@ -1,4 +1,4 @@
-import { Box, Grid2, Input, InputLabel } from "@mui/material";
+import { Box, Grid2, Input, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 
@@ -8,17 +8,18 @@ export const FormStepAccountSetup = () => {
     <>
       <Box sx={{ width: "558.31px" }}>
         <Grid2 container direction="column" spacing={2}>
-          <InputLabel
+          <Typography
+            variant="h2"
             sx={{
               fontSize: "1.145rem",
-              fontWeight: "500", 
+              fontWeight: "500",
               color: "#404D61",
               position: "static",
               textAlign: "left",
             }}
           >
             Account Setup
-          </InputLabel>
+          </Typography>
           <Grid2 xs={12} sm={6}>
             <Input
               id="email"

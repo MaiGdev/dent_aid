@@ -9,20 +9,23 @@ export const DentAidLayout = ({ children }) => {
       sx={{
         display: "flex",
         padding: "40px",
+        minHeight: "100vh",
         backgroundColor: "#F8F9FC",
         gap: "40px",
       }}
     >
-      <NavBar drawerWidth={drawerWidth} />
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-        component="main"
-      >
-        {children}
+
+        <NavBar drawerWidth={drawerWidth} />
+        <Box
+          sx={{
+            flexGrow: 1,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+          }}
+          component="main"
+        >
+          {children}
+        </Box>
       </Box>
-    </Box>
+    
   );
 };

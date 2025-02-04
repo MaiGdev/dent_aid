@@ -9,18 +9,18 @@ import {
   Select,
 } from "@mui/material";
 import React, { useState } from "react";
+import { flushSync } from "react-dom";
+import { useNavigate } from "react-router";
 import { FormProvider } from "../../context/FormProvider";
 import { PatientStepperForm } from "./components/";
 import { DentistStepperForm } from "./components/DentistStepperForm";
-import { flushSync } from "react-dom";
-import { useNavigate } from "react-router";
 
 export const RegisterPage = () => {
   const [step, setStep] = useState(1);
   const [typeUser, setTypeUser] = useState("patient");
   const [isUserSelected, setIsUserSelected] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleUserTypeChange = (value) => {
     setTypeUser(value);
   };
@@ -30,7 +30,7 @@ export const RegisterPage = () => {
   };
 
   const handleLogin = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!document.startViewTransition) {
       navigate("/auth/login");
       return;
@@ -153,12 +153,6 @@ export const RegisterPage = () => {
           >
             {typeUser === "dentist" ? (
               <>
-                {/*                 <Grid2
-                  sx={{ width: "100%", paddingBottom: "50px" }}
-                  className="flex items-center justify-center flex-col"
-                >
-                  <StepperForm step={step} setStep={setStep} />
-                </Grid2> */}
                 <DentistStepperForm
                   step={step}
                   setStep={setStep}
@@ -167,12 +161,6 @@ export const RegisterPage = () => {
               </>
             ) : (
               <>
-                {/*                 <Grid2
-                  sx={{ width: "100%", paddingBottom: "50px" }}
-                  className="flex items-center justify-center flex-col" 
-                >
-                  <StepperForm step={step} setStep={setStep} />
-                </Grid2> */}
                 <PatientStepperForm
                   step={step}
                   setStep={setStep}

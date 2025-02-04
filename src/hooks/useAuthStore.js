@@ -56,6 +56,14 @@ export const useAuthStore = () => {
           text: "Cannot reach the server. Please check your connection or contact support.",
         });
       } else {
+        if (error.response?.status === 401) {
+          return Swal.fire({
+            icon: "warning",
+            title: "Unauthorized",
+            text: "Please check your login credentials.",
+          });
+        }
+
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -77,7 +85,6 @@ export const useAuthStore = () => {
     fullName,
     email,
     password,
-    gender,
     identification,
     phoneNumber,
     emergencyPhoneNumber,
@@ -92,7 +99,7 @@ export const useAuthStore = () => {
     yearsOfExperience = undefined,
     /* Pacient */
     bloodType = undefined,
-    genre = undefined,
+    gender = undefined,
     filteredKnownAllergies: knownAllergies = undefined,
     filteredMedicalConditions: medicalConditions = undefined,
   }) => {
@@ -102,7 +109,6 @@ export const useAuthStore = () => {
       fullName,
       email,
       password,
-      gender,
       identification,
       phoneNumber,
       emergencyPhoneNumber,
@@ -117,7 +123,7 @@ export const useAuthStore = () => {
       yearsOfExperience,
       /* Pacient */
       bloodType,
-      genre,
+      gender,
       knownAllergies,
       medicalConditions,
     };

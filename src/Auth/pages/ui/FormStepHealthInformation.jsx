@@ -3,8 +3,8 @@ import {
   Box,
   Grid2,
   Input,
-  InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
@@ -27,7 +27,8 @@ export const FormStepHealthInformation = () => {
     <>
       <Box sx={{ width: "558.31px" }}>
         <Grid2 container direction="column" spacing={2}>
-          <InputLabel
+          <Typography
+            variant="h2"
             sx={{
               fontSize: "1.145rem",
               fontWeight: "500",
@@ -37,7 +38,7 @@ export const FormStepHealthInformation = () => {
             }}
           >
             Health Information
-          </InputLabel>
+          </Typography>
           <Grid2 size={12}>
             <Autocomplete
               sx={{
@@ -132,7 +133,6 @@ export const FormStepHealthInformation = () => {
                   },
                 });
               }}
-              
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -147,7 +147,6 @@ export const FormStepHealthInformation = () => {
               )}
             />
           </Grid2>
-
         </Grid2>
       </Box>
     </>

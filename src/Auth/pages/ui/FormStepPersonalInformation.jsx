@@ -1,4 +1,13 @@
-import { Box, Grid2, Input, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Grid2,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useContext } from "react";
@@ -20,7 +29,8 @@ export const FormStepPersonalInformation = () => {
     <>
       <Box sx={{ width: "558.31px" }}>
         <Grid2 container direction="column" spacing={2}>
-          <InputLabel
+          <Typography
+            variant="h2"
             sx={{
               fontSize: "1.145rem",
               fontWeight: "500", //
@@ -30,7 +40,7 @@ export const FormStepPersonalInformation = () => {
             }}
           >
             Personal information
-          </InputLabel>
+          </Typography>
           <Grid2
             container
             direction={"row"}
@@ -121,41 +131,52 @@ export const FormStepPersonalInformation = () => {
               </LocalizationProvider>
             </Grid2>
             <Grid2 size={6} sx={{ paddingLeft: ".5rem" }}>
-              <Select
-                labelId="gender-select-label"
-                id="gender"
-                value={gender}
-                label="Gender"
-                onChange={({ target: { value } }) =>
-                  onInputChange({ target: { name: "gender", value } })
-                }
-                name="gender"
-                fullWidth
-                sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
-                  marginTop: "0.5rem",
-                  color: "#5A6474",
-                  textAlign: "left",
-
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    border: "none",
-                  },
-                }}
-              >
-                {gender === "gender" && (
-                  <MenuItem value="gender" disabled>
-                    Gender
+              <FormControl fullWidth>
+                <InputLabel
+                  id="gender-label"
+                  sx={{
+                    fontSize: "16px",
+                    color: "#5A6474",
+                    transform: "translate(14px, 8px) scale(1)",
+                    "&.Mui-focused, &.MuiInputLabel-shrink": {
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                  }}
+                >
+                  Gender
+                </InputLabel>
+                <Select
+                  labelId="gender-label"
+                  id="gender"
+                  value={gender}
+                  label="Gender"
+                  onChange={({ target: { value } }) =>
+                    onInputChange({ target: { name: "gender", value } })
+                  }
+                  name="gender"
+                  sx={{
+                    fontSize: "0.875rem",
+                    height: "2.063rem",
+                    borderRadius: ".5rem",
+                /*     border: "1px solid #cccccc", */
+                    color: "#5A6474",
+                    textAlign: "left",
+      /*               "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                    "& .MuiSelect-select": {
+                      padding: "0.5rem 1rem",
+                    }, */
+                  }}
+                >
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                  <MenuItem value="Prefer Not to Say">
+                    Prefer Not to Say
                   </MenuItem>
-                )}
-
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-                <MenuItem value="Prefer Not to Say">Prefer Not to Say</MenuItem>
-              </Select>
+                </Select>
+              </FormControl>
             </Grid2>
             <Grid2 size={12}>
               <Input
@@ -218,7 +239,7 @@ export const FormStepPersonalInformation = () => {
               />
             </Grid2>
 
-            <InputLabel
+            <Typography
               sx={{
                 fontSize: "1.145rem",
                 fontWeight: "500",
@@ -229,7 +250,7 @@ export const FormStepPersonalInformation = () => {
               }}
             >
               Address
-            </InputLabel>
+            </Typography>
             <Grid2 size={12}>
               <Input
                 id="city"

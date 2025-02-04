@@ -9,8 +9,9 @@ import { store } from "./store/store.js";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Poppins', sans-serif", // Cambia la fuente predeterminada
+    fontFamily: "'Poppins', sans-serif", 
   },
+  
 });
 
 createRoot(document.getElementById("root")).render(
