@@ -52,7 +52,7 @@ export const RegisterPage = () => {
       >
         <Grid2 container sx={{ padding: "1.25rem" }}>
           <Grid2 xs={12} className="flex items-center gap-4">
-            {/*  <Link to="/auth/login" style={{ textDecoration: "none" }}> */}
+      
             <Button
               startIcon={<ArrowBack />}
               onClick={handleLogin}
@@ -70,7 +70,7 @@ export const RegisterPage = () => {
                 },
               }}
             />
-            {/*  </Link> */}
+    
             <InputLabel sx={{ color: "#000", fontSize: "1.2em" }}>
               Sign In
             </InputLabel>

@@ -16,12 +16,14 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useUserStore } from "../../hooks/useUserStore";
+import { useNavigate } from "react-router";
+import { useUserStore } from "../../hooks";
 import { DentAidLayout } from "../layout/DentAidLayout";
 
 export const UserManagement = () => {
   const { admin, dentists, patients, startGetUsers } = useUserStore();
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     startGetUsers();
@@ -69,6 +71,7 @@ export const UserManagement = () => {
   ];
 
   useEffect(() => {
+    //default user row
     if (dentists && dentists.length > 0) {
       const formatedDentist = dentists.map((dentist) => ({
         id: dentist.id,
@@ -86,7 +89,7 @@ export const UserManagement = () => {
   const [userType, setUserType] = useState("DENTIST_ROLE");
 
   const handleEdit = (e) => {
-    console.log("Edit user with ID: ", e);
+    navigate(`/dentaid/user/${e.id}?usertype=${userType}`);
   };
 
   const handleUserTypeChange = ({ target }) => {
@@ -260,7 +263,12 @@ export const UserManagement = () => {
               }}
             />
             <Paper
-              sx={{ height: 450, width: "900px", border: "1px solid #cccccc" }}
+              sx={{
+                height: 450,
+                width: "900px",
+                border: "1px solid #cccccc",
+                borderRadius: 0,
+              }}
             >
               <DataGrid
                 rows={rows}
@@ -268,7 +276,7 @@ export const UserManagement = () => {
                 initialState={{ pagination: { paginationModel } }}
                 pageSizeOptions={[5, 10]}
                 /*  checkboxSelection */
-                sx={{ border: 0 }}
+                sx={{ border: 0, borderRadius: 0 }}
               />
             </Paper>
           </Grid2>

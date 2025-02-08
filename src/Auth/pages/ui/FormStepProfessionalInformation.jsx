@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Grid2, Input, TextField } from "@mui/material";
+import { Autocomplete, Box, Grid2, Input, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 import { dentistSpecialityOptions } from "./constants/dentist-speciaty";

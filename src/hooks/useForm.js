@@ -2,8 +2,6 @@ import { useState } from "react";
 
 export const useForm = (initialForm = {}) => {
   const [formState, setFormState] = useState(initialForm);
-  /*   const [formValidation, setFormValidation] = useState({});
-   */
   const onInputChange = (eventOrValue) => {
     if (eventOrValue.target) {
       const { name, value } = eventOrValue.target;
@@ -21,7 +19,7 @@ export const useForm = (initialForm = {}) => {
         [name]: value,
       });
     } else {
-      const formattedDate = eventOrValue.toDate().toISOString();;
+      const formattedDate = eventOrValue.toDate().toISOString();
       setFormState({
         ...formState,
         dateOfBirth: eventOrValue,

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { NavBar } from "../components/Navbar";
+import { NavBar } from "../components";
 
 export const DentAidLayout = ({ children }) => {
   const drawerWidth = 320;
@@ -14,18 +14,16 @@ export const DentAidLayout = ({ children }) => {
         gap: "40px",
       }}
     >
-
-        <NavBar drawerWidth={drawerWidth} />
-        <Box
-          sx={{
-            flexGrow: 1,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-          }}
-          component="main"
-        >
-          {children}
-        </Box>
+      <NavBar drawerWidth={drawerWidth} />
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+        component="main"
+      >
+        {children}
       </Box>
-    
+    </Box>
   );
 };

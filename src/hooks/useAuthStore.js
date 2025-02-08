@@ -25,6 +25,7 @@ export const useAuthStore = () => {
             email: email,
             id: data.user.id,
             name: data.user.name,
+            role: data.user.role,
             patientId: data.user.patientId,
           })
         );
@@ -35,6 +36,7 @@ export const useAuthStore = () => {
             email: email,
             id: data.user.id,
             name: data.user.name,
+            role: data.user.role,
             dentistId: data.user.dentistId,
           })
         );
@@ -44,6 +46,7 @@ export const useAuthStore = () => {
           email: email,
           id: data.user.id,
           name: data.user.name,
+          role: data.user.role,
         })
       );
 
@@ -140,10 +143,12 @@ export const useAuthStore = () => {
           email: data.user.email,
           id: data.user.id,
           name: data.user.name,
+          role: data.user.role,
         })
       );
       return true;
     } catch (error) {
+      console.log({ message: error.response.data.message });
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -173,6 +178,7 @@ export const useAuthStore = () => {
               email: data.user.email,
               name: data.user.name,
               id: data.user.id,
+              role: data.user.role,
             })
           );
           return;
@@ -197,6 +203,18 @@ export const useAuthStore = () => {
     }
   };
 
+  const startGetUser = async ({ id, userType }) => {
+    try {
+      const response = await dentaidApi.get("/user/getUser", {
+        params: { id, userType },
+      });
+      return response.data; 
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error; 
+    }
+  };
+
   return {
     /* Properties */
     status,
@@ -207,5 +225,6 @@ export const useAuthStore = () => {
     startLogout,
     startRegisterUser,
     checkAuthToken,
+    startGetUser,
   };
 };

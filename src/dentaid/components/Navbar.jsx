@@ -5,16 +5,59 @@ import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { Link, useLocation } from "react-router";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { useAuthStore } from "../../hooks";
+
 
 export const NavBar = ({ drawerWidth }, props) => {
   const { window } = props;
 
-  const { startLogout, user } = useAuthStore();
+  const { startLogout, user, status } = useAuthStore();
   const location = useLocation();
 
+  const adminOptions = [
+    { label: "User Management", href: "/dentaid/user-management" },
+    { label: "Dashboard", href: "/dentaid/dashboard" },
+    {
+      label: "Appointment management",
+      href: "/dentaid/appointment-management",
+    },
+  ];
 
-  const isActive = (path) => location.pathname === path;
+  const dentistOptions = [
+    {
+      label: "Appointment Management",
+      href: "/dentaid/appointment-management",
+    },
+    { label: "Dashboard", href: "/dentaid/dashboard" },
+    { label: "Schedule", href: "/dentaid/schedule" },
+    { label: "Patient History", href: "/dentaid/patient-history" },
+  ];
+
+  const defaultOptions = [
+    { label: "Account", href: "/dentaid/account" },
+    { label: "Settings", href: "/dentaid/settings" },
+  ];
+
+  const loggedUserOptions = () => {
+    if (status === "authenticated" && user && user.role === "ADMIN_ROLE") {
+      return adminOptions;
+    }
+    if (status === "authenticated" && user && user.role === "DENTIST_ROLE") {
+      return dentistOptions;
+    }
+    return defaultOptions;
+  };
+
+const isActive = (path) => {
+  if (path === "/dentaid/user-management") {
+    return (
+      location.pathname.startsWith("/dentaid/user-management") ||
+      location.pathname.startsWith("/dentaid/user/")
+    );
+  }
+  return location.pathname === path;
+};
+
 
   const handleLogout = () => {
     startLogout();
@@ -37,11 +80,8 @@ export const NavBar = ({ drawerWidth }, props) => {
           padding: "35px 30px",
           display: "flex",
           flexDirection: "column",
-          /*      justifyContent: "center", */
         }}
       >
-        {/* Drawer goes here */}
-
         <Grid2 container direction={"column"} width={"219px"} margin={"0 auto"}>
           <img src="/public/logo.png" alt="" />
         </Grid2>
@@ -66,150 +106,81 @@ export const NavBar = ({ drawerWidth }, props) => {
 
         <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <Grid2 container padding={"35px 1rem"} sx={{ flexGrow: "0" }}>
-            <Grid2 size={12}>
-              <Link
-                to={"/dentaid/user-management"}
-                style={{ textDecoration: "none", width: "100%" }}
-              >
-                <Button
+            {loggedUserOptions().map((option) => (
+              <Grid2 key={option.href} size={12}>
+                <Link
+                  to={option.href}
                   sx={{
-                    fontSize: "24px",
-                    color: isActive("/dentaid/user-management")
-                      ? "#024389"
-                      : "#81A1C4",
-                    fontWeight: isActive("/dentaid/user-management")
-                      ? "600"
-                      : "normal",
-                    textTransform: "none",
-                    justifyContent: "flex-start",
+                    textDecoration: "none",
                     width: "100%",
-                    position: "relative",
-                    "&::before": isActive("/dentaid/user-management")
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "60%",
-                          backgroundColor: "#024389",
-                          borderRadius: "5px",
-                        }
-                      : {},
                   }}
                 >
-                  User Management
-                </Button>
-              </Link>
-            </Grid2>
-            <Grid2 size={12}>
-              <Link
-                to={"/dentaid/dashboard"}
-                style={{ textDecoration: "none", width: "100%" }}
-              >
-                <Button
-                  sx={{
-                    fontSize: "24px",
-                    color: isActive("/dentaid/dashboard")
-                      ? "#024389"
-                      : "#81A1C4",
-                    fontWeight: isActive("/dentaid/dashboard")
-                      ? "600"
-                      : "normal",
-                    textTransform: "none",
-                    justifyContent: "flex-start",
-                    width: "100%",
-                    position: "relative",
-                    "&::before": isActive("/dentaid/dashboard")
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "60%",
-                          backgroundColor: "#024389",
-                          borderRadius: "5px",
-                        }
-                      : {},
-                  }}
+                  <Button
+                    sx={{
+                      fontSize: "24px",
+                      color: isActive(`${option.href}`) ? "#024389" : "#81A1C4",
+                      fontWeight: isActive(`${option.href}`) ? "600" : "normal",
+                      textTransform: "none",
+                      justifyContent: "flex-start",
+                      textAlign: "left",
+                      width: "100%",
+                      position: "relative",
+                      "&::before": isActive(`${option.href}`)
+                        ? {
+                            content: '""',
+                            position: "absolute",
+                            left: 0,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "4px",
+                            height: "60%",
+                            backgroundColor: "#024389",
+                            borderRadius: "5px",
+                          }
+                        : {},
+                    }}
+                  >
+                    {option.label}
+                  </Button>
+                </Link>
+              </Grid2>
+            ))}
+
+            {defaultOptions.map((option) => (
+              <Grid2 key={option.href} size={12}>
+                <Link
+                  to={option.href}
+                  style={{ textDecoration: "none", width: "100%" }}
                 >
-                  Dashboard
-                </Button>
-              </Link>
-            </Grid2>
-            <Grid2 size={12}>
-              <Link
-                to={"/dentaid/account"}
-                style={{ textDecoration: "none", width: "100%" }}
-              >
-                <Button
-                  sx={{
-                    fontSize: "24px",
-                    color: isActive("/dentaid/account") ? "#024389" : "#81A1C4",
-                    fontWeight: isActive("/dentaid/account") ? "600" : "normal",
-                    textTransform: "none",
-                    justifyContent: "flex-start",
-                    width: "100%",
-                    position: "relative",
-                    "&::before": isActive("/dentaid/account")
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "60%",
-                          backgroundColor: "#024389",
-                          borderRadius: "5px",
-                        }
-                      : {},
-                  }}
-                >
-                  Account
-                </Button>
-              </Link>
-            </Grid2>
-            <Grid2 size={12}>
-              <Link
-                to={"/dentaid/settings"}
-                style={{ textDecoration: "none", width: "100%" }}
-              >
-                <Button
-                  sx={{
-                    fontSize: "24px",
-                    color: isActive("/dentaid/settings")
-                      ? "#024389"
-                      : "#81A1C4",
-                    fontWeight: isActive("/dentaid/settings")
-                      ? "600"
-                      : "normal",
-                    textTransform: "none",
-                    justifyContent: "flex-start",
-                    width: "100%",
-                    position: "relative",
-                    "&::before": isActive("/dentaid/settings")
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "60%",
-                          backgroundColor: "#024389",
-                          borderRadius: "5px",
-                        }
-                      : {},
-                  }}
-                >
-                  Settings
-                </Button>
-              </Link>
-            </Grid2>
+                  <Button
+                    sx={{
+                      fontSize: "24px",
+                      color: isActive(`${option.href}`) ? "#024389" : "#81A1C4",
+                      fontWeight: isActive(`${option.href}`) ? "600" : "normal",
+                      textTransform: "none",
+                      justifyContent: "flex-start",
+                      width: "100%",
+                      position: "relative",
+                      "&::before": isActive(`${option.href}`)
+                        ? {
+                            content: '""',
+                            position: "absolute",
+                            left: 0,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "4px",
+                            height: "60%",
+                            backgroundColor: "#024389",
+                            borderRadius: "5px",
+                          }
+                        : {},
+                    }}
+                  >
+                    {option.label}
+                  </Button>
+                </Link>
+              </Grid2>
+            ))}
           </Grid2>
           <Grid2
             container

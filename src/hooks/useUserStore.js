@@ -9,15 +9,13 @@ export const useUserStore = () => {
 
   const startGetUsers = async () => {
     try {
+      const [adminResponse, dentistResponse, patientResponse] =
+        await Promise.all([
+          dentaidApi.get("user/", { params: { userType: "ADMIN_ROLE" } }),
+          dentaidApi.get("user/", { params: { userType: "DENTIST_ROLE" } }),
+          dentaidApi.get("user/", { params: { userType: "PATIENT_ROLE" } }),
+        ]);
 
-    const [adminResponse, dentistResponse, patientResponse] = await Promise.all(
-      [
-        dentaidApi.get("user/", { params: { userType: "ADMIN_ROLE" } }),
-        dentaidApi.get("user/", { params: { userType: "DENTIST_ROLE" } }),
-        dentaidApi.get("user/", { params: { userType: "PATIENT_ROLE" } }),
-      ]
-    );
-      
       const adminData = adminResponse.data;
       const dentistData = dentistResponse.data;
       const patientsData = patientResponse.data;
@@ -34,6 +32,8 @@ export const useUserStore = () => {
     }
   };
 
+  const startGetUser = async () => {};
+
   return {
     admin,
     dentists,
@@ -41,5 +41,6 @@ export const useUserStore = () => {
 
     /* Methods */
     startGetUsers,
+    startGetUser,
   };
 };

@@ -17,20 +17,19 @@ export const StepperForm = ({ step = 1, setStep }) => {
     [`& .${stepConnectorClasses.line}`]: {
       height: 3,
       border: 0,
-      /*       backgroundColor: "#eaeaf0", // Color por defecto */
       borderRadius: 1,
       backgroundColor: theme.palette.grey[800],
     },
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        backgroundColor: "#018A53", // Color para pasos activos
+        backgroundColor: "#018A53", 
         boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
       },
     },
   }));
 
   const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
-    backgroundColor: ownerState.active ? "#01448A" : "#EFF0F6", // Cambiar color si el paso está activo
+    backgroundColor: ownerState.active ? "#01448A" : "#EFF0F6", 
     zIndex: 1,
     color: ownerState.active ? "#fff" : "#6F6C90",
     width: 40,
@@ -49,7 +48,7 @@ export const StepperForm = ({ step = 1, setStep }) => {
 
     return (
       <ColorlibStepIconRoot ownerState={{ active }} className={className}>
-        {icon} {/* Mostramos el número en lugar de un icono */}
+        {icon} 
       </ColorlibStepIconRoot>
     );
   }

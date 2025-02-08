@@ -158,15 +158,9 @@ export const FormStepPersonalInformation = () => {
                     fontSize: "0.875rem",
                     height: "2.063rem",
                     borderRadius: ".5rem",
-                /*     border: "1px solid #cccccc", */
                     color: "#5A6474",
                     textAlign: "left",
-      /*               "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                    "& .MuiSelect-select": {
-                      padding: "0.5rem 1rem",
-                    }, */
+  
                   }}
                 >
                   <MenuItem value="Male">Male</MenuItem>

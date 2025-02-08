@@ -2,7 +2,8 @@ import { Button, Grid2, Input, InputLabel } from "@mui/material";
 import { useContext } from "react";
 import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
-import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useAuthStore } from "../../../hooks";
+
 
 export const LoginForm = () => {
   const { email, password, onInputChange } = useContext(FormContext);

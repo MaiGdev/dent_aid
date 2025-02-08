@@ -5,7 +5,7 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router";
 import { FormContext } from "../../../context/FormContext";
-import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useAuthStore } from "../../../hooks";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepHealthInformation } from "../ui/FormStepHealthInformation";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
@@ -113,7 +113,28 @@ export const PatientStepperForm = ({
             {step === 3 && <FormStepHealthInformation />}
 
             {(step === 1 || step === 2) && (
-              <Grid2>
+              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#fff",
+                    color: "#475B6F",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
                 <Button
                   endIcon={<ArrowForward />}
                   onClick={nextStep}
@@ -134,30 +155,31 @@ export const PatientStepperForm = ({
                 >
                   Continue
                 </Button>
+              </Grid2>
+            )}
+            {step === 3 && (
+              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
                 <Button
                   startIcon={<ArrowBack />}
                   onClick={prevStep}
                   fullWidth
                   sx={{
-                    backgroundColor: "#2A3E54",
-                    color: "white",
+                    backgroundColor: "#fff",
+                    color: "#475B6F",
                     fontSize: "0.875rem",
                     fontWeight: "600",
                     borderRadius: "1.5rem",
-                    marginTop: "16px",
+                    marginTop: "40px",
                     textTransform: "none",
 
                     "&:hover": {
                       backgroundColor: "#4A5D72",
+                      color: "#fff",
                     },
                   }}
                 >
                   Back
                 </Button>
-              </Grid2>
-            )}
-            {step === 3 && (
-              <Grid2>
                 <Button
                   endIcon={<ArrowForward />}
                   onClick={handleSubmit}
@@ -177,26 +199,6 @@ export const PatientStepperForm = ({
                   }}
                 >
                   Continue
-                </Button>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#2A3E54",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "16px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Back
                 </Button>
               </Grid2>
             )}

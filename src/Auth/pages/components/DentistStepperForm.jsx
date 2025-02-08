@@ -4,12 +4,13 @@ import React, { useContext } from "react";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
-import { useAuthStore } from "../../../hooks/useAuthStore";
+
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
 import { FormStepProfessionalInformation } from "../ui/FormStepProfessionalInformation";
-import Swal from "sweetalert2";
+import { useAuthStore } from "../../../hooks";
 export const DentistStepperForm = ({
   step = 1,
   setStep,
@@ -88,8 +89,6 @@ export const DentistStepperForm = ({
           title:
             "You're all set! Dive into your dashboard and start exploring.",
         });
-
-        /*  navigate("/dentaid/dashboard"); */
       }
     } catch (error) {
       Swal.fire({
@@ -121,7 +120,28 @@ export const DentistStepperForm = ({
             {step === 3 && <FormStepProfessionalInformation />}
 
             {step === 1 || step === 2 ? (
-              <Grid2>
+              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+                <Button
+                  startIcon={<ArrowBack />}
+                  onClick={prevStep}
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#fff",
+                    color: "#475B6F",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    borderRadius: "1.5rem",
+                    marginTop: "40px",
+                    textTransform: "none",
+
+                    "&:hover": {
+                      backgroundColor: "#4A5D72",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  Back
+                </Button>
                 <Button
                   endIcon={<ArrowForward />}
                   onClick={nextStep}
@@ -142,29 +162,30 @@ export const DentistStepperForm = ({
                 >
                   Continue
                 </Button>
+              </Grid2>
+            ) : (
+              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
                 <Button
                   startIcon={<ArrowBack />}
                   onClick={prevStep}
                   fullWidth
                   sx={{
-                    backgroundColor: "#2A3E54",
-                    color: "white",
+                    backgroundColor: "#fff",
+                    color: "#475B6F",
                     fontSize: "0.875rem",
                     fontWeight: "600",
                     borderRadius: "1.5rem",
-                    marginTop: "16px",
+                    marginTop: "40px",
                     textTransform: "none",
 
                     "&:hover": {
                       backgroundColor: "#4A5D72",
+                      color: "#fff",
                     },
                   }}
                 >
                   Back
                 </Button>
-              </Grid2>
-            ) : (
-              <Grid2>
                 <Button
                   endIcon={<ArrowForward />}
                   onClick={handleSubmit}
@@ -185,26 +206,6 @@ export const DentistStepperForm = ({
                   }}
                 >
                   Continue
-                </Button>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#2A3E54",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "16px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Back
                 </Button>
               </Grid2>
             )}
