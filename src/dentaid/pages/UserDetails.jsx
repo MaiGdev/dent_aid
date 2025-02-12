@@ -91,6 +91,8 @@ export const UserDetails = () => {
             display: "flex",
             flexDirection: "column",
             gap: "3.125rem",
+            backgroundColor: "#fff",
+            border: "1px solid #cccccc",
           }}
         >
           <Grid2

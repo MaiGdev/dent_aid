@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { NavBar } from "../components";
 
+import { motion } from "framer-motion";
+
 export const DentAidLayout = ({ children }) => {
   const drawerWidth = 320;
 
@@ -15,6 +17,7 @@ export const DentAidLayout = ({ children }) => {
       }}
     >
       <NavBar drawerWidth={drawerWidth} />
+
       <Box
         sx={{
           flexGrow: 1,
@@ -22,7 +25,14 @@ export const DentAidLayout = ({ children }) => {
         }}
         component="main"
       >
-        {children}
+        <motion.div
+          initial={{ height: "100%", opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
+          {children}
+        </motion.div>
       </Box>
     </Box>
   );

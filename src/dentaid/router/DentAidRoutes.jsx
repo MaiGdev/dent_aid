@@ -6,6 +6,7 @@ import {
   UserDetails,
   UserManagement,
 } from "../pages";
+import { Appointment } from "../pages/Appointment";
 
 export const DentAidRoutes = () => {
   return (
@@ -13,10 +14,8 @@ export const DentAidRoutes = () => {
       <Routes>
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/user-management" element={<UserManagement />} />
-        <Route
-          path="/appointment-management"
-          element={<AppointmentManagement />}
-        />
+        <Route path="/appointments" element={<AppointmentManagement />} />
+        <Route path="/appointments/:id" element={<Appointment />} />
         <Route path="/user/:id" element={<UserDetails />} />
         <Route path="/user/:id/schedule" element={<DentistSchedule />} />
       </Routes>

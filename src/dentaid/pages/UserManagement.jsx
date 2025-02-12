@@ -142,6 +142,8 @@ export const UserManagement = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          backgroundColor: "#fff",
+          border: "1px solid #cccccc",
         }}
       >
         <Grid2
@@ -256,7 +258,7 @@ export const UserManagement = () => {
             <Grid2
               sx={{
                 width: "100%",
-                height: "20px",
+                height: "18px",
                 backgroundColor: "#333333",
                 borderTopLeftRadius: "1rem",
                 borderTopRightRadius: "1rem",

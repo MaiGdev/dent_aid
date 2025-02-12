@@ -1,4 +1,4 @@
-import { Button, Grid2, InputLabel } from "@mui/material";
+import { Button, Grid2, InputLabel, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -7,9 +7,9 @@ import * as React from "react";
 import { Link, useLocation } from "react-router";
 import { useAuthStore } from "../../hooks";
 
-
 export const NavBar = ({ drawerWidth }, props) => {
   const { window } = props;
+  const theme = useTheme();
 
   const { startLogout, user, status } = useAuthStore();
   const location = useLocation();
@@ -18,15 +18,15 @@ export const NavBar = ({ drawerWidth }, props) => {
     { label: "User Management", href: "/dentaid/user-management" },
     { label: "Dashboard", href: "/dentaid/dashboard" },
     {
-      label: "Appointment management",
-      href: "/dentaid/appointment-management",
+      label: "Appointments",
+      href: "/dentaid/appointments",
     },
   ];
 
   const dentistOptions = [
     {
-      label: "Appointment Management",
-      href: "/dentaid/appointment-management",
+      label: "Appointments",
+      href: "/dentaid/appointments",
     },
     { label: "Dashboard", href: "/dentaid/dashboard" },
     { label: "Schedule", href: "/dentaid/schedule" },
@@ -48,16 +48,15 @@ export const NavBar = ({ drawerWidth }, props) => {
     return defaultOptions;
   };
 
-const isActive = (path) => {
-  if (path === "/dentaid/user-management") {
-    return (
-      location.pathname.startsWith("/dentaid/user-management") ||
-      location.pathname.startsWith("/dentaid/user/")
-    );
-  }
-  return location.pathname === path;
-};
-
+  const isActive = (path) => {
+    if (path === "/dentaid/user-management") {
+      return (
+        location.pathname.startsWith("/dentaid/user-management") ||
+        location.pathname.startsWith("/dentaid/user/")
+      );
+    }
+    return location.pathname === path;
+  };
 
   const handleLogout = () => {
     startLogout();
@@ -69,6 +68,10 @@ const isActive = (path) => {
         backgroundColor: "#fff",
         borderRadius: "3rem",
         p: "30px",
+        border: "1px solid #cccccc",
+        [theme.breakpoints.down("md")]: {
+          display: "none",
+        },
       }}
     >
       <CssBaseline />
