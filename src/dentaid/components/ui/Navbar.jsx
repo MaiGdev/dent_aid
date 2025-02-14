@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { Link, useLocation } from "react-router";
-import { useAuthStore } from "../../hooks";
+import { useAuthStore } from "../../../hooks";
 
 export const NavBar = ({ drawerWidth }, props) => {
   const { window } = props;
@@ -34,7 +34,10 @@ export const NavBar = ({ drawerWidth }, props) => {
   ];
 
   const defaultOptions = [
-    { label: "Account", href: "/dentaid/account" },
+    {
+      label: "Account",
+      href: `/dentaid/user/${user?.id}?usertype=${user.role}&account=true`,
+    },
     { label: "Settings", href: "/dentaid/settings" },
   ];
 
@@ -45,14 +48,16 @@ export const NavBar = ({ drawerWidth }, props) => {
     if (status === "authenticated" && user && user.role === "DENTIST_ROLE") {
       return dentistOptions;
     }
-    return defaultOptions;
+    return [];
   };
 
   const isActive = (path) => {
+    console.log(path);
     if (path === "/dentaid/user-management") {
       return (
         location.pathname.startsWith("/dentaid/user-management") ||
-        location.pathname.startsWith("/dentaid/user/")
+        (location.pathname.startsWith("/dentaid/user/") &&
+          !location.pathname.includes(`/dentaid/user/${user?.id}`))
       );
     }
     if (path === "/dentaid/appointments") {
@@ -60,6 +65,9 @@ export const NavBar = ({ drawerWidth }, props) => {
         location.pathname.startsWith("/dentaid/appointments") ||
         location.pathname.startsWith("/dentaid/appointments/:id")
       );
+    }
+    if (location.pathname.startsWith(`/dentaid/user/${user?.id}`)) {
+      if (path.includes(`?usertype=${user.role}&account=true`)) return true;
     }
     return location.pathname === path;
   };

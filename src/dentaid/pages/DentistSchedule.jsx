@@ -49,7 +49,6 @@ export const DentistSchedule = () => {
           minHeight: "100%",
           borderRadius: "3rem",
           display: "flex",
-
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
