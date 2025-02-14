@@ -55,6 +55,12 @@ export const NavBar = ({ drawerWidth }, props) => {
         location.pathname.startsWith("/dentaid/user/")
       );
     }
+    if (path === "/dentaid/appointments") {
+      return (
+        location.pathname.startsWith("/dentaid/appointments") ||
+        location.pathname.startsWith("/dentaid/appointments/:id")
+      );
+    }
     return location.pathname === path;
   };
 

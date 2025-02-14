@@ -21,13 +21,9 @@ import { useUserStore } from "../../hooks";
 import { DentAidLayout } from "../layout/DentAidLayout";
 
 export const UserManagement = () => {
-  const { admin, dentists, patients, startGetUsers } = useUserStore();
+  const { admin, dentists, patients } = useUserStore();
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    startGetUsers();
-  }, []);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },

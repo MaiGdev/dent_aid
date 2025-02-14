@@ -2,8 +2,16 @@ import { Box } from "@mui/material";
 import { NavBar } from "../components";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useUserStore } from "../../hooks";
 
 export const DentAidLayout = ({ children }) => {
+  const { startGetUsers } = useUserStore();
+
+  useEffect(() => {
+    startGetUsers();
+  }, []);
+
   const drawerWidth = 320;
 
   return (

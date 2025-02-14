@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router";
 import { useScheduleLogic } from "../../hooks/";
 import { DaySchedule, SlotDurationSelector } from "../components";
 import { DentAidLayout } from "../layout/DentAidLayout";
+import Swal from "sweetalert2";
 
 dayjs.extend(isBetween);
 dayjs.locale("en");
@@ -28,7 +29,14 @@ export const DentistSchedule = () => {
   const handleSubmit = async () => {
     try {
       const form = await submitSchedule();
-      console.log("Submit Schedule", form);
+      if (form) {
+        Swal.fire({
+          title: "Schedule Saved!",
+          icon: "success",
+          confirmButtonText: "Close",
+        });
+        navigate(`/dentaid/user-management`);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -62,16 +70,17 @@ export const DentistSchedule = () => {
               alignItems: "center",
             }}
           >
+
             <Button
               onClick={() => {
-                navigate(`/dentaid/user/${id}?usertype=DENTIST_ROLE`);
+                  navigate(`/dentaid/user/${id}?usertype=DENTIST_ROLE`);
               }}
               startIcon={<ArrowBack />}
               sx={{
                 color: "#fff",
                 minWidth: 0,
-                padding: "0",
-                borderRadius: "50%",
+                padding: "0 5px",
+                gap: "5px",
                 width: "fit-content",
                 height: "fit-content",
                 textTransform: "none",
@@ -84,7 +93,9 @@ export const DentistSchedule = () => {
                   backgroundColor: "#01448A",
                 },
               }}
-            />
+            >
+              Back
+            </Button>
           </Grid2>
           <Grid2
             container

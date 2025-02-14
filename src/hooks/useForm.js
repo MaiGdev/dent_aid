@@ -4,21 +4,32 @@ export const useForm = (initialForm = {}) => {
   const [formState, setFormState] = useState(initialForm);
   const onInputChange = (eventOrValue) => {
     if (eventOrValue.target) {
-      const { name, value } = eventOrValue.target;
-
-      if (value instanceof Object) {
-        setFormState({
-          ...formState,
-          [name]: value.value,
+      if (Array.isArray(eventOrValue.target)) {
+        const updatedState = { ...formState };
+        eventOrValue.target.forEach(({ name, value }) => {
+          if (value instanceof Object && value.value !== undefined) {
+            updatedState[name] = value.value;
+          } else {
+            updatedState[name] = value;
+          }
         });
-        return;
+        setFormState(updatedState);
+      } else {
+        const { name, value } = eventOrValue.target;
+        if (value instanceof Object && value.value !== undefined) {
+          setFormState({
+            ...formState,
+            [name]: value.value,
+          });
+        } else {
+          setFormState({
+            ...formState,
+            [name]: value,
+          });
+        }
       }
-
-      setFormState({
-        ...formState,
-        [name]: value,
-      });
     } else {
+      // Manejo de fechas (si es necesario)
       const formattedDate = eventOrValue.toDate().toISOString();
       setFormState({
         ...formState,
