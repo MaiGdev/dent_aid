@@ -52,7 +52,7 @@ export const NavBar = ({ drawerWidth }, props) => {
   };
 
   const isActive = (path) => {
-    console.log(path);
+
     if (path === "/dentaid/user-management") {
       return (
         location.pathname.startsWith("/dentaid/user-management") ||

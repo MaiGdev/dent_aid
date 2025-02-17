@@ -32,7 +32,14 @@ export const useUserStore = () => {
     }
   };
 
-  const startGetUser = async () => {};
+  const startUpdateUser = async (id, user) => {
+    try {
+      const userUpdated = await dentaidApi.put(`user/?id=${id}`, user);
+      return userUpdated.data;
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
 
   return {
     admin,
@@ -41,6 +48,6 @@ export const useUserStore = () => {
 
     /* Methods */
     startGetUsers,
-    startGetUser,
+    startUpdateUser,
   };
 };

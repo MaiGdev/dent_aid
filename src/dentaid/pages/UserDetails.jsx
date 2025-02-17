@@ -1,6 +1,7 @@
 import { Settings } from "@mui/icons-material";
 import { Button, Divider, Grid2, Typography } from "@mui/material";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   useLocation,
   useNavigate,
@@ -9,6 +10,7 @@ import {
 } from "react-router";
 import Swal from "sweetalert2";
 import { useAuthStore } from "../../hooks";
+import { onUpdateUser } from "../../store";
 import { CardContainer } from "../components";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import { GeneralInformation } from "../components/UserDetails/GeneralInformation";
@@ -24,6 +26,7 @@ export const UserDetails = () => {
   const [boxWidth, setBoxWidth] = useState(0);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { startGetUser } = useAuthStore();
   const location = useLocation();
@@ -39,10 +42,17 @@ export const UserDetails = () => {
           month: "long",
           day: "numeric",
         });
+
         setUserData({
           ...data,
           dateOfBirthFormat,
         });
+
+        dispatch(
+          onUpdateUser({
+            ...data.user,
+          })
+        );
       } catch (error) {
         console.error("Error obteniendo usuario:", error);
         Swal.fire(
@@ -57,12 +67,6 @@ export const UserDetails = () => {
 
     if (id && userType) fetchUser();
   }, [id, userType]);
-
-  useLayoutEffect(() => {
-    if (userData && boxRef.current) {
-      setBoxWidth(boxRef.current.offsetWidth);
-    }
-  }, [userData]);
 
   return (
     <DentAidLayout>
@@ -133,11 +137,7 @@ export const UserDetails = () => {
               flexDirection: "column",
             }}
           >
-            <GeneralInformation
-              userData={userData}
-              boxWidth={boxWidth}
-              boxRef={boxRef}
-            />
+            <GeneralInformation />
             {userType !== "ADMIN_ROLE" && <Divider />}
 
             {userType === "DENTIST_ROLE" && (

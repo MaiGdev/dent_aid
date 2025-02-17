@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const UserSlice = createSlice({
   name: "User",
   initialState: {
+    updatedUser: null,
     admin: [],
     dentists: [],
     patients: [],
@@ -14,7 +15,11 @@ export const UserSlice = createSlice({
       state.dentists = dentists;
       state.patients = patients;
     },
+    onUpdateUser: (state, { payload }) => {
+      state.updatedUser = payload;
+    },
   },
 });
 
-export const { admin, dentists, patients, onSetUsers } = UserSlice.actions;
+export const { updatedUser, admin, dentists, patients, onSetUsers, onUpdateUser } =
+  UserSlice.actions;

@@ -47,7 +47,18 @@ export const FilterControls = ({
         }}
       >
         <FormControl sx={{ width: "205px" }}>
-          <InputLabel id="user-select-label">Dentist</InputLabel>
+          <InputLabel
+            id="user-select-label"
+            sx={{
+              transform: "translate(14px, 5px) scale(1)",
+              transition: "all 0.2s ease-in-out",
+              "&.Mui-focused, &.MuiInputLabel-shrink": {
+                transform: "translate(14px, -8px) scale(0.75)",
+              },
+            }}
+          >
+            Dentist
+          </InputLabel>
           <Select
             labelId="user-select-label"
             id="demo-simple-select"
@@ -66,6 +77,12 @@ export const FilterControls = ({
               borderRadius: ".4rem",
               color: "#5A6474",
               textAlign: "left",
+              "& .MuiInputLabel-root": {
+                transform: "translate(14px, 5px) scale(1) !important",
+                "&.Mui-focused, &.MuiInputLabel-shrink": {
+                  transform: "translate(14px, -8px) scale(0.75) !important",
+                },
+              },
             }}
             label="Dentist"
           >
@@ -77,7 +94,18 @@ export const FilterControls = ({
           </Select>
         </FormControl>
         <FormControl sx={{ width: "205px" }}>
-          <InputLabel id="status-select-label">Status</InputLabel>
+          <InputLabel
+            id="status-select-label"
+            sx={{
+              transform: "translate(14px, 5px) scale(1)",
+              transition: "all 0.2s ease-in-out",
+              "&.Mui-focused, &.MuiInputLabel-shrink": {
+                transform: "translate(14px, -8px) scale(0.75)",
+              },
+            }}
+          >
+            Status
+          </InputLabel>
           <Select
             labelId="status-select-label"
             id="demo-simple-select"

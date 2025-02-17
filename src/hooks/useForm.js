@@ -61,5 +61,6 @@ export const useForm = (initialForm = {}) => {
     onInputChange,
     onMultipleSelectChange,
     onResetForm,
+    setFormState,
   };
 };
