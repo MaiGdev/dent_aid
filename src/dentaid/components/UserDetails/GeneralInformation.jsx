@@ -1,32 +1,19 @@
 import { Save, Settings } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid2,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
-import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { Box, Button, Grid2, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import Swal from "sweetalert2";
-import { useAuthStore, useForm, useUserStore } from "../../../hooks";
+import { useAuthStore, useUserStore } from "../../../hooks";
 import { onUpdateUser } from "../../../store";
 import { LoadingSpinner } from "../ui";
-import { GeneralInformationDetails } from "./GeneralInformationDetail";
+import { GeneralInfoForm } from "./GeneralInformation/GeneralInfoForm";
+import { GeneralInformationDetails } from "./generalInformation/GeneralInformationDetail";
 
 export const GeneralInformation = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const { startGetUser } = useAuthStore();
+  const { startGetUser, user } = useAuthStore();
   const { startUpdateUser } = useUserStore();
-  const [userToUpdate, setUserToUpdate] = useState(null);
   const { id } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -34,38 +21,23 @@ export const GeneralInformation = () => {
   const boxUpdateRef = useRef(null);
   const [boxUpdateWidth, setUpdateWidth] = useState(0);
 
-  const dispatch = useDispatch();
+  const { updatedUser } = useSelector((state) => state.userSlice);
 
-  const {
-    identification,
-    phoneNumber,
-    gender,
-    emergencyPhoneNumber,
-    dateOfBirth,
-    address,
-    onInputChange,
-    formState,
-    setFormState,
-  } = useForm({
-    identification: "",
-    phoneNumber: "",
-    gender: "",
-    dateOfBirth: "",
-    emergencyPhoneNumber: "",
-    address: "",
-  });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const data = await startGetUser({
-          id: id,
-          userType: userType,
-        });
-        setUserToUpdate(data.user);
+        let data;
+        if (user.id === id && user.role === userType) {
+          data = await startGetUser({ id });
+          dispatch(onUpdateUser(data));
+        } else {
+          data = await startGetUser({ id, userType });
+          dispatch(onUpdateUser(data.user));
+        }
       } catch (error) {
         console.error("API Error:", error);
-        throw error;
       }
     };
 
@@ -73,47 +45,35 @@ export const GeneralInformation = () => {
   }, [id, userType]);
 
   useEffect(() => {
-    if (userToUpdate) {
-      setFormState({
-        identification: userToUpdate.identification || "",
-        phoneNumber: userToUpdate.phoneNumber || "",
-        gender: userToUpdate.gender,
-        emergencyPhoneNumber: userToUpdate.emergencyPhoneNumber,
-        dateOfBirth: userToUpdate.dateOfBirth,
-        address: userToUpdate.address,
-      });
-    }
-  }, [userToUpdate, setFormState]);
-
-  useLayoutEffect(() => {
     if (boxUpdateRef.current) {
       setUpdateWidth(boxUpdateRef.current.offsetWidth);
     }
   }, [isEditing]);
 
-  if (!userToUpdate || !formState) {
+  if (!updatedUser) {
     return <LoadingSpinner />;
   }
+
   const onSubmit = async () => {
     try {
-      const data = await startUpdateUser(id, formState);
+      let data;
+      if (location.search.includes("&account=true")) {
+        data = await startUpdateUser(id, "", updatedUser);
+      } else {
+        data = await startUpdateUser(id, userType, updatedUser);
+      }
       if (data) {
         Swal.fire({
           title: "User updated successfully",
           icon: "success",
         });
 
-        dispatch(
-          onUpdateUser({
-            ...data.user,
-          })
-        );
+        dispatch(onUpdateUser(data.user));
         setIsEditing(false);
-        setUserToUpdate(user);
+        setUserToUpdate(data.user);
       }
     } catch (error) {
       console.error("API Error:", error);
-      throw error;
     }
   };
 
@@ -190,316 +150,10 @@ export const GeneralInformation = () => {
           gap: "35px",
         }}
       >
-        {isEditing && userToUpdate && formState ? (
-          <>
-            <Grid2
-              ref={boxUpdateRef}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "90px",
-              }}
-            >
-              <Grid2
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  gap: "35px",
-                }}
-              >
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Email
-                  </Typography>
-                  <Input
-                    id="email"
-                    placeholder="Email Address"
-                    type="text"
-                    name="email"
-                    disabled
-                    value={userToUpdate?.email}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: "1px solid #cccccc",
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                </Grid2>
-                <Grid2 size={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Date of Birth
-                  </Typography>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateField
-                      label="Date of birth"
-                      sx={{
-                        marginTop: "0.5rem",
-                        "& .MuiInputBase-root": {
-                          fontSize: "0.875rem",
-                          height: "2.063rem",
-                          borderRadius: ".5rem",
-                          textAlign: "left",
-                        },
-                        "& .MuiInputLabel-root": {
-                          transform: "translate(14px, 5px) scale(1)",
-                          "&.Mui-focused, &.MuiInputLabel-shrink": {
-                            transform:
-                              "translate(14px, -8px) scale(0.75) !important",
-                          },
-                        },
-                      }}
-                      fullWidth
-                      value={dayjs(dateOfBirth) || dayjs()}
-                      onChange={(e) => {
-                        onInputChange({
-                          target: {
-                            name: "dateOfBirth",
-                            value: dayjs(e).format("YYYY-MM-DD"),
-                          },
-                        });
-                      }}
-                    />
-                  </LocalizationProvider>
-                </Grid2>
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Phone number
-                  </Typography>
-                  <Input
-                    id="phoneNumber"
-                    placeholder="Phone number"
-                    type="text"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "phoneNumber",
-                          value: e.target.value,
-                        },
-                      });
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: "1px solid #cccccc",
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                </Grid2>
-              </Grid2>
-              <Grid2
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  gap: "35px",
-                }}
-              >
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Identification
-                  </Typography>
-                  <Input
-                    id="identification"
-                    placeholder="Identification"
-                    type="text"
-                    name="identification"
-                    value={identification}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "identification",
-                          value: e.target.value,
-                        },
-                      });
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: "1px solid #cccccc",
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                </Grid2>
-                <Grid2 xs={12}>
-                  <Typography
-                    sx={{
-                      fontSize: "1.20rem",
-                      color: "#15192C",
-                      paddingBottom: ".5rem",
-                    }}
-                  >
-                    Gender
-                  </Typography>
-                  <FormControl fullWidth>
-                    <InputLabel
-                      id="gender-label"
-                      sx={{
-                        fontSize: "16px",
-                        color: "#5A6474",
-                        transform: "translate(14px, 5px) scale(1)",
-                        transition: "all 0.2s ease-in-out",
-                        "&.Mui-focused, &.MuiInputLabel-shrink": {
-                          transform: "translate(14px, -8px) scale(0.75)",
-                        },
-                      }}
-                    >
-                      Gender
-                    </InputLabel>
-                    <Select
-                      labelId="gender-label"
-                      id="gender"
-                      value={gender}
-                      label="Gender"
-                      onChange={({ target: { value } }) =>
-                        onInputChange({ target: { name: "gender", value } })
-                      }
-                      name="gender"
-                      sx={{
-                        fontSize: "0.875rem",
-                        height: "2.063rem",
-                        borderRadius: ".5rem",
-                        color: "#5A6474",
-                        textAlign: "left",
-                      }}
-                    >
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                      <MenuItem value="Prefer Not to Say">
-                        Prefer Not to Say
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid2>
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Emergency phone number
-                  </Typography>
-                  <Input
-                    id="emergencyPhoneNumber"
-                    placeholder="Emergency phone number"
-                    type="text"
-                    name="emergencyPhoneNumber"
-                    value={emergencyPhoneNumber}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "emergencyPhoneNumber",
-                          value: e.target.value,
-                        },
-                      });
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: "1px solid #cccccc",
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                </Grid2>
-              </Grid2>
-            </Grid2>
-            <Grid2
-            /*    sx={{
-                width: `${boxUpdateWidth}px`,
-              }} */
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                Address
-              </Typography>
-              <Input
-                id="address"
-                placeholder="Address"
-                type="text"
-                name="address"
-                value={address}
-                onChange={(e) => {
-                  onInputChange({
-                    target: {
-                      name: "address",
-                      value: e.target.value,
-                    },
-                  });
-                }}
-                sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-                  width: `${boxUpdateWidth ? boxUpdateWidth : "100%"}px`,
-                  "&::before, &::after": {
-                    borderBottom: "none !important",
-                  },
-                  "&:hover:not(.Mui-disabled):before": {
-                    borderBottom: "none !important",
-                  },
-                  "&:focus": {
-                    borderColor: "#2A3E54",
-                  },
-                }}
-              />
-            </Grid2>
-          </>
+        {isEditing && updatedUser ? (
+          <GeneralInfoForm />
         ) : (
+          /*   <></> */
           <GeneralInformationDetails />
         )}
       </Box>

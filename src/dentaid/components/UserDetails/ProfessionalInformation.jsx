@@ -1,8 +1,90 @@
-import { Settings } from "@mui/icons-material";
+import { Save, Settings } from "@mui/icons-material";
 import { Box, Button, Grid2, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router";
+import Swal from "sweetalert2";
+import { useAuthStore, useUserStore } from "../../../hooks";
+import { onUpdateDentist } from "../../../store";
+import { ProfInfoDetails } from "./ProfessionalInformation/ProfInfoDetails";
+import { ProfInfoForm } from "./ProfessionalInformation/ProfInfoForm";
 
-export const ProfessionalInformation = ({ userData, boxWidth }) => {
-  const { speciality, workplace, university, yearsOfExperience } = userData;
+export const ProfessionalInformation = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const { id } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userType = queryParams.get("usertype");
+  const { startGetUser } = useAuthStore();
+  const dispatch = useDispatch();
+  const { updatedDentist } = useSelector((state) => state.userSlice);
+  const { startUpdateProfessionalInfo } = useUserStore();
+
+  const transformSpeciality = (speciality) => {
+    return speciality.map((speciality) => ({
+      label: `${speciality}`,
+      type: `${speciality}`,
+    }));
+  };
+
+  const onSubmit = async () => {
+    console.log(updatedDentist);
+    try {
+      const speciality = updatedDentist.speciality.map((s) => s.label);
+      const formData = { ...updatedDentist, speciality };
+
+      const data = await startUpdateProfessionalInfo(id, formData);
+      if (data) {
+        setIsEditing((prev) => !prev);
+        Swal.fire({
+          title: "Dentist information updated successfully",
+          icon: "success",
+        });
+        const transformedSpeciality = transformSpeciality(data.speciality);
+        dispatch(
+          onUpdateDentist({
+            ...data,
+            speciality: transformedSpeciality,
+          })
+        );
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to update dentist information",
+          text: "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const data = await startGetUser({
+          id: id,
+          userType: userType,
+        });
+        if (data) {
+          const transformedSpeciality = transformSpeciality(data.speciality);
+          dispatch(
+            onUpdateDentist({
+              ...data,
+              speciality: transformedSpeciality,
+            })
+          );
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        throw error;
+      }
+    };
+
+    fetchUser();
+  }, [id, userType]);
+
   return (
     <Box>
       <Grid2
@@ -15,29 +97,57 @@ export const ProfessionalInformation = ({ userData, boxWidth }) => {
         <Typography sx={{ fontSize: "1.25rem", color: "#15192C" }}>
           Profesional information
         </Typography>
-        <Button
-          sx={{
-            backgroundColor: "#fff",
-            color: "#01448A",
-            border: "2px solid #01448A",
-            fontSize: "0.875rem",
-            fontWeight: "600",
-            borderRadius: ".5rem",
-            textTransform: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            "&:hover": {
-              backgroundColor: "#01448A",
-              color: "#fff",
-            },
-            transition: "all 0.3s",
-          }}
-          endIcon={<Settings />}
-        >
-          Edit
-        </Button>
+        {isEditing ? (
+          <Button
+            onClick={onSubmit}
+            sx={{
+              backgroundColor: "#fff",
+              color: "#4285CB",
+              border: "2px solid #4285CB",
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              borderRadius: ".5rem",
+              textTransform: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#4285CB",
+                color: "#fff",
+              },
+              transition: "all 0.3s",
+            }}
+            endIcon={<Save />}
+          >
+            Save
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setIsEditing((prev) => !prev)}
+            sx={{
+              backgroundColor: "#fff",
+              color: "#01448A",
+              border: "2px solid #01448A",
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              borderRadius: ".5rem",
+              textTransform: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#01448A",
+                color: "#fff",
+              },
+              transition: "all 0.3s",
+            }}
+            endIcon={<Settings />}
+          >
+            Edit
+          </Button>
+        )}
       </Grid2>
       <Grid2
         sx={{
@@ -50,93 +160,12 @@ export const ProfessionalInformation = ({ userData, boxWidth }) => {
         <Box
           sx={{
             display: "flex",
+            flexDirection: "column",
             justifyContent: "flex-start",
-            gap: "90px",
-            width: `${boxWidth}px`,
+            gap: "35px",
           }}
         >
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              gap: "35px",
-              width: "100%",
-            }}
-          >
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                Speciality
-              </Typography>
-              {speciality.length ? (
-                <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
-                  {speciality}
-                </Typography>
-              ) : (
-                <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
-                  There's no speciality available
-                </Typography>
-              )}
-            </Grid2>
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                Workplace
-              </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
-                {workplace}
-              </Typography>
-            </Grid2>
-          </Grid2>
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              gap: "35px",
-              width: "100%",
-            }}
-          >
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                University
-              </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
-                {university}
-              </Typography>
-            </Grid2>
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                Years of experience
-              </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
-                {yearsOfExperience}
-              </Typography>
-            </Grid2>
-          </Grid2>
+          {isEditing && updatedDentist ? <ProfInfoForm /> : <ProfInfoDetails />}
         </Box>
       </Grid2>
     </Box>

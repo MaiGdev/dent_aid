@@ -29,7 +29,6 @@ export const useForm = (initialForm = {}) => {
         }
       }
     } else {
-      // Manejo de fechas (si es necesario)
       const formattedDate = eventOrValue.toDate().toISOString();
       setFormState({
         ...formState,

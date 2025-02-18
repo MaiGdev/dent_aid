@@ -4,6 +4,8 @@ export const UserSlice = createSlice({
   name: "User",
   initialState: {
     updatedUser: null,
+    updatedDentist: null,
+    updatedPatient: null,
     admin: [],
     dentists: [],
     patients: [],
@@ -18,8 +20,24 @@ export const UserSlice = createSlice({
     onUpdateUser: (state, { payload }) => {
       state.updatedUser = payload;
     },
+    onUpdateDentist: (state, { payload }) => {
+      state.updatedDentist = payload;
+    },
+    onUpdatePatient: (state, { payload }) => {
+      state.updatedPatient = payload;
+    },
   },
 });
 
-export const { updatedUser, admin, dentists, patients, onSetUsers, onUpdateUser } =
-  UserSlice.actions;
+export const {
+  updatedUser,
+  updatedDentist,
+  updatedPatient,
+  admin,
+  dentists,
+  patients,
+  onSetUsers,
+  onUpdateUser,
+  onUpdateDentist,
+  onUpdatePatient,
+} = UserSlice.actions;

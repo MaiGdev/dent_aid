@@ -32,12 +32,31 @@ export const useUserStore = () => {
     }
   };
 
-  const startUpdateUser = async (id, user) => {
+  const startUpdateUser = async (id, userType, user) => {
     try {
-      const userUpdated = await dentaidApi.put(`user/?id=${id}`, user);
+      const userUpdated = await dentaidApi.put(
+        `user/?id=${id}&userType=${userType}`,
+        user
+      );
       return userUpdated.data;
     } catch (error) {
       console.error("Error updating user:", error);
+    }
+  };
+  const startUpdateProfessionalInfo = async (id, user) => {
+    try {
+      const userUpdated = await dentaidApi.put(`user/dentist?id=${id}`, user);
+      return userUpdated.data;
+    } catch (error) {
+      console.error("Error updating professional dentist information:", error);
+    }
+  };
+  const startUpdateMedicalInfo = async (id, user) => {
+    try {
+      const userUpdated = await dentaidApi.put(`user/patient?id=${id}`, user);
+      return userUpdated.data;
+    } catch (error) {
+      console.error("Error updating medical patient informatiob:", error);
     }
   };
 
@@ -49,5 +68,7 @@ export const useUserStore = () => {
     /* Methods */
     startGetUsers,
     startUpdateUser,
+    startUpdateProfessionalInfo,
+    startUpdateMedicalInfo,
   };
 };
