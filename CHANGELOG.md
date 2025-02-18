@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/MaiGdev/dent_aid/compare/v0.0.2...v0.0.3) (2025-02-18)
+
+
+### Features
+
+* Refactor UserDetails into modular components and enhance update logic ([4363146](https://github.com/MaiGdev/dent_aid/commit/436314607de36a74a31817f9e1b5a62d49e212f3))
+
 ### [0.0.2](https://github.com/MaiGdev/dent_aid/compare/v0.0.1...v0.0.2) (2025-02-17)
 
 
