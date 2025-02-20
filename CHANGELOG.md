@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/MaiGdev/dent_aid/compare/v0.0.3...v0.0.4) (2025-02-20)
+
+
+### Features
+
+* Migrate schedule state management to Redux ([eff0de5](https://github.com/MaiGdev/dent_aid/commit/eff0de5e0281dabb8470b541109aabf812c8455d))
+
 ### [0.0.3](https://github.com/MaiGdev/dent_aid/compare/v0.0.2...v0.0.3) (2025-02-18)
 
 
