@@ -52,7 +52,6 @@ export const NavBar = ({ drawerWidth }, props) => {
   };
 
   const isActive = (path) => {
-
     if (path === "/dentaid/user-management") {
       return (
         location.pathname.startsWith("/dentaid/user-management") ||
@@ -100,7 +99,7 @@ export const NavBar = ({ drawerWidth }, props) => {
         }}
       >
         <Grid2 container direction={"column"} width={"219px"} margin={"0 auto"}>
-          <img src="/public/logo.png" alt="" />
+          <img src="/logo.png" alt="" />
         </Grid2>
         <Grid2 container padding={"35px 1.5rem"}>
           <InputLabel

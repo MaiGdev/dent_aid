@@ -1,8 +1,6 @@
-import { Box, Button, Grid2, Input, InputLabel } from "@mui/material";
-import { useContext } from "react";
+import { Box, Button, Grid2 } from "@mui/material";
 import { flushSync } from "react-dom";
-import { Link, useNavigate } from "react-router";
-import { FormContext } from "../../context/FormContext";
+import { useNavigate } from "react-router";
 import { FormProvider } from "../../context/FormProvider";
 import { LoginForm } from "./components/LoginForm";
 
@@ -19,8 +17,6 @@ export const LoginPage = () => {
     });
   };
 
-
-
   return (
     <FormProvider>
       <Box
@@ -34,7 +30,7 @@ export const LoginPage = () => {
         <Box className="flex justify-center items-center w-[950px] h-[656px] mx-auto loginDiv rounded-3xl ">
           <div className="flex justify-center items-center flex-col text-center bg-[#ECF5FF] h-[656px] w-full rounded-l-3xl ">
             <div className="w-[363.3px] flex justify-center items-center flex-col gap-[20px] ">
-              <img src="/public/logo.png" alt="" />
+              <img src="/logo.png" alt="" />
               <h2 className="text-[#1E3A8A] font-semibold text-[18.9px] px-[10px]">
                 Your Trusted Partner for Online Dental Care
               </h2>

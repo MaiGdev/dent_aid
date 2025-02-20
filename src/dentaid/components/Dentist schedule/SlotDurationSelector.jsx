@@ -1,8 +1,17 @@
+import { Grid2, MenuItem, Select, Typography } from "@mui/material";
 import React from "react";
-import { Grid2, Typography, Select, MenuItem } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormState } from "../../../store";
 
-export const SlotDurationSelector = ({ formState, onInputChange }) => { 
+export const SlotDurationSelector = () => {
+  const dispatch = useDispatch();
 
+  const { formState } = useSelector((state) => state.scheduleSlice);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    dispatch(updateFormState({ name, value: value }));
+  };
   return (
     <Grid2
       sx={{
@@ -18,9 +27,9 @@ export const SlotDurationSelector = ({ formState, onInputChange }) => {
         Slot duration:
       </Typography>
       <Select
-        value={formState.slotDuration}
+        value={formState.slotDuration || 30}
         onChange={(e) =>
-          onInputChange({
+          handleInputChange({
             target: {
               name: "slotDuration",
               value: parseInt(e.target.value),
@@ -39,4 +48,4 @@ export const SlotDurationSelector = ({ formState, onInputChange }) => {
       </Select>
     </Grid2>
   );
-}
+};

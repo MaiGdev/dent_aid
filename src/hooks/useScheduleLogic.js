@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { dentaidApi } from "../api/dentaidApi";
-import { useScheduleState } from "./useScheduleState";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDayBreaks } from "../store/schedule/scheduleSlice";
 
 dayjs.extend(isBetween);
 dayjs.locale("en");
@@ -15,8 +15,9 @@ const days = [
   "Saturday",
 ];
 
-export const useScheduleLogic = ({ idDentist }) => {
-  const { formState, onInputChange, updateDayBreaks } = useScheduleState();
+export const useScheduleLogic = () => {
+  const dispatch = useDispatch();
+  const { formState } = useSelector((state) => state.scheduleSlice);
 
   const calculateAvailableTimeSlots = (
     startTime,
@@ -31,8 +32,8 @@ export const useScheduleLogic = ({ idDentist }) => {
       const slotEnd = currentSlot.add(slotDuration, "minute");
 
       const isInBreak = breaks.some((breakItem) => {
-        const breakStart = dayjs(breakItem.start);
-        const breakEnd = dayjs(breakItem.end);
+        const breakStart = dayjs(breakItem.start, "HH:mm"); 
+        const breakEnd = dayjs(breakItem.end, "HH:mm");
 
         return (
           currentSlot.isBetween(breakStart, breakEnd, null, "[)") ||
@@ -41,7 +42,10 @@ export const useScheduleLogic = ({ idDentist }) => {
         );
       });
 
-      if (!isInBreak && slotEnd.isBefore(endTime)) {
+      if (
+        !isInBreak &&
+        (slotEnd.isBefore(endTime) || slotEnd.isSame(endTime))
+      ) {
         slots.push({
           start: currentSlot.format("HH:mm"),
           end: slotEnd.format("HH:mm"),
@@ -54,15 +58,15 @@ export const useScheduleLogic = ({ idDentist }) => {
   };
 
   const addBreak = (day) => {
-    const newBreak = { start: dayjs().hour(12), end: dayjs().hour(13) };
+    const newBreak = { start:  dayjs("00:00", "HH:mm").format("HH:mm"), end:  dayjs("00:00", "HH:mm").format("HH:mm") };
     const updatedBreaks = [...(formState[day]?.breaks || []), newBreak];
-    updateDayBreaks(day, updatedBreaks);
+    dispatch(updateDayBreaks({ day, breaks: updatedBreaks }));
   };
 
   const removeBreak = (day, index) => {
     const filteredBreaks =
       formState[day]?.breaks?.filter((_, i) => i !== index) || [];
-    updateDayBreaks(day, filteredBreaks);
+    dispatch(updateDayBreaks({ day, breaks: filteredBreaks }));
   };
 
   const validateBreaks = (dayData) => {
@@ -73,31 +77,34 @@ export const useScheduleLogic = ({ idDentist }) => {
     });
   };
 
-  const onBreakTimeChange = (day, index, field, value) => {
+  const onBreakTimeChange = ({ day, index, field, value }) => {
     const updatedBreaks =
       formState[day]?.breaks?.map((breakItem, i) =>
         i === index ? { ...breakItem, [field]: value } : breakItem
       ) || [];
 
     if (validateBreaks({ breaks: updatedBreaks })) {
-      updateDayBreaks(day, updatedBreaks);
+      dispatch(updateDayBreaks({ day, breaks: updatedBreaks }));
     }
   };
 
-  const formatScheduleDataForAPI = () => {
-    return Object.entries(formState)
+  const formatScheduleDataForAPI = ({ formState: xFormState }) => {
+    return Object.entries(xFormState)
       .filter(([dayName]) => dayName !== "slotDuration")
+      .filter(([_, dayData]) => dayData.isNonWorking !== true)
       .map(([dayName, dayData]) => ({
         dayOfWeek: mapDayNameToNumber(dayName),
-        startTime: dayData.start?.format("HH:mm"),
-        endTime: dayData.end?.format("HH:mm"),
+        startTime: dayjs(dayData.start, "HH:mm").format("HH:mm"),
+        endTime: dayjs(dayData.end, "HH:mm").format("HH:mm"),
         breaks: dayData.breaks?.map((br) => ({
-          start: br.start.format("HH:mm"),
-          end: br.end.format("HH:mm"),
+          start: br.start,
+          end: br.end,
+          /*           start: br.start.format("HH:mm"),
+          end: br.end.format("HH:mm"), */
         })),
         slots: calculateAvailableTimeSlots(
-          dayData.start,
-          dayData.end,
+          dayjs(dayData.start, "HH:mm"),
+          dayjs(dayData.end, "HH:mm"),
           dayData.breaks,
           formState.slotDuration
         ),
@@ -118,21 +125,13 @@ export const useScheduleLogic = ({ idDentist }) => {
     return daysMap[dayName];
   };
 
-  const submitSchedule = async () => {
-    try {
-      const scheduleData = formatScheduleDataForAPI();
-      const formData = {
-        schedule: scheduleData,
-        dentist: idDentist,
-      };
-      const response = await dentaidApi.post("/schedule", formData);
-      return response;
-    } catch (error) {
-      console.error("API Error:", error);
-      throw error;
+  const onInputChange = (event) => {
+    if (event?.target) {
+      const { name, value, type, checked } = event.target;
+      const finalValue = type === "checkbox" ? checked : value;
+      dispatch(updateFormState({ name, value: finalValue }));
     }
   };
-
   return {
     formState,
     onInputChange,
@@ -144,6 +143,5 @@ export const useScheduleLogic = ({ idDentist }) => {
     calculateAvailableTimeSlots,
     validateBreaks,
     mapDayNameToNumber,
-    submitSchedule,
   };
 };

@@ -4,34 +4,156 @@ import dayjs from "dayjs";
 import "dayjs/locale/en";
 import isBetween from "dayjs/plugin/isBetween";
 import * as React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { useScheduleLogic } from "../../hooks/";
+import Swal from "sweetalert2";
+import { useScheduleAppointmentApi, useScheduleLogic } from "../../hooks/";
+import {
+  onGetScheduleFromApi,
+  resetFormState,
+  resetScheduleState,
+  updateFormState,
+} from "../../store";
 import { DaySchedule, SlotDurationSelector } from "../components";
 import { DentAidLayout } from "../layout/DentAidLayout";
-import Swal from "sweetalert2";
 
 dayjs.extend(isBetween);
 dayjs.locale("en");
 
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export const DentistSchedule = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    formState,
-    onInputChange,
-    days,
-    addBreak,
-    removeBreak,
-    onBreakTimeChange,
-    submitSchedule,
-  } = useScheduleLogic({ idDentist: id });
+  const { startGetSchedule, startUpdateSchedule, startRegisterSchedule } =
+    useScheduleAppointmentApi();
+  const { formatScheduleDataForAPI } = useScheduleLogic();
+  const dispatch = useDispatch();
 
-  const handleSubmit = async () => {
+  const { schedule, formState } = useSelector((state) => state.scheduleSlice);
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const data = await startGetSchedule({ idDentist: id });
+        if (data.length !== 0) {
+          let formattedData = data.reduce((acc, day) => {
+            const dayOfWeek = dayjs().day(day.dayOfWeek).format("dddd");
+
+            acc[dayOfWeek] = {
+              breaks: day.breaks || [],
+              end: day.endTime,
+              isNonWorking: false,
+              start: day.startTime,
+            };
+
+            return acc;
+          }, {});
+
+          formattedData = {
+            slotDuration: data[0].slotDuration,
+            ...formattedData,
+          };
+          dispatch(onGetScheduleFromApi(formattedData));
+        } else {
+          dispatch(resetFormState());
+          dispatch(resetScheduleState());
+        }
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    };
+
+    fetchSchedule();
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    const updatedFormState = {
+      ...formState,
+      ...schedule,
+      slotDuration: schedule.slotDuration,
+    };
+    dispatch(updateFormState(updatedFormState));
+  }, [schedule]);
+
+  const handleRegisterSubmit = async () => {
     try {
-      const form = await submitSchedule();
+      if (hasWorkingDays()) return;
+      const filterdSchedule = formatScheduleDataForAPI({ formState });
+
+      if (isStartEndValid(filterdSchedule)) return;
+
+      const form = await startRegisterSchedule({formState, id});
       if (form) {
         Swal.fire({
           title: "Schedule Saved!",
+          icon: "success",
+          confirmButtonText: "Close",
+        });
+        navigate(`/dentaid/user-management`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const hasWorkingDays = () => {
+    const workingDays = Object.entries(formState)
+      .filter(([day]) => day !== "slotDuration")
+      .every(([, payload]) => payload.isNonWorking === true);
+
+    if (workingDays) {
+      Swal.fire({
+        title: "No working days found",
+        icon: "warning",
+        confirmButtonText: "Close",
+      });
+      return true;
+    }
+    return false;
+  };
+
+  const isStartEndValid = (filterdSchedule) => {
+    const resp = filterdSchedule
+      .map((day) => {
+        const start = dayjs(day.startTime, "HH:mm");
+        const end = dayjs(day.endTime, "HH:mm");
+        return start.isBefore(end);
+      })
+      .some((value) => value === false);
+
+    if (resp) {
+      Swal.fire({
+        title: "Start time should be before end time",
+        icon: "warning",
+        confirmButtonText: "Close",
+      });
+      return true;
+    }
+    return false;
+  };
+
+  const handleUpdateSubmit = async () => {
+    try {
+      // validations
+      if (hasWorkingDays()) return;
+      const filterdSchedule = formatScheduleDataForAPI({ formState });
+
+      if (isStartEndValid(filterdSchedule)) return;
+
+      // update schedule
+      const form = await startUpdateSchedule({ formState, id });
+      if (form) {
+        Swal.fire({
+          title: `${form.data.message}`,
           icon: "success",
           confirmButtonText: "Close",
         });
@@ -69,10 +191,9 @@ export const DentistSchedule = () => {
               alignItems: "center",
             }}
           >
-
             <Button
               onClick={() => {
-                  navigate(`/dentaid/user/${id}?usertype=DENTIST_ROLE`);
+                navigate(`/dentaid/user/${id}?usertype=DENTIST_ROLE`);
               }}
               startIcon={<ArrowBack />}
               sx={{
@@ -109,29 +230,33 @@ export const DentistSchedule = () => {
             }}
           >
             <Grid2 xs={12}>
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: "1.875rem",
-                  textAlign: "center",
-                  padding: "1rem 0",
-                }}
-              >
-                Schedule
-              </Typography>
+              {schedule.length !== 0 ? (
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontSize: "1.875rem",
+                    textAlign: "center",
+                    padding: "1rem 0",
+                  }}
+                >
+                  Update schedule
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontSize: "1.875rem",
+                    textAlign: "center",
+                    padding: "1rem 0",
+                  }}
+                >
+                  Schedule
+                </Typography>
+              )}
             </Grid2>
 
-            {days.map((day) => (
-              <DaySchedule
-                key={day}
-                day={day}
-                formState={formState}
-                onInputChange={onInputChange}
-                addBreak={addBreak}
-                removeBreak={removeBreak}
-                onBreakTimeChange={onBreakTimeChange}
-              />
-            ))}
+            {formState &&
+              days.map((day) => <DaySchedule key={day} day={day} />)}
 
             <Grid2
               sx={{
@@ -141,12 +266,22 @@ export const DentistSchedule = () => {
                 gap: "15px",
               }}
             >
-              <SlotDurationSelector
-                formState={formState}
-                onInputChange={onInputChange}
-              />
-
-              <Divider orientation="horizontal" />
+              {schedule.length === 0 && (
+                <>
+                  <SlotDurationSelector
+                    formState={formState}
+                    onInputChange={(event) =>
+                      dispatch(
+                        updateFormState({
+                          name: event.target.name,
+                          value: event.target.value,
+                        })
+                      )
+                    }
+                  />
+                  <Divider orientation="horizontal" />
+                </>
+              )}
 
               <Grid2
                 sx={{
@@ -179,28 +314,54 @@ export const DentistSchedule = () => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleSubmit}
-                  endIcon={<Save />}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#01448A",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: ".5rem",
-                    textTransform: "none",
-                    padding: ".5rem 1.5rem",
-                    gap: "0.3rem",
-                    "&:hover": {
-                      backgroundColor: "#fff",
-                      color: "#01448A",
-                      outline: "1px solid #01448A",
-                    },
-                  }}
-                >
-                  Save
-                </Button>
+
+                {schedule.length !== 0 ? (
+                  <Button
+                    onClick={handleUpdateSubmit}
+                    endIcon={<Save />}
+                    fullWidth
+                    sx={{
+                      backgroundColor: "#01448A",
+                      color: "white",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                      borderRadius: ".5rem",
+                      textTransform: "none",
+                      padding: ".5rem 1.5rem",
+                      gap: "0.3rem",
+                      "&:hover": {
+                        backgroundColor: "#fff",
+                        color: "#01448A",
+                        outline: "1px solid #01448A",
+                      },
+                    }}
+                  >
+                    Update
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleRegisterSubmit}
+                    endIcon={<Save />}
+                    fullWidth
+                    sx={{
+                      backgroundColor: "#01448A",
+                      color: "white",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                      borderRadius: ".5rem",
+                      textTransform: "none",
+                      padding: ".5rem 1.5rem",
+                      gap: "0.3rem",
+                      "&:hover": {
+                        backgroundColor: "#fff",
+                        color: "#01448A",
+                        outline: "1px solid #01448A",
+                      },
+                    }}
+                  >
+                    Save
+                  </Button>
+                )}
               </Grid2>
             </Grid2>
           </Grid2>

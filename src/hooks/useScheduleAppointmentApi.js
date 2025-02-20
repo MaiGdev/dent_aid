@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { dentaidApi } from "../api/dentaidApi";
+import { useScheduleLogic } from "./useScheduleLogic";
 
 export const useScheduleAppointmentApi = () => {
   const [schedule, setSchedule] = useState();
   const [appointments, setAppointments] = useState();
+  const { formatScheduleDataForAPI } = useScheduleLogic();
 
   const startGetDentistSchedule = async (dentistId) => {
     if (dentistId === "") return setSchedule(undefined);
@@ -155,13 +157,58 @@ export const useScheduleAppointmentApi = () => {
     }
   };
 
+  const startGetSchedule = async ({ idDentist }) => {
+    try {
+      const response = await dentaidApi.get(`schedule?dentistId=${idDentist}`);
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  const startRegisterSchedule = async ({ formState, id }) => {
+    try {
+      const scheduleData = formatScheduleDataForAPI({ formState });
+
+      const formData = {
+        schedule: scheduleData,
+        dentist: id,
+      };
+      const response = await dentaidApi.post("/schedule", formData);
+      return response;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  const startUpdateSchedule = async ({ formState, id }) => {
+    try {
+      const scheduleData = formatScheduleDataForAPI({ formState });
+      const formData = {
+        schedule: scheduleData,
+        dentist: id,
+      };
+      console.log(formData);
+      const response = await dentaidApi.put("/schedule", formData);
+      return response;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+
   return {
-    schedule,
     appointments,
-    startGetDentistSchedule,
-    startGetAvailableSlots,
-    startRegisterAppointment,
-    startPatientAppointment,
+    schedule,
     startAppointments,
+    startGetAvailableSlots,
+    startGetDentistSchedule,
+    startGetSchedule,
+    startPatientAppointment,
+    startRegisterAppointment,
+    startRegisterSchedule,
+    startUpdateSchedule,
   };
 };
