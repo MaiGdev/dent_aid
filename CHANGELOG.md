@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/MaiGdev/dent_aid/compare/v0.0.4...v0.0.5) (2025-02-21)
+
+
+### Features
+
+* Refactor useScheduleAppointmentApi and Appointment-related components ([adcd626](https://github.com/MaiGdev/dent_aid/commit/adcd626f381d1c0b3a0edce7c8f9d18065d6f703))
+
 ### [0.0.4](https://github.com/MaiGdev/dent_aid/compare/v0.0.3...v0.0.4) (2025-02-20)
 
 
