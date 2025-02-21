@@ -185,6 +185,7 @@ export const useAuthStore = () => {
         }
         return;
       } catch (error) {
+              console.log(error);
         if (error.code === "ERR_NETWORK") {
           Swal.fire({
             icon: "error",
@@ -208,10 +209,10 @@ export const useAuthStore = () => {
       const response = await dentaidApi.get("/user/getUser", {
         params: { id, userType },
       });
-      return response.data; 
+      return response.data;
     } catch (error) {
       console.error("API Error:", error);
-      throw error; 
+      throw error;
     }
   };
 

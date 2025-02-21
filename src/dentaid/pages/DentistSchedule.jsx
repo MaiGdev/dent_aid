@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
-import { useScheduleAppointmentApi, useScheduleLogic } from "../../hooks/";
+import { useScheduleLogic, useScheduleStore } from "../../hooks/";
 import {
   onGetScheduleFromApi,
   resetFormState,
@@ -34,7 +34,7 @@ export const DentistSchedule = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { startGetSchedule, startUpdateSchedule, startRegisterSchedule } =
-    useScheduleAppointmentApi();
+    useScheduleStore();
   const { formatScheduleDataForAPI } = useScheduleLogic();
   const dispatch = useDispatch();
 
@@ -91,7 +91,7 @@ export const DentistSchedule = () => {
 
       if (isStartEndValid(filterdSchedule)) return;
 
-      const form = await startRegisterSchedule({formState, id});
+      const form = await startRegisterSchedule({ formState, id });
       if (form) {
         Swal.fire({
           title: "Schedule Saved!",

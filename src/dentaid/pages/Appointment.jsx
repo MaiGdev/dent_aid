@@ -5,9 +5,17 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { useForm, useUserStore } from "../../hooks";
-import { useScheduleAppointmentApi } from "../../hooks/useScheduleAppointmentApi";
+import { useAppointmentStore, useForm, useUserStore } from "../../hooks";
+import { useScheduleStore } from "../../hooks/useScheduleStore";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  onGetScheduleFromApi,
+  resetFormState,
+  resetScheduleState,
+  updateSlotState,
+} from "../../store";
+import { updateAppointmentsState } from "../../store/appointment/appointmentSlice";
 import {
   ActionButtons,
   CardContainer,
@@ -28,48 +36,108 @@ const formData = {
 export const Appointment = () => {
   const navigator = useNavigate();
   const { dentists, patients } = useUserStore();
-  const { dentistId, patientId, start, end, formState, onInputChange } =
-    useForm(formData);
+  const { dentistId, patientId, start, end, onInputChange } = useForm(formData);
+  const { startGetSchedule, startGetAvailableSlots, startRegisterAppointment } =
+    useScheduleStore();
   const [day, setDay] = useState(dayjs());
-  const {
-    schedule,
-    startGetAvailableSlots,
-    startRegisterAppointment,
-    startPatientAppointment,
-  } = useScheduleAppointmentApi();
+  const { startPatientAppointment } = useAppointmentStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [slots, setSlots] = useState();
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const dispatch = useDispatch();
+  const { patientAppointments } = useSelector(
+    (state) => state.appointmentSlice
+  );
 
   useEffect(() => {
     if (dentistId) {
       setIsLoading(true);
       console.log(dentistId);
-      const resp = startGetAvailableSlots(dentistId, day).finally(() => {
-        setIsLoading(false);
-      });
-      if (!resp) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "No schedule found for the given dentist and day of the week",
-        });
-      }
+
+      const fetchSchedule = async () => {
+        try {
+          const data = await startGetSchedule({ idDentist: dentistId });
+          if (data.length !== 0) {
+            let formattedData = data.reduce((acc, day) => {
+              const dayOfWeek = dayjs().day(day.dayOfWeek).format("dddd");
+
+              acc[dayOfWeek] = {
+                breaks: day.breaks || [],
+                end: day.endTime,
+                isNonWorking: false,
+                start: day.startTime,
+              };
+
+              return acc;
+            }, {});
+
+            formattedData = {
+              slotDuration: data[0].slotDuration,
+              ...formattedData,
+            };
+            dispatch(onGetScheduleFromApi(formattedData));
+          } else {
+            dispatch(resetFormState());
+            dispatch(resetScheduleState());
+          }
+        } catch (error) {
+          console.error("Error fetching schedule:", error);
+        }
+      };
+
+      fetchSchedule();
+
+      const fetchAvailableSlots = async () => {
+        try {
+          const data = await startGetAvailableSlots(dentistId, day);
+
+          if (data.length > 0) {
+            dispatch(updateSlotState(data));
+            setIsLoading(false);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No schedule found for the given dentist and day of the week",
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching available slots:", error);
+        }
+      };
+      fetchAvailableSlots();
     }
   }, [dentistId]);
 
   useEffect(() => {
-    if (schedule && schedule.length > 0) {
-      const today = dayjs();
-      const dayOfWeek = today.day();
+    if (patientId) {
+      setIsLoading(true);
+      console.log(patientId);
 
-      const todaySchedule = schedule.find((day) => day.dayOfWeek === dayOfWeek);
-
-      setSlots(schedule);
+      const fetchPatientAppointments = async () => {
+        try {
+          const patientAppointmentExist = await startPatientAppointment(
+            patientId
+          );
+          if (patientAppointmentExist) {
+            dispatch(updateAppointmentsState(patientAppointmentExist));
+            setIsLoading(false);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No schedule found for the given dentist and day of the week",
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching available slots:", error);
+        }
+      };
+      fetchPatientAppointments();
     }
-  }, [schedule]);
+  }, [patientId]);
 
   const handleSelect = (start, end, index) => {
+    console.log(patientAppointments);
     setSelectedIndex(index);
     onInputChange({
       target: [
@@ -108,7 +176,7 @@ export const Appointment = () => {
       }
     }
     if (valueMessage) {
-      Swal.fire({
+      return Swal.fire({
         icon: "warning",
         title: `${valueMessage}`,
         toast: true,
@@ -120,15 +188,19 @@ export const Appointment = () => {
     }
 
     try {
-      const patientAppointmentExist = await startPatientAppointment(patientId);
+      const patientAppointmentExist = patientAppointments.some(
+        (appointment) => {
+          const dayjsDate = dayjs(appointment.date).utc().format("YYYY-MM-DD");
+          return dayjsDate === day.format("YYYY-MM-DD");
+        }
+      );
 
-      if (patientAppointmentExist.length > 0) {
-        Swal.fire({
+      if (patientAppointmentExist) {
+        return Swal.fire({
           title: "Error",
-          text: "You already have an appointment scheduled for this day",
+          text: "Already have an appointment scheduled for this day",
           icon: "error",
         });
-        return;
       }
 
       const appointment = await startRegisterAppointment(formattedData);
@@ -175,12 +247,12 @@ export const Appointment = () => {
           />
           <Box sx={{ display: "flex", gap: "20px" }}>
             <DatePickerSection
+              dentistId={dentistId}
+              setIsLoading={setIsLoading}
               day={day}
               setDay={setDay}
-              dentistId={dentistId}
             />
             <TimeSlotList
-              slots={slots}
               selectedIndex={selectedIndex}
               handleSelect={handleSelect}
               dentistId={dentistId}

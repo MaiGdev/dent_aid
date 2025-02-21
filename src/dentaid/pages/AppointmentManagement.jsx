@@ -6,7 +6,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useUserStore } from "../../hooks";
-import { useScheduleAppointmentApi } from "../../hooks/useScheduleAppointmentApi";
+import { useScheduleStore } from "../../hooks/useScheduleStore";
 import { AppointmentList } from "../components/Appointment management/AppointmentList";
 import { FilterControls } from "../components/Appointment management/FilterControls";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
@@ -22,7 +22,7 @@ export const AppointmentManagement = () => {
   const [selectedDentist, setSelectedDentist] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const { appointments = [], startAppointments } = useScheduleAppointmentApi();
+  const { appointments = [], startAppointments } = useScheduleStore();
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 

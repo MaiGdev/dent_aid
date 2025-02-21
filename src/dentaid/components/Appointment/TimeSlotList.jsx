@@ -1,3 +1,4 @@
+import { CheckBoxOutlined } from "@mui/icons-material";
 import {
   Alert,
   Box,
@@ -8,16 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { CheckBoxOutlined } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 
 export const TimeSlotList = ({
-  slots,
   selectedIndex,
   handleSelect,
   dentistId,
   isLoading,
 }) => {
+  const { slots } = useSelector((state) => state.scheduleSlice);
   return (
     <Box sx={{ overflowY: "auto", maxHeight: "350px" }}>
       <List

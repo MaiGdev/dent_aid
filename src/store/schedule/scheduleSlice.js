@@ -45,10 +45,14 @@ export const ScheduleSlice = createSlice({
   initialState: {
     schedule: [],
     formState: initialScheduleData,
+    slots: [],
   },
   reducers: {
     onGetScheduleFromApi: (state, { payload }) => {
       state.schedule = payload;
+    },
+    updateSlotState: (state, { payload }) => {
+      state.slots = payload;
     },
     updateFormState: (state, { payload }) => {
       const { name, value } = payload;
@@ -82,6 +86,9 @@ export const ScheduleSlice = createSlice({
     resetScheduleState: (state) => {
       state.schedule = [];
     },
+    resetScheduleSlots: (state) => {
+      state.slots = [];
+    },
   },
 });
 
@@ -91,4 +98,6 @@ export const {
   updateDayBreaks,
   resetFormState,
   resetScheduleState,
+  updateSlotState,
+  resetScheduleSlots,
 } = ScheduleSlice.actions;

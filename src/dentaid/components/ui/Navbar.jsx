@@ -38,7 +38,7 @@ export const NavBar = ({ drawerWidth }, props) => {
       label: "Account",
       href: `/dentaid/user/${user?.id}?usertype=${user.role}&account=true`,
     },
-    { label: "Settings", href: "/dentaid/settings" },
+    { label: "Settings", href: "/" },
   ];
 
   const loggedUserOptions = () => {

@@ -1,4 +1,4 @@
-import { Box, Grid2, Pagination, Typography } from "@mui/material";
+import { Alert, Box, Grid2, Pagination, Typography } from "@mui/material";
 import { AppointmentCard } from "./AppointmentCard";
 
 export const AppointmentList = ({ filteredAppointments }) => {
@@ -16,7 +16,9 @@ export const AppointmentList = ({ filteredAppointments }) => {
           <AppointmentCard key={index} appointment={appointment} />
         ))
       ) : (
-        <Typography>No appointments found.</Typography>
+        <Alert severity="warning">
+          <Typography>No appointments found.</Typography>
+        </Alert>
       )}
       <Grid2
         sx={{

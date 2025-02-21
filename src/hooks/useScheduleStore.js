@@ -3,43 +3,13 @@ import Swal from "sweetalert2";
 import { dentaidApi } from "../api/dentaidApi";
 import { useScheduleLogic } from "./useScheduleLogic";
 
-export const useScheduleAppointmentApi = () => {
+export const useScheduleStore = () => {
   const [schedule, setSchedule] = useState();
   const [appointments, setAppointments] = useState();
   const { formatScheduleDataForAPI } = useScheduleLogic();
 
-  const startGetDentistSchedule = async (dentistId) => {
-    if (dentistId === "") return setSchedule(undefined);
-    try {
-      const schedule = await dentaidApi.get("schedule", {
-        params: {
-          dentistId: dentistId,
-        },
-      });
-
-      if (!schedule) return false;
-
-      setSchedule(schedule.data);
-      return true;
-    } catch (error) {
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Network Error",
-          text: "Cannot reach the server. Please check your connection or contact support.",
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong reloading your session. Please try again later.",
-        });
-      }
-    }
-  };
   const startGetAvailableSlots = async (dentistId, date) => {
     if (dentistId === "") return setSchedule(undefined);
-    /*     if (date === "") return; */
     let schedule;
 
     const dayOfWeek = date.day();
@@ -47,21 +17,17 @@ export const useScheduleAppointmentApi = () => {
       schedule = await dentaidApi.get("/schedule/availableSlots", {
         params: {
           dentistId: dentistId,
-          dayOfWeek: dayOfWeek,
+          dayOfWeek: parseInt(dayOfWeek),
         },
       });
 
       if (schedule) {
-        return setSchedule(schedule.data);
+        return schedule.data;
       } else {
-        schedule = await startGetDentistSchedule(dentistId);
-        if (schedule) {
-          return setSchedule(schedule.data);
-        } else {
-          return setSchedule([]);
-        }
+        return [];
       }
     } catch (error) {
+      console.log(error);
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -69,6 +35,7 @@ export const useScheduleAppointmentApi = () => {
           text: "Cannot reach the server. Please check your connection or contact support.",
         });
       } else {
+        console.log(error);
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -90,32 +57,12 @@ export const useScheduleAppointmentApi = () => {
         start: start,
         end: end,
         description: description,
-        status: "pending",
+        status: "scheduled",
       });
 
       return appointment;
     } catch (error) {
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Network Error",
-          text: "Cannot reach the server. Please check your connection or contact support.",
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong reloading your session. Please try again later.",
-        });
-      }
-    }
-  };
-
-  const startPatientAppointment = async (id) => {
-    try {
-      const appointment = await dentaidApi.get(`/appointments/${id}`);
-      return appointment.data;
-    } catch (error) {
+      console.log(error);
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -141,6 +88,7 @@ export const useScheduleAppointmentApi = () => {
       setAppointments(appointments.data);
       return true;
     } catch (error) {
+      console.log(error);
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -204,9 +152,7 @@ export const useScheduleAppointmentApi = () => {
     schedule,
     startAppointments,
     startGetAvailableSlots,
-    startGetDentistSchedule,
     startGetSchedule,
-    startPatientAppointment,
     startRegisterAppointment,
     startRegisterSchedule,
     startUpdateSchedule,

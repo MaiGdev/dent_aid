@@ -24,7 +24,6 @@ export const FilterControls = ({
   navigator,
 }) => {
   const appointmentStatus = [
-    { value: "pending", label: "Pending" },
     { value: "scheduled", label: "Scheduled" },
     { value: "finished", label: "Finished" },
     { value: "cancel", label: "Cancel" },
