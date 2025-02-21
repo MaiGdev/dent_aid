@@ -105,8 +105,12 @@ export const useAuthStore = () => {
     gender = undefined,
     filteredKnownAllergies: knownAllergies = undefined,
     filteredMedicalConditions: medicalConditions = undefined,
+    /*  */
+    createdByAdmin,
   }) => {
-    dispatch(onChecking());
+    if (!createdByAdmin) {
+      dispatch(onChecking());
+    }
 
     const userData = {
       fullName,
@@ -137,18 +141,21 @@ export const useAuthStore = () => {
       );
       const { data } = await dentaidApi.post("/auth/register", filteredData);
 
-      localStorage.setItem("token", data.token);
-      dispatch(
-        onLogin({
-          email: data.user.email,
-          id: data.user.id,
-          name: data.user.name,
-          role: data.user.role,
-        })
-      );
+      if (!createdByAdmin) {
+        localStorage.setItem("token", data.token);
+        dispatch(
+          onLogin({
+            email: data.user.email,
+            id: data.user.id,
+            name: data.user.name,
+            role: data.user.role,
+          })
+        );
+      }
       return true;
     } catch (error) {
       console.log({ message: error.response.data.message });
+
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -156,6 +163,12 @@ export const useAuthStore = () => {
           text: "Cannot reach the server. Please check your connection or contact support.",
         });
       }
+      Swal.fire({
+        icon: "error",
+        title: "Network Error",
+        text: `${error.response.data.message}`,
+      });
+
       dispatch(onLogout({ message: error.message }));
       return false;
     }
@@ -185,7 +198,7 @@ export const useAuthStore = () => {
         }
         return;
       } catch (error) {
-              console.log(error);
+        console.log(error);
         if (error.code === "ERR_NETWORK") {
           Swal.fire({
             icon: "error",

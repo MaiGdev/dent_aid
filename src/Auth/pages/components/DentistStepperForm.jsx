@@ -3,14 +3,14 @@ import React, { useContext } from "react";
 
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
 
+import { useAuthStore } from "../../../hooks";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
 import { FormStepProfessionalInformation } from "../ui/FormStepProfessionalInformation";
-import { useAuthStore } from "../../../hooks";
 export const DentistStepperForm = ({
   step = 1,
   setStep,
@@ -35,6 +35,7 @@ export const DentistStepperForm = ({
     formState,
   } = useContext(FormContext);
   const { startRegisterUser } = useAuthStore();
+  const location = useLocation();
 
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
@@ -50,6 +51,11 @@ export const DentistStepperForm = ({
     const filteredSpeciality = speciality.map((x) => {
       return x.value;
     });
+
+    let createdByAdmin = false;
+    if (location.search.includes(`?usertype=`)) {
+      createdByAdmin = true;
+    }
 
     try {
       const user = await startRegisterUser({
@@ -69,6 +75,8 @@ export const DentistStepperForm = ({
         university,
         workplace,
         yearsOfExperience,
+        /*  */
+        createdByAdmin,
       });
 
       if (user) {
@@ -89,6 +97,10 @@ export const DentistStepperForm = ({
           title:
             "You're all set! Dive into your dashboard and start exploring.",
         });
+
+        if (createdByAdmin) {
+          navigate("/dentaid/user-management");
+        }
       }
     } catch (error) {
       Swal.fire({

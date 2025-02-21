@@ -20,6 +20,55 @@ import { useNavigate } from "react-router";
 import { useUserStore } from "../../hooks";
 import { DentAidLayout } from "../layout/DentAidLayout";
 
+import { AssignmentInd } from "@mui/icons-material";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Menu from "@mui/material/Menu";
+import { alpha, styled } from "@mui/material/styles";
+
+const StyledMenu = styled((props) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "right",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "right",
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color: "#666",
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: "#4285CB",
+        marginRight: theme.spacing(1.5),
+      },
+      "&:active": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
+      },
+    },
+    ...theme.applyStyles("dark", {
+      color: theme.palette.grey[300],
+    }),
+  },
+}));
+
 export const UserManagement = () => {
   const { admin, dentists, patients } = useUserStore();
   const [rows, setRows] = useState([]);
@@ -106,19 +155,20 @@ export const UserManagement = () => {
       case "DENTIST_ROLE":
         const formatedDentist = dentists.map((dentist) => ({
           id: dentist.id,
-          user: dentist.user.fullName,
-          email: dentist.user.email,
-          phoneNumber: dentist.user.phoneNumber,
+          user: dentist.user?.fullName,
+          email: dentist.user?.email,
+          phoneNumber: dentist.user?.phoneNumber,
           accountStatus: "active -d",
         }));
         setRows(formatedDentist);
         break;
       case "PATIENT_ROLE":
+        
         const formatedPatient = patients.map((patient) => ({
           id: patient.id,
-          user: patient.user.fullName,
-          email: patient.user.email,
-          phoneNumber: patient.user.phoneNumber,
+          user: patient.user?.fullName,
+          email: patient.user?.email,
+          phoneNumber: patient.user?.phoneNumber,
           accountStatus: "active -d",
         }));
         setRows(formatedPatient);
@@ -127,6 +177,19 @@ export const UserManagement = () => {
         console.log(value);
         break;
     }
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCreateUserNavigation = ({ target }) => {
+    navigate(`/auth/register?usertype=${target}`);
   };
 
   return (
@@ -147,7 +210,6 @@ export const UserManagement = () => {
           direction={"column"}
           spacing={3}
           sx={{
-            /*   width: "75%", */
             backgroundColor: "#fff",
             padding: "2.5rem",
             borderRadius: "1rem",
@@ -229,22 +291,53 @@ export const UserManagement = () => {
             </Grid2>
             <Grid2>
               <Button
-                fullWidth
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: ".5rem",
-                  textTransform: "none",
-
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
+                id="demo-customized-button"
+                aria-controls={open ? "demo-customized-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                variant="contained"
+                disableElevation
+                onClick={handleClick}
+                sx={{ backgroundColor: "#01448A" }}
+                endIcon={<KeyboardArrowDownIcon />}
               >
-                New
+                Options
               </Button>
+              <StyledMenu
+                id="demo-customized-menu"
+                MenuListProps={{
+                  "aria-labelledby": "demo-customized-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  onClick={(e) => {
+                    handleClose(e);
+                    handleCreateUserNavigation({
+                      target: "DENTIST_ROLE",
+                    });
+                  }}
+                  disableRipple
+                >
+                  <AssignmentInd />
+                  Create Dentist
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem
+                  onClick={(e) => {
+                    handleClose(e);
+                    handleCreateUserNavigation({
+                      target: "PATIENT_ROLE",
+                    });
+                  }}
+                  disableRipple
+                >
+                  <FileCopyIcon />
+                  Create Patient
+                </MenuItem>
+              </StyledMenu>
             </Grid2>
           </Grid2>
 

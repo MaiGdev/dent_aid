@@ -8,9 +8,9 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { FormProvider } from "../../context/FormProvider";
 import { PatientStepperForm } from "./components/";
 import { DentistStepperForm } from "./components/DentistStepperForm";
@@ -19,6 +19,7 @@ export const RegisterPage = () => {
   const [step, setStep] = useState(1);
   const [typeUser, setTypeUser] = useState("patient");
   const [isUserSelected, setIsUserSelected] = useState(false);
+  const location = useLocation();
 
   const navigate = useNavigate();
   const handleUserTypeChange = (value) => {
@@ -40,6 +41,17 @@ export const RegisterPage = () => {
     });
   };
 
+  useEffect(() => {
+    if (location.search.includes(`?usertype=DENTIST_ROLE`)) {
+      setTypeUser("dentist");
+      handleContinue();
+    }
+    if (location.search.includes(`?usertype=PATIENT_ROLE`)) {
+      setTypeUser("patient");
+      handleContinue();
+    }
+  }, []);
+
   return (
     <FormProvider>
       <Box
@@ -52,7 +64,6 @@ export const RegisterPage = () => {
       >
         <Grid2 container sx={{ padding: "1.25rem" }}>
           <Grid2 xs={12} className="flex items-center gap-4">
-      
             <Button
               startIcon={<ArrowBack />}
               onClick={handleLogin}
@@ -70,7 +81,7 @@ export const RegisterPage = () => {
                 },
               }}
             />
-    
+
             <InputLabel sx={{ color: "#000", fontSize: "1.2em" }}>
               Sign In
             </InputLabel>

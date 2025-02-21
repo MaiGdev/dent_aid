@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { FormContext } from "../../../context/FormContext";
 import { useAuthStore } from "../../../hooks";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
@@ -34,6 +34,8 @@ export const PatientStepperForm = ({
     medicalConditions,
   } = useContext(FormContext);
 
+  const location = useLocation();
+
   const nextStep = () => {
     setStep((prevStep) => prevStep + 1);
   };
@@ -53,6 +55,11 @@ export const PatientStepperForm = ({
       return x.value;
     });
 
+    let createdByAdmin = false;
+    if (location.search.includes(`?usertype=`)) {
+      createdByAdmin = true;
+    }
+
     try {
       const user = await startRegisterUser({
         fullName,
@@ -68,9 +75,14 @@ export const PatientStepperForm = ({
         bloodType,
         filteredKnownAllergies,
         filteredMedicalConditions,
+        /*  */
+        createdByAdmin,
       });
 
       if (user) {
+        if (createdByAdmin) {
+          navigate("/dentaid/user-management");
+        }
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
