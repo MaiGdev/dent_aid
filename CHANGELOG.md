@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/MaiGdev/dent_aid/compare/v0.0.5...v0.0.6) (2025-02-21)
+
+
+### Features
+
+* Added Dentist-Patient creation functionality on User Management Page ([e9a9ef0](https://github.com/MaiGdev/dent_aid/commit/e9a9ef0b1a3b10aab2d5d7bd06226018a2912aa8))
+
 ### [0.0.5](https://github.com/MaiGdev/dent_aid/compare/v0.0.4...v0.0.5) (2025-02-21)
 
 
