@@ -1,18 +1,17 @@
-import { EventNote, Search, WatchLater } from "@mui/icons-material";
+import { EventNote, FilterListOff, Search } from "@mui/icons-material";
 import {
+  Button,
   FormControl,
+  Grid2,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Button,
-  Grid2,
-  InputAdornment,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 
 export const FilterControls = ({
   dentists,
@@ -201,6 +200,32 @@ export const FilterControls = ({
             label="Date"
           />
         </LocalizationProvider>
+        <Button
+          variant="contained"
+          disableElevation
+          onClick={() =>
+            handleFilterChange({
+              target: {
+                name: "clear",
+              },
+            })
+          }
+          sx={{
+            backgroundColor: "#fff",
+            color: "#c62828",
+            outline: "2px solid #c62828",
+            display: "flex",
+            gap: "8px",
+            padding: "2.5px 10px",
+            textTransform: "none",
+            "& .MuiButton-icon:hover": {
+              color: "black",
+            },
+          }}
+          endIcon={<FilterListOff />}
+        >
+          Clear filters
+        </Button>
       </Grid2>
       <Grid2>
         <Button

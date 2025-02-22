@@ -63,8 +63,6 @@ export const AppointmentManagement = () => {
         .utc(true)
         .startOf("day")
         .format("YYYY-MM-DD");
-
-      console.log(`Date: ${formattedDate}`);
       filtered = filtered.filter(
         (appointment) =>
           dayjs(appointment.date).utc().format("YYYY-MM-DD") === formattedDate
@@ -85,6 +83,11 @@ export const AppointmentManagement = () => {
       setSelectedStatus(value);
     } else if (name === "date-select") {
       setSelectedDate(value);
+    } else if (name === "clear") {
+      setSelectedDentist("");
+      setPatientInput("");
+      setSelectedStatus("");
+      setSelectedDate(dayjs());
     }
   };
 

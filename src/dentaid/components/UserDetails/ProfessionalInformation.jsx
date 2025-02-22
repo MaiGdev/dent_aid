@@ -6,6 +6,7 @@ import { useLocation, useParams } from "react-router";
 import Swal from "sweetalert2";
 import { useAuthStore, useUserStore } from "../../../hooks";
 import { onUpdateDentist } from "../../../store";
+import { LoadingSpinner } from "../ui";
 import { ProfInfoDetails } from "./ProfessionalInformation/ProfInfoDetails";
 import { ProfInfoForm } from "./ProfessionalInformation/ProfInfoForm";
 
@@ -84,6 +85,10 @@ export const ProfessionalInformation = () => {
 
     fetchUser();
   }, [id, userType]);
+
+  if (!updatedDentist) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box>

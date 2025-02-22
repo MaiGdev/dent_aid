@@ -73,6 +73,7 @@ export const UserManagement = () => {
   const { admin, dentists, patients } = useUserStore();
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
+  const [nameInput, setNameInput] = useState();
 
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -163,7 +164,6 @@ export const UserManagement = () => {
         setRows(formatedDentist);
         break;
       case "PATIENT_ROLE":
-        
         const formatedPatient = patients.map((patient) => ({
           id: patient.id,
           user: patient.user?.fullName,
@@ -177,6 +177,66 @@ export const UserManagement = () => {
         console.log(value);
         break;
     }
+  };
+
+  /*   const handleDelete = (id) => {
+    console.log(`User with ID ${id} has been deleted.`);
+  }; */
+  const handleSearchFilter = ({ target }) => {
+    const { value } = target;
+
+    switch (userType) {
+      case "ADMIN_ROLE":
+        const formattedAdmin = admin
+          .filter((admin) =>
+            admin.fullName?.toLowerCase().includes(value.toLowerCase())
+          )
+          .map((admin) => ({
+            id: admin.id,
+            user: admin.fullName,
+            email: admin.email,
+            phoneNumber: admin.phoneNumber,
+            accountStatus: "active -c",
+          }));
+        setRows(formattedAdmin);
+        break;
+      case "DENTIST_ROLE":
+        const formattedDentists = dentists
+          .filter((dentist) =>
+            dentist.user?.fullName.toLowerCase().includes(value.toLowerCase())
+          )
+          .map((dentist) => ({
+            id: dentist.id,
+            user: dentist.user?.fullName,
+            email: dentist.user?.email,
+            phoneNumber: dentist.user?.phoneNumber,
+            accountStatus: "active -d",
+          }));
+
+        setRows(formattedDentists);
+        break;
+      case "PATIENT_ROLE":
+        const formatedPatient = patients
+          .filter((patient) =>
+            patient.user?.fullName.toLowerCase().includes(value.toLowerCase())
+          )
+          .map((patient) => ({
+            id: patient.id,
+            user: patient.user?.fullName,
+            email: patient.user?.email,
+            phoneNumber: patient.user?.phoneNumber,
+            accountStatus: "active -d",
+          }));
+        setRows(formatedPatient);
+        break;
+      default:
+        console.log(value);
+        break;
+    }
+
+    console.log(`Search term: ${value}`);
+    // Implement search logic here
+    // Example: Filter rows based on user input
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -229,8 +289,10 @@ export const UserManagement = () => {
           <Grid2 sx={{ display: "flex", justifyContent: "space-between" }}>
             <Grid2 sx={{ display: "flex", gap: "1rem" }}>
               <TextField
+                value={nameInput}
+                onChange={handleSearchFilter}
                 id="input-with-icon-textfield"
-                placeholder="Name, email, etc..."
+                placeholder="User name"
                 sx={{
                   width: "205px",
                   fontSize: "0.875rem",

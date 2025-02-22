@@ -71,7 +71,7 @@ export const UserDetails = () => {
 
   useEffect(() => {
     if (id && userType) {
-      /*   fetchUser(); */
+      fetchUser();
     }
   }, [id, userType]);
 
@@ -144,7 +144,7 @@ export const UserDetails = () => {
           }}
         >
           <GeneralInformation />
-          {userType !== "ADMIN_ROLE" && <Divider sx={{margin:"1rem 0"}} />}
+          {userType !== "ADMIN_ROLE" && <Divider sx={{ margin: "1rem 0" }} />}
 
           {userType === "DENTIST_ROLE" && <ProfessionalInformation />}
 

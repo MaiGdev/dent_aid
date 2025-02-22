@@ -8,6 +8,7 @@ import { useAuthStore, useUserStore } from "../../../hooks";
 import { onUpdatePatient } from "../../../store";
 import { MedicalInfoDetails } from "./MedicalInformation/MedicalInfoDetails";
 import { MedicalInfoForm } from "./MedicalInformation/MedicalInfoForm";
+import { LoadingSpinner } from "../ui";
 
 export const MedicalInformation = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -39,9 +40,7 @@ export const MedicalInformation = () => {
           dispatch(
             onUpdatePatient({
               bloodType: data.bloodType,
-              medicalConditions: transformToLabelType(
-                data.medicalConditions
-              ),
+              medicalConditions: transformToLabelType(data.medicalConditions),
               knownAllergies: transformToLabelType(data.knownAllergies),
             })
           );
@@ -103,6 +102,11 @@ export const MedicalInformation = () => {
       throw error;
     }
   };
+
+  if (!updatedPatient) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <Box>
       <Grid2

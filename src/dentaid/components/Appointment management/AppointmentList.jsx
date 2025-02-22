@@ -1,7 +1,22 @@
 import { Alert, Box, Grid2, Pagination, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { AppointmentCard } from "./AppointmentCard";
 
 export const AppointmentList = ({ filteredAppointments }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const appointmentsPerPage = 2;
+
+  const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+  const currentAppointments = filteredAppointments.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Box
       sx={{
@@ -11,8 +26,8 @@ export const AppointmentList = ({ filteredAppointments }) => {
         gap: "22px",
       }}
     >
-      {filteredAppointments && filteredAppointments.length > 0 ? (
-        filteredAppointments.map((appointment, index) => (
+      {currentAppointments && currentAppointments.length > 0 ? (
+        currentAppointments.map((appointment, index) => (
           <AppointmentCard key={index} appointment={appointment} />
         ))
       ) : (
@@ -29,7 +44,13 @@ export const AppointmentList = ({ filteredAppointments }) => {
           paddingTop: "1rem",
         }}
       >
-        <Pagination count={10} variant="outlined" shape="rounded" />
+        <Pagination
+          count={Math.ceil(filteredAppointments.length / appointmentsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
       </Grid2>
     </Box>
   );
