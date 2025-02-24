@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/MaiGdev/dent_aid/compare/v0.0.6...v0.0.7) (2025-02-24)
+
+
+### Features
+
+* Added a functional paginator and a clear filter button on the AppointmentManagement Page ([9308765](https://github.com/MaiGdev/dent_aid/commit/9308765605a39f28810a9a4d568843e656923b86))
+* Implement pages and navbar options for patient users ([2ce4204](https://github.com/MaiGdev/dent_aid/commit/2ce4204da3b62b72e1c10342c5db2ec1edc12f0d))
+
 ### [0.0.6](https://github.com/MaiGdev/dent_aid/compare/v0.0.5...v0.0.6) (2025-02-21)
 
 
