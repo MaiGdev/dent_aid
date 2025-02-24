@@ -12,6 +12,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useSelector } from "react-redux";
 
 export const FilterControls = ({
   dentists,
@@ -27,6 +28,8 @@ export const FilterControls = ({
     { value: "finished", label: "Finished" },
     { value: "cancel", label: "Cancel" },
   ];
+
+  const { user } = useSelector((state) => state.authSlice);
 
   return (
     <Grid2
@@ -133,38 +136,41 @@ export const FilterControls = ({
           </Select>
         </FormControl>
 
-        <TextField
-          id="input-with-icon-textfield"
-          placeholder="Patient"
-          value={patientInput}
-          onChange={(e) => {
-            handleFilterChange({
-              target: {
-                name: "patient-input",
-                value: e.target.value,
+        {user.role !== "PATIENT_ROLE" && (
+          <TextField
+            id="input-with-icon-textfield"
+            placeholder="Patient"
+            value={patientInput}
+            onChange={(e) => {
+              handleFilterChange({
+                target: {
+                  name: "patient-input",
+                  value: e.target.value,
+                },
+              });
+            }}
+            sx={{
+              fontSize: "0.875rem",
+              height: "2.063rem",
+              color: "#5A6474",
+              textAlign: "left",
+              "& .MuiInputBase-root": {
+                borderRadius: ".4rem",
+                height: "100%",
               },
-            });
-          }}
-          sx={{
-            fontSize: "0.875rem",
-            height: "2.063rem",
-            color: "#5A6474",
-            textAlign: "left",
-            "& .MuiInputBase-root": {
-              borderRadius: ".4rem",
-              height: "100%",
-            },
-          }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
+            }}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        )}
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             value={selectedDate}
@@ -212,8 +218,8 @@ export const FilterControls = ({
           }
           sx={{
             backgroundColor: "#fff",
-            color: "#c62828",
-            outline: "2px solid #c62828",
+            color: "#B72F2F",
+            outline: "2px solid #B72F2F",
             display: "flex",
             gap: "8px",
             padding: "2.5px 10px",

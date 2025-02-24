@@ -5,8 +5,7 @@ import utc from "dayjs/plugin/utc";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useUserStore } from "../../hooks";
-import { useScheduleStore } from "../../hooks/useScheduleStore";
+import { useAppointmentStore, useAuthStore, useUserStore } from "../../hooks";
 import { AppointmentList } from "../components/Appointment management/AppointmentList";
 import { FilterControls } from "../components/Appointment management/FilterControls";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
@@ -22,22 +21,57 @@ export const AppointmentManagement = () => {
   const [selectedDentist, setSelectedDentist] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const { appointments = [], startAppointments } = useScheduleStore();
+  const {
+    appointments = [],
+    startGetAppointments,
+    startGetPatientAppointments,
+    startGetDentistAppointments,
+  } = useAppointmentStore();
+  const { startGetUser, user } = useAuthStore();
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [fullLoggedUserData, setFullLoggedUserData] = useState(null);
+
   useEffect(() => {
     setIsLoading(true);
-    startAppointments().finally(() => {
-      setIsLoading(false);
-    });
-  }, []);
+
+    const fetchingLoggedUserData = async () => {
+      try {
+        const userData = await startGetUser({
+          id: user.id,
+          userType: user.role,
+        });
+        setFullLoggedUserData(userData);
+      } catch (error) {}
+    };
+    fetchingLoggedUserData();
+  }, [user]);
+
   useEffect(() => {
-    setFilteredAppointments(appointments);
+    if (fullLoggedUserData) {
+      if (user.role === "PATIENT_ROLE") {
+        if (fullLoggedUserData) {
+          startGetPatientAppointments(fullLoggedUserData.id).finally(() => {
+            setIsLoading(false);
+          });
+        }
+      } else {
+        startGetAppointments().finally(() => {
+          setIsLoading(false);
+        });
+      }
+    }
+  }, [fullLoggedUserData]);
+
+  useEffect(() => {
+    if (Array.isArray(appointments) && appointments.length > 0) {
+      setFilteredAppointments(appointments);
+    }
   }, [appointments]);
 
   useEffect(() => {
-    if (!appointments) return;
+    if (!Array.isArray(appointments) || appointments.length === 0) return;
     let filtered = appointments;
 
     if (patientInput) {
@@ -58,7 +92,7 @@ export const AppointmentManagement = () => {
         (appointment) => appointment.status === selectedStatus
       );
     }
-    if (selectedDate) {
+    /*   if (selectedDate) {
       const formattedDate = dayjs(selectedDate)
         .utc(true)
         .startOf("day")
@@ -67,14 +101,14 @@ export const AppointmentManagement = () => {
         (appointment) =>
           dayjs(appointment.date).utc().format("YYYY-MM-DD") === formattedDate
       );
-    }
+    } */
 
     setFilteredAppointments(filtered);
   }, [patientInput, selectedDentist, selectedStatus, selectedDate]);
 
   const handleFilterChange = ({ target }) => {
     const { name, value } = target;
-
+    console.log(appointments);
     if (name === "user-select") {
       setSelectedDentist(value);
     } else if (name === "patient-input") {
@@ -89,6 +123,7 @@ export const AppointmentManagement = () => {
       setSelectedStatus("");
       setSelectedDate(dayjs());
     }
+    console.log(appointments);
   };
 
   return (

@@ -246,9 +246,15 @@ export const GeneralInfoForm = () => {
               }}
             >
               <Grid2 xs={12}>
-                <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+                <Typography
+                  sx={{
+                    fontSize: "1.20rem",
+                    color: "#15192C",
+                  }}
+                >
                   Identification
                 </Typography>
+
                 <Input
                   id="identification"
                   placeholder="Identification"
@@ -272,6 +278,7 @@ export const GeneralInfoForm = () => {
                     border: "1px solid #cccccc",
                     padding: "0.5rem 1rem",
                     marginTop: "0.5rem",
+
                     "&::before, &::after": {
                       borderBottom: "none !important",
                     },
@@ -284,6 +291,7 @@ export const GeneralInfoForm = () => {
                   }}
                 />
               </Grid2>
+
               <Grid2 xs={12}>
                 <Typography
                   sx={{

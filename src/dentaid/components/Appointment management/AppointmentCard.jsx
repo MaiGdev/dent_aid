@@ -1,4 +1,3 @@
-import { WatchLater } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -7,9 +6,12 @@ import {
   Grid2,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import { formatDate } from "../../../helpers/formatDate";
 
 export const AppointmentCard = ({ appointment }) => {
+  const { user } = useSelector((state) => state.authSlice);
+
   return (
     <Card
       sx={{
@@ -32,10 +34,12 @@ export const AppointmentCard = ({ appointment }) => {
         </Typography>
         <Grid2>
           <Typography variant="h5" component="div">
-            {`Patient:   ${appointment.patient.user.fullName}`}
+            {user.role === "ADMIN_ROLE" || user.role === "DENTIST_ROLE"
+              ? `Patient:   ${appointment.patient.user.fullName}`
+              : `Dentist:   ${appointment.dentist.user.fullName}`}
           </Typography>
           <Grid2 sx={{ display: "flex", gap: ".5rem" }}>
-            <WatchLater />
+            {/*  <WatchLater /> */}🕐
             <Typography>
               {appointment.start} - {appointment.end}
             </Typography>

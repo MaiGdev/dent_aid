@@ -33,6 +33,14 @@ export const NavBar = ({ drawerWidth }, props) => {
     { label: "Patient History", href: "/dentaid/patient-history" },
   ];
 
+  const patientOptions = [
+    {
+      label: "Appointments",
+      href: "/dentaid/appointments",
+    },
+    { label: "Dashboard", href: "/dentaid/dashboard" },
+  ];
+
   const defaultOptions = [
     {
       label: "Account",
@@ -47,6 +55,9 @@ export const NavBar = ({ drawerWidth }, props) => {
     }
     if (status === "authenticated" && user && user.role === "DENTIST_ROLE") {
       return dentistOptions;
+    }
+    if (status === "authenticated" && user && user.role === "PATIENT_ROLE") {
+      return patientOptions;
     }
     return [];
   };

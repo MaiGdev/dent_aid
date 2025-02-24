@@ -37,8 +37,9 @@ export const Appointment = () => {
   const navigator = useNavigate();
   const { dentists, patients } = useUserStore();
   const { dentistId, patientId, start, end, onInputChange } = useForm(formData);
-  const { startGetSchedule, startGetAvailableSlots, startRegisterAppointment } =
-    useScheduleStore();
+  const { startGetSchedule, startGetAvailableSlots } = useScheduleStore();
+  const { startRegisterAppointment } = useAppointmentStore();
+
   const [day, setDay] = useState(dayjs());
   const { startPatientAppointment } = useAppointmentStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -137,7 +138,6 @@ export const Appointment = () => {
   }, [patientId]);
 
   const handleSelect = (start, end, index) => {
-    console.log(patientAppointments);
     setSelectedIndex(index);
     onInputChange({
       target: [
@@ -188,19 +188,23 @@ export const Appointment = () => {
     }
 
     try {
-      const patientAppointmentExist = patientAppointments.some(
-        (appointment) => {
-          const dayjsDate = dayjs(appointment.date).utc().format("YYYY-MM-DD");
-          return dayjsDate === day.format("YYYY-MM-DD");
-        }
-      );
+      if (Array.isArray(patientAppointments)) {
+        const patientAppointmentExist = patientAppointments.some(
+          (appointment) => {
+            const dayjsDate = dayjs(appointment.date)
+              .utc()
+              .format("YYYY-MM-DD");
+            return dayjsDate === day.format("YYYY-MM-DD");
+          }
+        );
 
-      if (patientAppointmentExist) {
-        return Swal.fire({
-          title: "Error",
-          text: "Already have an appointment scheduled for this day",
-          icon: "error",
-        });
+        if (patientAppointmentExist) {
+          return Swal.fire({
+            title: "Error",
+            text: "Already have an appointment scheduled for this day",
+            icon: "error",
+          });
+        }
       }
 
       const appointment = await startRegisterAppointment(formattedData);

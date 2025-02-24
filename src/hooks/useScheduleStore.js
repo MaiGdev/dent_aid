@@ -5,7 +5,6 @@ import { useScheduleLogic } from "./useScheduleLogic";
 
 export const useScheduleStore = () => {
   const [schedule, setSchedule] = useState();
-  const [appointments, setAppointments] = useState();
   const { formatScheduleDataForAPI } = useScheduleLogic();
 
   const startGetAvailableSlots = async (dentistId, date) => {
@@ -36,66 +35,6 @@ export const useScheduleStore = () => {
         });
       } else {
         console.log(error);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong reloading your session. Please try again later.",
-        });
-      }
-    }
-  };
-
-  const startRegisterAppointment = async (formData) => {
-    const { dentistId, patientId, date, start, end, description, dayOfWeek } =
-      formData;
-    try {
-      const appointment = await dentaidApi.post("/appointments", {
-        dentistId: dentistId,
-        patientId: patientId,
-        date: date,
-        dayOfWeek: dayOfWeek,
-        start: start,
-        end: end,
-        description: description,
-        status: "scheduled",
-      });
-
-      return appointment;
-    } catch (error) {
-      console.log(error);
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Network Error",
-          text: "Cannot reach the server. Please check your connection or contact support.",
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong reloading your session. Please try again later.",
-        });
-      }
-    }
-  };
-
-  const startAppointments = async (status) => {
-    try {
-      const appointments = await dentaidApi.get("/appointments", {
-        params: { status: status },
-      });
-      if (!appointments) return false;
-      setAppointments(appointments.data);
-      return true;
-    } catch (error) {
-      console.log(error);
-      if (error.code === "ERR_NETWORK") {
-        Swal.fire({
-          icon: "error",
-          title: "Network Error",
-          text: "Cannot reach the server. Please check your connection or contact support.",
-        });
-      } else {
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -148,12 +87,9 @@ export const useScheduleStore = () => {
   };
 
   return {
-    appointments,
     schedule,
-    startAppointments,
     startGetAvailableSlots,
     startGetSchedule,
-    startRegisterAppointment,
     startRegisterSchedule,
     startUpdateSchedule,
   };
