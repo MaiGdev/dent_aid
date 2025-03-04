@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/MaiGdev/dent_aid/compare/v0.0.7...v0.0.8) (2025-03-04)
+
+
+### Features
+
+* Add validations to Account and UserDetails page ([6dc964f](https://github.com/MaiGdev/dent_aid/commit/6dc964fbf983eb0b6e4bcb9cd7d906fc2dffca8f))
+* Add validations to the Register and Login forms ([0ec94f0](https://github.com/MaiGdev/dent_aid/commit/0ec94f070b0f7ec0925ff807f78471a796673312))
+
 ### [0.0.7](https://github.com/MaiGdev/dent_aid/compare/v0.0.6...v0.0.7) (2025-02-24)
 
 
