@@ -10,22 +10,56 @@ export const accountSetupSchema = yup.object({
 });
 
 export const personalInformationSchema = yup.object({
-  fullName: yup.string().required("Full name is required"),
-  identification: yup.string().required("Identification is required"),
+  fullName: yup
+    .string()
+    .required("Full name is required")
+    .test(
+      "not-empty",
+      "Full name cannot be empty",
+      (value) => value.trim() !== ""
+    ),
+  identification: yup
+    .string()
+    .required("Identification is required")
+    .test(
+      "not-empty",
+      "Identification cannot be empty",
+      (value) => value.trim() !== ""
+    ),
   dateOfBirth: yup
     .mixed()
     .required("Date of birth is required")
     .test("is-adult", "You must be at least 18 years old", (value) => {
-      if (!dayjs.isDayjs(value)) return false;
-      return value.isBefore(dayjs().subtract(17, "year"), "day");
+      const date = dayjs(value);
+      if (!dayjs.isDayjs(date)) return false;
+      return date.isBefore(dayjs().subtract(17, "year"), "day");
     }),
   // gender: yup.string().required("Gender es required"),
-  phoneNumber: yup.string().required("Phone number is required"),
+  phoneNumber: yup
+    .string()
+    .required("Phone number is required")
+    .test(
+      "not-empty",
+      "Phone number cannot be empty",
+      (value) => value.trim() !== ""
+    ),
   emergencyPhoneNumber: yup
     .string()
-    .required("Emergency phone number is required"),
-  city: yup.string().required("City is required"),
-  address: yup.string().required("Address is required"),
+    .required("Emergency phone number is required")
+    .test(
+      "not-empty",
+      "Emergency phone number cannot be empty",
+      (value) => value.trim() !== ""
+    ),
+
+  address: yup
+    .string()
+    .required("Address is required")
+    .test(
+      "not-empty",
+      "Address cannot be empty",
+      (value) => value.trim() !== ""
+    ),
 });
 
 export const healthInformationSchema = yup.object({

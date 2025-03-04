@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import Swal from "sweetalert2";
+import { healthInformationSchema } from "../../../helpers";
 import { useAuthStore, useUserStore } from "../../../hooks";
-import { onUpdatePatient } from "../../../store";
+import { onSetPatientUpdateErrors, onUpdatePatient } from "../../../store";
 import { LoadingSpinner } from "../ui";
 import { MedicalInfoDetails } from "./MedicalInformation/MedicalInfoDetails";
 import { MedicalInfoForm } from "./MedicalInformation/MedicalInfoForm";
@@ -25,7 +26,7 @@ export const MedicalInformation = () => {
     if (obj)
       return obj.map((o) => ({
         label: `${o}`,
-        type: `${o}`,
+        value: `${o}`,
       }));
   };
 
@@ -56,50 +57,68 @@ export const MedicalInformation = () => {
 
   const onSubmit = async () => {
     console.log(updatedPatient);
-    setIsEditing((prev) => !prev);
 
     try {
-      const bloodType = updatedPatient.bloodType;
-      const knownAllergies = updatedPatient.knownAllergies.map((s) => s.label);
-      const medicalConditions = updatedPatient.medicalConditions.map(
-        (s) => s.label
-      );
-
-      const data = await startUpdateMedicalInfo(id, {
-        bloodType,
-        knownAllergies,
-        medicalConditions,
+      await healthInformationSchema.validate(updatedPatient, {
+        abortEarly: false,
       });
-      if (data) {
-        setIsEditing(false);
-        Swal.fire({
-          title: "Patient information updated successfully",
-          icon: "success",
+      dispatch(onSetPatientUpdateErrors({}));
+
+      try {
+        const bloodType = updatedPatient.bloodType;
+        const knownAllergies = updatedPatient.knownAllergies.map(
+          (s) => s.label
+        );
+        const medicalConditions = updatedPatient.medicalConditions.map(
+          (s) => s.label
+        );
+
+        const data = await startUpdateMedicalInfo(id, {
+          bloodType,
+          knownAllergies,
+          medicalConditions,
         });
-        const transformedBloodType = transformToLabelType(data.user.bloodType);
-        const transformedKnownAllergies = transformToLabelType(
-          data.user.knownAllergies
-        );
-        const transformedMedicalConditions = transformToLabelType(
-          data.user.medicalConditions
-        );
-        dispatch(
-          onUpdatePatient({
-            bloodType: transformedBloodType,
-            knownAllergies: transformedKnownAllergies,
-            medicalConditions: transformedMedicalConditions,
-          })
-        );
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Failed to update patient information",
-          text: "Please try again later.",
-        });
+        if (data) {
+          setIsEditing(false);
+          Swal.fire({
+            title: "Patient information updated successfully",
+            icon: "success",
+          });
+          const transformedBloodType = transformToLabelType(
+            data.user.bloodType
+          );
+          const transformedKnownAllergies = transformToLabelType(
+            data.user.knownAllergies
+          );
+          const transformedMedicalConditions = transformToLabelType(
+            data.user.medicalConditions
+          );
+          dispatch(
+            onUpdatePatient({
+              bloodType: transformedBloodType,
+              knownAllergies: transformedKnownAllergies,
+              medicalConditions: transformedMedicalConditions,
+            })
+          );
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed to update patient information",
+            text: "Please try again later.",
+          });
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        throw error;
       }
-    } catch (error) {
-      console.error("API Error:", error);
-      throw error;
+
+      console.log("Updated");
+    } catch (err) {
+      const validationErrors = {};
+      err.inner.forEach((error) => {
+        validationErrors[error.path] = error.message;
+      });
+      dispatch(onSetPatientUpdateErrors(validationErrors));
     }
   };
 

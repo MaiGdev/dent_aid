@@ -5,6 +5,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dentistSpecialityOptions } from "../../../../auth/pages/ui/constants/dentist-speciaty";
@@ -31,10 +32,12 @@ export const ProfInfoForm = () => {
     medicalLicenseNumber: "",
   });
   const dispatch = useDispatch();
-  const { updatedDentist } = useSelector((state) => state.userSlice);
+  const { updatedDentist, dentistUpdateErrors } = useSelector(
+    (state) => state.userSlice
+  );
 
   useEffect(() => {
-    if (updatedDentist) {
+    if (updatedDentist.id) {
       setFormState({
         speciality: updatedDentist.speciality || "",
         workplace: updatedDentist.workplace || "",
@@ -46,15 +49,10 @@ export const ProfInfoForm = () => {
   }, [updatedDentist]);
 
   useEffect(() => {
-    const isFormStateEmpty = Object.values(formState).some(
-      (value) => value === "" || (Array.isArray(value) && value.length === 0)
-    );
-    if (isFormStateEmpty) return;
-
     if (!compareObjects(formState, updatedDentist)) {
       dispatch(onUpdateDentist(formState));
     }
-  }, [updatedDentist, formState]);
+  }, [formState]);
 
   return (
     <>
@@ -112,6 +110,16 @@ export const ProfInfoForm = () => {
                   },
                 }}
               />
+              {dentistUpdateErrors.medicalLicenseNumber && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {dentistUpdateErrors.medicalLicenseNumber}
+                </motion.span>
+              )}
             </Grid2>
           </Grid2>
           <Grid2
@@ -153,6 +161,16 @@ export const ProfInfoForm = () => {
                   },
                 }}
               />
+              {dentistUpdateErrors.workplace && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {dentistUpdateErrors.workplace}
+                </motion.span>
+              )}
             </Grid2>
           </Grid2>
         </Grid2>
@@ -167,41 +185,51 @@ export const ProfInfoForm = () => {
           >
             Speciality
           </Typography>
-          {speciality && speciality.length && (
-            <Autocomplete
-              sx={{
-                marginTop: "0.5rem",
-                "& .MuiInputBase-root": {
-                  borderRadius: ".5rem",
-                  padding: "0 14px",
+
+          <Autocomplete
+            sx={{
+              marginTop: "0.5rem",
+              "& .MuiInputBase-root": {
+                borderRadius: ".5rem",
+                padding: "0 14px",
+              },
+            }}
+            fullWidth
+            disablePortal
+            options={dentistSpecialityOptions}
+            value={speciality}
+            onChange={(event, newValue) => {
+              onMultipleSelectChange({
+                target: {
+                  name: "speciality",
+                  value: newValue,
                 },
-              }}
-              fullWidth
-              disablePortal
-              options={dentistSpecialityOptions}
-              value={speciality}
-              onChange={(event, newValue) => {
-                onMultipleSelectChange({
-                  target: {
-                    name: "speciality",
-                    value: newValue,
+              });
+            }}
+            multiple
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Speciality"
+                InputLabelProps={{
+                  style: {
+                    top: "-9px",
+                    color: "#A2A2A2",
                   },
-                });
-              }}
-              multiple
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Speciality"
-                  InputLabelProps={{
-                    style: {
-                      top: "-9px",
-                      color: "#A2A2A2",
-                    },
-                  }}
-                />
-              )}
-            />
+                }}
+              />
+            )}
+          />
+
+          {dentistUpdateErrors.speciality && (
+            <motion.span
+              className="!text-red-400 text-[12px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {dentistUpdateErrors.speciality}
+            </motion.span>
           )}
         </Grid2>
 
@@ -250,6 +278,16 @@ export const ProfInfoForm = () => {
                 },
               }}
             />
+            {dentistUpdateErrors.university && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {dentistUpdateErrors.university}
+              </motion.span>
+            )}
           </Grid2>
 
           <Grid2
@@ -296,6 +334,16 @@ export const ProfInfoForm = () => {
                 },
               }}
             />
+            {dentistUpdateErrors.yearsOfExperience && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {dentistUpdateErrors.yearsOfExperience}
+              </motion.span>
+            )}
           </Grid2>
         </Grid2>
       </Grid2>

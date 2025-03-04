@@ -9,6 +9,28 @@ export const UserSlice = createSlice({
     admin: [],
     dentists: [],
     patients: [],
+    userUpdateErrors: {
+      fullName: "",
+      email: "",
+      identification: "",
+      phoneNumber: "",
+      gender: "",
+      dateOfBirth: "",
+      emergencyPhoneNumber: "",
+      address: "",
+    },
+    dentistUpdateErrors: {
+      speciality: "",
+      workplace: "",
+      university: "",
+      yearsOfExperience: "",
+      medicalLicenseNumber: "",
+    },
+    patientUpdateErrors: {
+      bloodType: "",
+      knownAllergies: "",
+      medicalConditions: "",
+    },
   },
   reducers: {
     onSetUsers: (state, { payload }) => {
@@ -26,6 +48,15 @@ export const UserSlice = createSlice({
     onUpdatePatient: (state, { payload }) => {
       state.updatedPatient = payload;
     },
+    onSetUserUpdateErrors: (state, { payload }) => {
+      state.userUpdateErrors = payload;
+    },
+    onSetDentistUpdateErrors: (state, { payload }) => {
+      state.dentistUpdateErrors = payload;
+    },
+    onSetPatientUpdateErrors: (state, { payload }) => {
+      state.patientUpdateErrors = payload;
+    },
   },
 });
 
@@ -40,4 +71,7 @@ export const {
   onUpdateUser,
   onUpdateDentist,
   onUpdatePatient,
+  onSetUserUpdateErrors,
+  onSetDentistUpdateErrors,
+  onSetPatientUpdateErrors,
 } = UserSlice.actions;

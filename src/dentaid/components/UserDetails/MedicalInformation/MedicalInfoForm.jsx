@@ -1,4 +1,5 @@
 import { Autocomplete, Grid2, TextField, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,12 +26,14 @@ export const MedicalInfoForm = () => {
     medicalConditions: [],
   });
   const dispatch = useDispatch();
-  const { updatedPatient } = useSelector((state) => state.userSlice);
+  const { updatedPatient, patientUpdateErrors } = useSelector(
+    (state) => state.userSlice
+  );
 
   useEffect(() => {
-    if (updatedPatient) {
+    if (updatedPatient.bloodType !== "") {
       setFormState({
-        bloodType: updatedPatient.bloodType || [],
+        bloodType: updatedPatient.bloodType || "",
         knownAllergies: updatedPatient.knownAllergies || [],
         medicalConditions: updatedPatient.medicalConditions || [],
       });
@@ -38,15 +41,15 @@ export const MedicalInfoForm = () => {
   }, [updatedPatient]);
 
   useEffect(() => {
-    const isFormStateEmpty = Object.values(formState).some(
+    /*     const isFormStateEmpty = Object.values(formState).some(
       (value) => value === "" || (Array.isArray(value) && value.length === 0)
     );
-    if (isFormStateEmpty) return;
+    if (isFormStateEmpty) return; */
 
     if (!compareObjects(formState, updatedPatient)) {
       dispatch(onUpdatePatient(formState));
     }
-  }, [updatedPatient, formState]);
+  }, [formState]);
 
   return (
     <>
@@ -76,6 +79,10 @@ export const MedicalInfoForm = () => {
                   "& .MuiInputBase-root": {
                     borderRadius: ".5rem",
                     padding: "0 14px",
+
+                    border: `${
+                      patientUpdateErrors.bloodType ? "1px solid #ff6467" : ""
+                    }`,
                   },
                 }}
                 fullWidth
@@ -103,6 +110,16 @@ export const MedicalInfoForm = () => {
                   />
                 )}
               />
+              {patientUpdateErrors.bloodType && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {patientUpdateErrors.bloodType}
+                </motion.span>
+              )}
             </Grid2>
           </Grid2>
 
@@ -122,6 +139,11 @@ export const MedicalInfoForm = () => {
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
+                  border: `${
+                    patientUpdateErrors.medicalConditions
+                      ? "1px solid #ff6467"
+                      : ""
+                  }`,
                 },
               }}
               fullWidth
@@ -150,6 +172,16 @@ export const MedicalInfoForm = () => {
                 />
               )}
             />
+            {patientUpdateErrors.medicalConditions && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {patientUpdateErrors.medicalConditions}
+              </motion.span>
+            )}
           </Grid2>
 
           <Grid2 size={12}>
@@ -168,6 +200,11 @@ export const MedicalInfoForm = () => {
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
+                  border: `${
+                    patientUpdateErrors.knownAllergies
+                      ? "1px solid #ff6467"
+                      : ""
+                  }`,
                 },
               }}
               fullWidth
@@ -196,6 +233,16 @@ export const MedicalInfoForm = () => {
                 />
               )}
             />
+            {patientUpdateErrors.knownAllergies && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {patientUpdateErrors.knownAllergies}
+              </motion.span>
+            )}
           </Grid2>
         </Grid2>
       )}

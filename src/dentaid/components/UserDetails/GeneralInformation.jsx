@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import Swal from "sweetalert2";
+import { personalInformationSchema } from "../../../helpers";
 import { useAuthStore, useUserStore } from "../../../hooks";
-import { onUpdateUser } from "../../../store";
+import { onSetUserUpdateErrors, onUpdateUser } from "../../../store";
 import { LoadingSpinner } from "../ui";
 import { GeneralInfoForm } from "./GeneralInformation/GeneralInfoForm";
 import { GeneralInformationDetails } from "./generalInformation/GeneralInformationDetail";
@@ -18,6 +19,7 @@ export const GeneralInformation = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userType = queryParams.get("usertype");
+  const view = queryParams.get("view");
   const boxUpdateRef = useRef(null);
   const [boxUpdateWidth, setUpdateWidth] = useState(0);
 
@@ -41,6 +43,10 @@ export const GeneralInformation = () => {
       }
     };
 
+    if (view === "patient-history") {
+      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddd");
+    }
+
     fetchUser();
   }, [id, userType]);
 
@@ -56,26 +62,42 @@ export const GeneralInformation = () => {
 
   const onSubmit = async () => {
     try {
-      let data;
-      if (location.search.includes("&account=true")) {
-        data = await startUpdateUser(id, "", updatedUser);
-      } else {
-        data = await startUpdateUser(id, userType, updatedUser);
-      }
-      if (data) {
-        Swal.fire({
-          title: "User updated successfully",
-          icon: "success",
-        });
+      await personalInformationSchema.validate(updatedUser, {
+        abortEarly: false,
+      });
+      dispatch(onSetUserUpdateErrors({}));
+      try {
+        let data;
+        if (location.search.includes("&account=true")) {
+          data = await startUpdateUser(id, "", updatedUser);
+        } else {
+          data = await startUpdateUser(id, userType, updatedUser);
+        }
+        if (data) {
+          Swal.fire({
+            title: "User updated successfully",
+            icon: "success",
+          });
 
-        dispatch(onUpdateUser(data.user));
-        setIsEditing(false);
-        setUserToUpdate(data.user);
+          dispatch(onUpdateUser(data.user));
+          setIsEditing(false);
+          setUserToUpdate(data.user);
+        }
+      } catch (error) {
+        console.error("API Error:", error);
       }
-    } catch (error) {
-      console.error("API Error:", error);
+    } catch (err) {
+      const validationErrors = {};
+      err.inner.forEach((error) => {
+        validationErrors[error.path] = error.message;
+      });
+      dispatch(onSetUserUpdateErrors(validationErrors));
     }
   };
+
+  /*   useEffect(() => {
+    console.log(location);
+  }, []); */
 
   return (
     <>
@@ -83,20 +105,20 @@ export const GeneralInformation = () => {
         sx={{
           display: "flex",
           justifyContent:
-            user.role === "DENTIST_ROLE" ? "center" : "space-between",
+            view === "patient-history" ? "center" : "space-between",
           alignItems: "center",
         }}
       >
         <Typography
           sx={{
-            fontSize: user.role === "DENTIST_ROLE" ? "1.55rem" : "1.25rem",
-            paddingBottom: user.role === "DENTIST_ROLE" ? "2rem" : "0",
+            fontSize: view === "patient-history" ? "1.55rem" : "1.25rem",
+            paddingBottom: view === "patient-history" ? "2rem" : "0",
             color: "#15192C",
           }}
         >
           General information
         </Typography>
-        {user.role !== "DENTIST_ROLE" ? (
+        {view !== "patient-history" ? (
           isEditing ? (
             <Button
               onClick={onSubmit}

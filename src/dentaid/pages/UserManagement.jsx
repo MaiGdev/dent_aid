@@ -164,7 +164,13 @@ export const UserManagement = () => {
   };
 
   const handleDetails = (e) => {
-    navigate(`/dentaid/user/${e.id}?usertype=PATIENT_ROLE`);
+    if (user.role === "DENTIST_ROLE") {
+      navigate(
+        `/dentaid/user/${e.id}?usertype=PATIENT_ROLE&view=patient-history`
+      );
+    } else {
+      navigate(`/dentaid/user/${e.id}?usertype=PATIENT_ROLE`);
+    }
   };
 
   const handleUserTypeChange = ({ target }) => {

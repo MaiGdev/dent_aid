@@ -8,7 +8,6 @@ const formData = {
   password: "",
   identification: "",
   fullName: "",
-  city: "",
   address: "",
   phoneNumber: "",
   emergencyPhoneNumber: "",

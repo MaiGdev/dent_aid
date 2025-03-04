@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import Swal from "sweetalert2";
+import { professionalInformationSchema } from "../../../helpers";
 import { useAuthStore, useUserStore } from "../../../hooks";
-import { onUpdateDentist } from "../../../store";
+import { onSetDentistUpdateErrors, onUpdateDentist } from "../../../store";
 import { LoadingSpinner } from "../ui";
 import { ProfInfoDetails } from "./ProfessionalInformation/ProfInfoDetails";
 import { ProfInfoForm } from "./ProfessionalInformation/ProfInfoForm";
@@ -24,40 +25,58 @@ export const ProfessionalInformation = () => {
   const transformSpeciality = (speciality) => {
     return speciality.map((speciality) => ({
       label: `${speciality}`,
-      type: `${speciality}`,
+      value: `${speciality}`,
     }));
   };
 
   const onSubmit = async () => {
     console.log(updatedDentist);
-    try {
-      const speciality = updatedDentist.speciality.map((s) => s.label);
-      const formData = { ...updatedDentist, speciality };
 
-      const data = await startUpdateProfessionalInfo(id, formData);
-      if (data) {
-        setIsEditing((prev) => !prev);
-        Swal.fire({
-          title: "Dentist information updated successfully",
-          icon: "success",
-        });
-        const transformedSpeciality = transformSpeciality(data.speciality);
-        dispatch(
-          onUpdateDentist({
-            ...data,
-            speciality: transformedSpeciality,
-          })
-        );
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Failed to update dentist information",
-          text: "Please try again later.",
-        });
+    try {
+      await professionalInformationSchema.validate(updatedDentist, {
+        abortEarly: false,
+      });
+      dispatch(onSetDentistUpdateErrors({}));
+
+      try {
+        const speciality = updatedDentist.speciality.map((s) => s.label);
+        const formData = { ...updatedDentist, speciality };
+
+        const data = await startUpdateProfessionalInfo(id, formData);
+        if (data) {
+          setIsEditing((prev) => !prev);
+          Swal.fire({
+            title: "Dentist information updated successfully",
+            icon: "success",
+          });
+          const transformedSpeciality = transformSpeciality(
+            data.updatedUser.speciality
+          );
+          dispatch(
+            onUpdateDentist({
+              ...data.updatedUser,
+              speciality: transformedSpeciality,
+            })
+          );
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed to update dentist information",
+            text: "Please try again later.",
+          });
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        throw error;
       }
-    } catch (error) {
-      console.error("API Error:", error);
-      throw error;
+
+      console.log("Updated");
+    } catch (err) {
+      const validationErrors = {};
+      err.inner.forEach((error) => {
+        validationErrors[error.path] = error.message;
+      });
+      dispatch(onSetDentistUpdateErrors(validationErrors));
     }
   };
 
@@ -97,9 +116,11 @@ export const ProfessionalInformation = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          marginBottom:"2rem" 
         }}
       >
-        <Typography sx={{ fontSize: "1.25rem", color: "#15192C" }}>
+        
+        <Typography className="" sx={{ fontSize: "1.25rem", color: "#15192C", textAlign:"center" }}>
           Profesional information
         </Typography>
         {isEditing ? (
