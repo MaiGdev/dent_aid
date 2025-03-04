@@ -4,7 +4,14 @@ import React, { useContext } from "react";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Grid2 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
+import { toastTop } from "../../../helpers/toastTop";
+import {
+  accountSetupSchema,
+  healthInformationSchema,
+  personalInformationSchema,
+} from "../../../helpers/yupSchemas";
 import { useAuthStore } from "../../../hooks";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepHealthInformation } from "../ui/FormStepHealthInformation";
@@ -32,20 +39,35 @@ export const PatientStepperForm = ({
     gender,
     knownAllergies,
     medicalConditions,
+    validateForm,
   } = useContext(FormContext);
 
   const location = useLocation();
 
-  const nextStep = () => {
-    setStep((prevStep) => prevStep + 1);
+  const nextStep = async () => {
+    if (step === 1) {
+      const isValid = await validateForm(accountSetupSchema);
+      if (!isValid) return toastTop();
+      setStep((prevStep) => prevStep + 1);
+    }
+    if (step === 2) {
+      const isValid = await validateForm(personalInformationSchema);
+      if (!isValid) return toastTop();
+      setStep((prevStep) => prevStep + 1);
+    }
+    if (step === 3) {
+      const isValid = await validateForm(healthInformationSchema);
+      if (!isValid) return toastTop();
+      handleSubmit();
+    }
   };
+
   const prevStep = () => {
     step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
   };
   const { formState } = useContext(FormContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     console.log("Formulario enviado:", formState);
 
     const filteredKnownAllergies = knownAllergies.map((x) => {
@@ -75,9 +97,10 @@ export const PatientStepperForm = ({
         bloodType,
         filteredKnownAllergies,
         filteredMedicalConditions,
-        /*  */
+
         createdByAdmin,
       });
+      /*    const user = null; */
 
       if (user) {
         if (createdByAdmin) {
@@ -124,96 +147,49 @@ export const PatientStepperForm = ({
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepHealthInformation />}
 
-            {(step === 1 || step === 2) && (
-              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#fff",
-                    color: "#475B6F",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
+            <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+              <Button
+                startIcon={<ArrowBack />}
+                onClick={prevStep}
+                fullWidth
+                sx={{
+                  backgroundColor: "#fff",
+                  color: "#475B6F",
+                  fontSize: "0.875rem",
+                  fontWeight: "600",
+                  borderRadius: "1.5rem",
+                  marginTop: "40px",
+                  textTransform: "none",
 
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  endIcon={<ArrowForward />}
-                  onClick={nextStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#01448A",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#4A5D72",
+                    color: "#fff",
+                  },
+                }}
+              >
+                Back
+              </Button>
+              <Button
+                endIcon={<ArrowForward />}
+                onClick={nextStep}
+                fullWidth
+                sx={{
+                  backgroundColor: "#01448A",
+                  color: "white",
+                  fontSize: "0.875rem",
+                  fontWeight: "600",
+                  borderRadius: "1.5rem",
+                  marginTop: "40px",
+                  textTransform: "none",
 
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Continue
-                </Button>
-              </Grid2>
-            )}
-            {step === 3 && (
-              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#fff",
-                    color: "#475B6F",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  endIcon={<ArrowForward />}
-                  onClick={handleSubmit}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#01448A",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Continue
-                </Button>
-              </Grid2>
-            )}
+                  "&:hover": {
+                    backgroundColor: "#4A5D72",
+                  },
+                }}
+              >
+                {step === 3 ? "Submit" : "Continue"}
+              </Button>
+            </Grid2>
           </form>
         </motion.div>
       </Grid2>

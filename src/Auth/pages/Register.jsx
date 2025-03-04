@@ -20,6 +20,7 @@ export const RegisterPage = () => {
   const [typeUser, setTypeUser] = useState("patient");
   const [isUserSelected, setIsUserSelected] = useState(false);
   const location = useLocation();
+  const [schemaType, setSchemaType] = useState("");
 
   const navigate = useNavigate();
   const handleUserTypeChange = (value) => {
@@ -28,6 +29,7 @@ export const RegisterPage = () => {
 
   const handleContinue = () => {
     setIsUserSelected(true);
+    setSchemaType(typeUser);
   };
 
   const handleLogin = (e) => {
@@ -53,7 +55,7 @@ export const RegisterPage = () => {
   }, []);
 
   return (
-    <FormProvider>
+    <FormProvider schemaType={schemaType}>
       <Box
         sx={{
           display: "flex",

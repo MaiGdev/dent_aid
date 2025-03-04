@@ -52,6 +52,8 @@ export const useAuthStore = () => {
 
       return true;
     } catch (error) {
+      console.log({ message: error.response.data.message });
+
       if (error.code === "ERR_NETWORK") {
         Swal.fire({
           icon: "error",
@@ -66,13 +68,15 @@ export const useAuthStore = () => {
             text: "Please check your login credentials.",
           });
         }
-
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong. Please try again later.",
-        });
-        console.log(error);
+        /* 
+        if (error.code !== "ERR_BAD_RESPONSE") {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Something went wrong. Please try again later.",
+          });
+          console.log(error);
+        } */
       }
 
       dispatch(onLogout({ message: error.message }));
@@ -206,11 +210,17 @@ export const useAuthStore = () => {
             text: "Cannot reach the server to reload your session. Please check your connection or contact support.",
           });
         } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Something went wrong reloading your session. Please try again later.",
-          });
+          if (
+            error.response.data.error !==
+            "Cannot destructure property 'id' of '(intermediate value)' as it is null."
+          ) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Something went wrong. Please try again later.",
+            });
+            console.log(error);
+          }
         }
         dispatch(onLogout());
       }

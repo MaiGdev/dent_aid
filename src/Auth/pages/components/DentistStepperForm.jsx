@@ -7,6 +7,12 @@ import { useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
 
+import { toastTop } from "../../../helpers/toastTop";
+import {
+  accountSetupSchema,
+  personalInformationSchema,
+  professionalInformationSchema,
+} from "../../../helpers/yupSchemas";
 import { useAuthStore } from "../../../hooks";
 import { FormStepAccountSetup } from "../ui/FormStepAccountSetup";
 import { FormStepPersonalInformation } from "../ui/FormStepPersonalInformation";
@@ -33,21 +39,33 @@ export const DentistStepperForm = ({
     yearsOfExperience,
     speciality,
     formState,
+    validateForm,
   } = useContext(FormContext);
   const { startRegisterUser } = useAuthStore();
   const location = useLocation();
 
-  const nextStep = () => {
-    setStep((prevStep) => prevStep + 1);
+  const nextStep = async () => {
+    if (step === 1) {
+      const isValid = await validateForm(accountSetupSchema);
+      if (!isValid) return toastTop();
+      setStep((prevStep) => prevStep + 1);
+    }
+    if (step === 2) {
+      const isValid = await validateForm(personalInformationSchema);
+      if (!isValid) return toastTop();
+      setStep((prevStep) => prevStep + 1);
+    }
+    if (step === 3) {
+      const isValid = await validateForm(professionalInformationSchema);
+      if (!isValid) return toastTop();
+      handleSubmit();
+    }
   };
   const prevStep = () => {
     step === 1 ? setIsUserSelected(false) : setStep((prevStep) => prevStep - 1);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Formulario enviado:", formState);
-
+  const handleSubmit = async () => {
     const filteredSpeciality = speciality.map((x) => {
       return x.value;
     });
@@ -75,7 +93,7 @@ export const DentistStepperForm = ({
         university,
         workplace,
         yearsOfExperience,
-        /*  */
+
         createdByAdmin,
       });
 
@@ -131,96 +149,49 @@ export const DentistStepperForm = ({
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepProfessionalInformation />}
 
-            {step === 1 || step === 2 ? (
-              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#fff",
-                    color: "#475B6F",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
+            <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+              <Button
+                startIcon={<ArrowBack />}
+                onClick={prevStep}
+                fullWidth
+                sx={{
+                  backgroundColor: "#fff",
+                  color: "#475B6F",
+                  fontSize: "0.875rem",
+                  fontWeight: "600",
+                  borderRadius: "1.5rem",
+                  marginTop: "40px",
+                  textTransform: "none",
 
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  endIcon={<ArrowForward />}
-                  onClick={nextStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#01448A",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#4A5D72",
+                    color: "#fff",
+                  },
+                }}
+              >
+                Back
+              </Button>
+              <Button
+                endIcon={<ArrowForward />}
+                onClick={nextStep}
+                fullWidth
+                sx={{
+                  backgroundColor: "#01448A",
+                  color: "white",
+                  fontSize: "0.875rem",
+                  fontWeight: "600",
+                  borderRadius: "1.5rem",
+                  marginTop: "40px",
+                  textTransform: "none",
 
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Continue
-                </Button>
-              </Grid2>
-            ) : (
-              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
-                <Button
-                  startIcon={<ArrowBack />}
-                  onClick={prevStep}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#fff",
-                    color: "#475B6F",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Back
-                </Button>
-                <Button
-                  endIcon={<ArrowForward />}
-                  onClick={handleSubmit}
-                  type="submit"
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#01448A",
-                    color: "white",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: "1.5rem",
-                    marginTop: "40px",
-                    textTransform: "none",
-
-                    "&:hover": {
-                      backgroundColor: "#4A5D72",
-                    },
-                  }}
-                >
-                  Continue
-                </Button>
-              </Grid2>
-            )}
+                  "&:hover": {
+                    backgroundColor: "#4A5D72",
+                  },
+                }}
+              >
+                {step === 3 ? "Submit" : "Continue"}
+              </Button>
+            </Grid2>
           </form>
         </motion.div>
       </Grid2>

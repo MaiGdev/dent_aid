@@ -16,7 +16,7 @@ const formData = {
   dateOfBirthFormated: new Date(),
   /* Patient */
   bloodType: "",
-  gender: "gender",
+  gender: "Male",
   knownAllergies: [],
   medicalConditions: [],
   /* Doctor */

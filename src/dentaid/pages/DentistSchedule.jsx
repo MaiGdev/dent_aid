@@ -4,11 +4,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/en";
 import isBetween from "dayjs/plugin/isBetween";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
-import { useScheduleLogic, useScheduleStore } from "../../hooks/";
+import { useAuthStore, useScheduleLogic, useScheduleStore } from "../../hooks/";
 import {
   onGetScheduleFromApi,
   resetFormState,
@@ -37,13 +37,35 @@ export const DentistSchedule = () => {
     useScheduleStore();
   const { formatScheduleDataForAPI } = useScheduleLogic();
   const dispatch = useDispatch();
-
   const { schedule, formState } = useSelector((state) => state.scheduleSlice);
+  const [fullLoggedUserData, setFullLoggedUserData] = useState(null);
+  const { startGetUser, user } = useAuthStore();
+
+  const location = useLocation();
+
+  const fetchingLoggedUserData = async () => {
+    try {
+      const userData = await startGetUser({
+        id: user.id,
+        userType: user.role,
+      });
+      setFullLoggedUserData(userData);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     const fetchSchedule = async () => {
+      let data;
       try {
-        const data = await startGetSchedule({ idDentist: id });
+        if (location.search.includes(`?account=true`)) {
+          fetchingLoggedUserData();
+          data = await startGetSchedule({
+            idDentist: fullLoggedUserData.id,
+          });
+        } else {
+          data = await startGetSchedule({ idDentist: id });
+        }
+
         if (data.length !== 0) {
           let formattedData = data.reduce((acc, day) => {
             const dayOfWeek = dayjs().day(day.dayOfWeek).format("dddd");
@@ -73,7 +95,7 @@ export const DentistSchedule = () => {
     };
 
     fetchSchedule();
-  }, [id, dispatch]);
+  }, [id, dispatch, fullLoggedUserData]);
 
   useEffect(() => {
     const updatedFormState = {
@@ -150,14 +172,28 @@ export const DentistSchedule = () => {
       if (isStartEndValid(filterdSchedule)) return;
 
       // update schedule
-      const form = await startUpdateSchedule({ formState, id });
+
+      let form;
+      if (location.search.includes(`?account=true`)) {
+        form = await startUpdateSchedule({
+          formState,
+          id: fullLoggedUserData.id,
+        });
+      } else {
+        form = await startUpdateSchedule({ formState, id });
+      }
+
       if (form) {
         Swal.fire({
           title: `${form.data.message}`,
           icon: "success",
           confirmButtonText: "Close",
         });
-        navigate(`/dentaid/user-management`);
+        if (location.search.includes(`?account=true`)) {
+          navigate(`/dentaid/dashboard`);
+        } else {
+          navigate(`/dentaid/user-management`);
+        }
       }
     } catch (error) {
       console.error(error);

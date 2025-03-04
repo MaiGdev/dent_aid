@@ -16,8 +16,8 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { useUserStore } from "../../hooks";
+import { useLocation, useNavigate } from "react-router";
+import { useAuthStore, useUserStore } from "../../hooks";
 import { DentAidLayout } from "../layout/DentAidLayout";
 
 import { AssignmentInd } from "@mui/icons-material";
@@ -74,6 +74,8 @@ export const UserManagement = () => {
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
   const [nameInput, setNameInput] = useState();
+  const location = useLocation();
+  const { user } = useAuthStore();
 
   const columns = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -93,26 +95,38 @@ export const UserManagement = () => {
       field: "actions",
       headerName: "Actions",
       flex: 2,
-      renderCell: (params) => (
-        <div>
-          <Button
-            size="small"
-            variant="contained"
-            onClick={() => handleEdit(params.row)}
-            sx={{ marginRight: 1, backgroundColor: "#4285CB" }}
-          >
-            Edit
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            color="error"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </Button>
-        </div>
-      ),
+      renderCell: (params) =>
+        user.role === "ADMIN_ROLE" ? (
+          <div>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={() => handleEdit(params.row)}
+              sx={{ marginRight: 1, backgroundColor: "#4285CB" }}
+            >
+              Edit
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="error"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              Delete
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={() => handleDetails(params.row)}
+              sx={{ marginRight: 1, backgroundColor: "#4285CB" }}
+            >
+              Details
+            </Button>
+          </div>
+        ),
     },
   ];
 
@@ -127,8 +141,19 @@ export const UserManagement = () => {
         accountStatus: "active -d",
       }));
       setRows(formatedDentist);
+
+      if (user.role === "DENTIST_ROLE") {
+        const formatedPatient = patients.map((patient) => ({
+          id: patient.id,
+          user: patient.user?.fullName,
+          email: patient.user?.email,
+          phoneNumber: patient.user?.phoneNumber,
+          accountStatus: "active -d",
+        }));
+        setRows(formatedPatient);
+      }
     }
-  }, [dentists]);
+  }, [dentists, user]);
 
   const paginationModel = { page: 0, pageSize: 5 };
 
@@ -136,6 +161,10 @@ export const UserManagement = () => {
 
   const handleEdit = (e) => {
     navigate(`/dentaid/user/${e.id}?usertype=${userType}`);
+  };
+
+  const handleDetails = (e) => {
+    navigate(`/dentaid/user/${e.id}?usertype=PATIENT_ROLE`);
   };
 
   const handleUserTypeChange = ({ target }) => {
@@ -179,9 +208,6 @@ export const UserManagement = () => {
     }
   };
 
-  /*   const handleDelete = (id) => {
-    console.log(`User with ID ${id} has been deleted.`);
-  }; */
   const handleSearchFilter = ({ target }) => {
     const { value } = target;
 
@@ -254,187 +280,206 @@ export const UserManagement = () => {
 
   return (
     <DentAidLayout>
-      <Box
-        sx={{
-          minHeight: "100%",
-          borderRadius: "3rem",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#fff",
-          border: "1px solid #cccccc",
-        }}
-      >
-        <Grid2
-          container
-          direction={"column"}
-          spacing={3}
+      {user && (
+        <Box
           sx={{
+            minHeight: "100%",
+            borderRadius: "3rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             backgroundColor: "#fff",
-            padding: "2.5rem",
-            borderRadius: "1rem",
+            border: "1px solid #cccccc",
           }}
         >
-          <Grid2 xs={12}>
-            <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
-              User management
-            </Typography>
-            <Typography
-              sx={{ color: "#92959E", fontSize: "14px", fontWeight: "200" }}
-            >
-              Information about...
-            </Typography>
-          </Grid2>
-
-          <Grid2 sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Grid2 sx={{ display: "flex", gap: "1rem" }}>
-              <TextField
-                value={nameInput}
-                onChange={handleSearchFilter}
-                id="input-with-icon-textfield"
-                placeholder="User name"
-                sx={{
-                  width: "205px",
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  color: "#5A6474",
-                  textAlign: "left",
-                  "& .MuiInputBase-root": {
-                    borderRadius: ".4rem",
-                    height: "100%",
-                  },
-                  "& .MuiInputAdornment-root": {
-                    marginRight: "8px",
-                  },
-                }}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-
-              <FormControl sx={{ width: "205px" }}>
-                <InputLabel
-                  id="userType-label"
-                  sx={{
-                    transform: "translate(14px, 5px) scale(1)",
-                    "&.Mui-focused, &.MuiInputLabel-shrink": {
-                      transform: "translate(14px, -9px) scale(0.75)",
-                    },
-                  }}
+          <Grid2
+            container
+            direction={"column"}
+            spacing={3}
+            sx={{
+              backgroundColor: "#fff",
+              padding: "2.5rem",
+              borderRadius: "1rem",
+            }}
+          >
+            {user.role === "DENTIST_ROLE" ? (
+              <Grid2 xs={12}>
+                <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
+                  PATIENTS
+                </Typography>
+                <Typography
+                  sx={{ color: "#92959E", fontSize: "14px", fontWeight: "200" }}
                 >
-                  User type
-                </InputLabel>
-                <Select
-                  labelId="userType-label"
-                  id="userType"
-                  value={userType}
-                  label="User type"
-                  onChange={handleUserTypeChange}
-                  name="userType"
+                  Information about...
+                </Typography>
+              </Grid2>
+            ) : (
+              <Grid2 xs={12}>
+                <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
+                  User management
+                </Typography>
+                <Typography
+                  sx={{ color: "#92959E", fontSize: "14px", fontWeight: "200" }}
+                >
+                  Information about...
+                </Typography>
+              </Grid2>
+            )}
+
+            <Grid2 sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+                <TextField
+                  value={nameInput}
+                  onChange={handleSearchFilter}
+                  id="input-with-icon-textfield"
+                  placeholder="User name"
                   sx={{
+                    width: "205px",
                     fontSize: "0.875rem",
                     height: "2.063rem",
-                    borderRadius: ".4rem",
                     color: "#5A6474",
                     textAlign: "left",
+                    "& .MuiInputBase-root": {
+                      borderRadius: ".4rem",
+                      height: "100%",
+                    },
+                    "& .MuiInputAdornment-root": {
+                      marginRight: "8px",
+                    },
                   }}
-                >
-                  <MenuItem value="ADMIN_ROLE">Admin</MenuItem>
-                  <MenuItem value="DENTIST_ROLE">Dentist</MenuItem>
-                  <MenuItem value="PATIENT_ROLE">Patient</MenuItem>
-                </Select>
-              </FormControl>
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+
+                {user.role === "ADMIN_ROLE" && (
+                  <FormControl sx={{ width: "205px" }}>
+                    <InputLabel
+                      id="userType-label"
+                      sx={{
+                        transform: "translate(14px, 5px) scale(1)",
+                        "&.Mui-focused, &.MuiInputLabel-shrink": {
+                          transform: "translate(14px, -9px) scale(0.75)",
+                        },
+                      }}
+                    >
+                      User type
+                    </InputLabel>
+                    <Select
+                      labelId="userType-label"
+                      id="userType"
+                      value={userType}
+                      label="User type"
+                      onChange={handleUserTypeChange}
+                      name="userType"
+                      sx={{
+                        fontSize: "0.875rem",
+                        height: "2.063rem",
+                        borderRadius: ".4rem",
+                        color: "#5A6474",
+                        textAlign: "left",
+                      }}
+                    >
+                      <MenuItem value="ADMIN_ROLE">Admin</MenuItem>
+                      <MenuItem value="DENTIST_ROLE">Dentist</MenuItem>
+                      <MenuItem value="PATIENT_ROLE">Patient</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              </Grid2>
+              {user.role === "ADMIN_ROLE" && (
+                <Grid2>
+                  <Button
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    variant="contained"
+                    disableElevation
+                    onClick={handleClick}
+                    sx={{ backgroundColor: "#01448A" }}
+                    endIcon={<KeyboardArrowDownIcon />}
+                  >
+                    Options
+                  </Button>
+                  <StyledMenu
+                    id="demo-customized-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "demo-customized-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <MenuItem
+                      onClick={(e) => {
+                        handleClose(e);
+                        handleCreateUserNavigation({
+                          target: "DENTIST_ROLE",
+                        });
+                      }}
+                      disableRipple
+                    >
+                      <AssignmentInd />
+                      Create Dentist
+                    </MenuItem>
+                    <Divider sx={{ my: 0.5 }} />
+                    <MenuItem
+                      onClick={(e) => {
+                        handleClose(e);
+                        handleCreateUserNavigation({
+                          target: "PATIENT_ROLE",
+                        });
+                      }}
+                      disableRipple
+                    >
+                      <FileCopyIcon />
+                      Create Patient
+                    </MenuItem>
+                  </StyledMenu>
+                </Grid2>
+              )}
             </Grid2>
+
+            <Divider />
+
             <Grid2>
-              <Button
-                id="demo-customized-button"
-                aria-controls={open ? "demo-customized-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                sx={{ backgroundColor: "#01448A" }}
-                endIcon={<KeyboardArrowDownIcon />}
-              >
-                Options
-              </Button>
-              <StyledMenu
-                id="demo-customized-menu"
-                MenuListProps={{
-                  "aria-labelledby": "demo-customized-button",
+              <Grid2
+                sx={{
+                  width: "100%",
+                  height: "18px",
+                  backgroundColor: "#333333",
+                  borderTopLeftRadius: "1rem",
+                  borderTopRightRadius: "1rem",
                 }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
+              />
+              <Paper
+                sx={{
+                  height: 450,
+                  width: "900px",
+                  border: "1px solid #cccccc",
+                  borderRadius: 0,
+                }}
               >
-                <MenuItem
-                  onClick={(e) => {
-                    handleClose(e);
-                    handleCreateUserNavigation({
-                      target: "DENTIST_ROLE",
-                    });
-                  }}
-                  disableRipple
-                >
-                  <AssignmentInd />
-                  Create Dentist
-                </MenuItem>
-                <Divider sx={{ my: 0.5 }} />
-                <MenuItem
-                  onClick={(e) => {
-                    handleClose(e);
-                    handleCreateUserNavigation({
-                      target: "PATIENT_ROLE",
-                    });
-                  }}
-                  disableRipple
-                >
-                  <FileCopyIcon />
-                  Create Patient
-                </MenuItem>
-              </StyledMenu>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  initialState={{ pagination: { paginationModel } }}
+                  pageSizeOptions={[5, 10]}
+                  /*  checkboxSelection */
+                  sx={{ border: 0, borderRadius: 0 }}
+                />
+              </Paper>
             </Grid2>
           </Grid2>
-
-          <Divider />
-
-          <Grid2>
-            <Grid2
-              sx={{
-                width: "100%",
-                height: "18px",
-                backgroundColor: "#333333",
-                borderTopLeftRadius: "1rem",
-                borderTopRightRadius: "1rem",
-              }}
-            />
-            <Paper
-              sx={{
-                height: 450,
-                width: "900px",
-                border: "1px solid #cccccc",
-                borderRadius: 0,
-              }}
-            >
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{ pagination: { paginationModel } }}
-                pageSizeOptions={[5, 10]}
-                /*  checkboxSelection */
-                sx={{ border: 0, borderRadius: 0 }}
-              />
-            </Paper>
-          </Grid2>
-        </Grid2>
-      </Box>
+        </Box>
+      )}
     </DentAidLayout>
   );
 };

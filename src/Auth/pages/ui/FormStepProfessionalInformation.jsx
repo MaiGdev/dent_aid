@@ -1,4 +1,12 @@
-import { Autocomplete, Box, Grid2, Input, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Grid2,
+  Input,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 import { dentistSpecialityOptions } from "./constants/dentist-speciaty";
@@ -12,6 +20,7 @@ export const FormStepProfessionalInformation = () => {
     speciality,
     onInputChange,
     onMultipleSelectChange,
+    errors,
   } = useContext(FormContext);
   return (
     <>
@@ -43,7 +52,9 @@ export const FormStepProfessionalInformation = () => {
                 fontSize: "0.875rem",
                 height: "2.063rem",
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${
+                  errors.medicalLicenseNumber ? "#ff6467" : "#cccccc"
+                }`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
 
@@ -58,14 +69,26 @@ export const FormStepProfessionalInformation = () => {
                 },
               }}
             />
+            {errors.medicalLicenseNumber && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.medicalLicenseNumber}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 size={12}>
             <Autocomplete
               sx={{
                 marginTop: "0.5rem",
+
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
+                  border: ` ${errors.speciality ? "1px solid #ff6467" : ""}`,
                 },
               }}
               fullWidth
@@ -94,6 +117,16 @@ export const FormStepProfessionalInformation = () => {
                 />
               )}
             />
+            {errors.speciality && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.speciality}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Input
@@ -114,7 +147,9 @@ export const FormStepProfessionalInformation = () => {
                 fontSize: "0.875rem",
                 height: "2.063rem",
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${
+                  errors.yearsOfExperience ? "#ff6467" : "#cccccc"
+                }`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
 
@@ -129,6 +164,16 @@ export const FormStepProfessionalInformation = () => {
                 },
               }}
             />
+            {errors.yearsOfExperience && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.yearsOfExperience}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Input
@@ -144,7 +189,9 @@ export const FormStepProfessionalInformation = () => {
                 fontSize: "0.875rem",
                 height: "2.063rem",
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${
+                  errors.university ? "#ff6467" : "#cccccc"
+                }`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
 
@@ -159,6 +206,16 @@ export const FormStepProfessionalInformation = () => {
                 },
               }}
             />
+            {errors.university && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.university}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Input
@@ -174,7 +231,7 @@ export const FormStepProfessionalInformation = () => {
                 fontSize: "0.875rem",
                 height: "2.063rem",
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${errors.workplace ? "#ff6467" : "#cccccc"}`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
 
@@ -189,6 +246,16 @@ export const FormStepProfessionalInformation = () => {
                 },
               }}
             />
+            {errors.workplace && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.workplace}
+              </motion.span>
+            )}
           </Grid2>
         </Grid2>
       </Box>

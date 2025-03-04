@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { DateField, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 
@@ -24,6 +25,7 @@ export const FormStepPersonalInformation = () => {
     emergencyPhoneNumber,
     phoneNumber,
     onInputChange,
+    errors,
   } = useContext(FormContext);
   return (
     <>
@@ -47,7 +49,7 @@ export const FormStepPersonalInformation = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "end",
+              alignItems: "start",
             }}
             spacing={2}
           >
@@ -65,7 +67,9 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${
+                    errors.fullName ? "#ff6467" : "#cccccc"
+                  }`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -80,6 +84,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.fullName && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.fullName}
+                </motion.span>
+              )}
             </Grid2>
             <Grid2 size={6} sx={{ paddingLeft: ".5rem" }}>
               <Input
@@ -95,7 +109,9 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${
+                    errors.identification ? "#ff6467" : "#cccccc"
+                  }`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -110,6 +126,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.identification && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.identification}
+                </motion.span>
+              )}
             </Grid2>
             <Grid2 size={6} sx={{ paddingRight: ".5rem" }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -122,6 +148,9 @@ export const FormStepPersonalInformation = () => {
                       height: "2.063rem",
                       borderRadius: ".5rem",
                       textAlign: "left",
+                      border: ` ${
+                        errors.dateOfBirth ? "1px solid #ff6467" : ""
+                      }`,
                     },
                   }}
                   fullWidth
@@ -129,8 +158,18 @@ export const FormStepPersonalInformation = () => {
                   onChange={onInputChange}
                 />
               </LocalizationProvider>
+              {errors.dateOfBirth && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.dateOfBirth}
+                </motion.span>
+              )}
             </Grid2>
-            <Grid2 size={6} sx={{ paddingLeft: ".5rem" }}>
+            <Grid2 size={6} sx={{ paddingLeft: ".5rem", marginTop: ".5rem" }}>
               <FormControl fullWidth>
                 <InputLabel
                   id="gender-label"
@@ -160,7 +199,6 @@ export const FormStepPersonalInformation = () => {
                     borderRadius: ".5rem",
                     color: "#5A6474",
                     textAlign: "left",
-  
                   }}
                 >
                   <MenuItem value="Male">Male</MenuItem>
@@ -171,6 +209,16 @@ export const FormStepPersonalInformation = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
+              {errors.gender && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.gender}
+                </motion.span>
+              )}
             </Grid2>
             <Grid2 size={12}>
               <Input
@@ -186,7 +234,9 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${
+                    errors.phoneNumber ? "#ff6467" : "#cccccc"
+                  }`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -201,6 +251,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.phoneNumber && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.phoneNumber}
+                </motion.span>
+              )}
             </Grid2>
             <Grid2 size={12}>
               <Input
@@ -216,7 +276,9 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${
+                    errors.emergencyPhoneNumber ? "#ff6467" : "#cccccc"
+                  }`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -231,6 +293,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.emergencyPhoneNumber && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.emergencyPhoneNumber}
+                </motion.span>
+              )}
             </Grid2>
 
             <Typography
@@ -259,7 +331,7 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${errors.city ? "#ff6467" : "#cccccc"}`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -274,6 +346,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.city && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.city}
+                </motion.span>
+              )}
             </Grid2>
             <Grid2 size={12}>
               <Input
@@ -289,7 +371,7 @@ export const FormStepPersonalInformation = () => {
                   fontSize: "0.875rem",
                   height: "2.063rem",
                   borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
+                  border: `1px solid ${errors.address ? "#ff6467" : "#cccccc"}`,
                   padding: "0.5rem 1rem",
                   marginTop: "0.5rem",
 
@@ -304,6 +386,16 @@ export const FormStepPersonalInformation = () => {
                   },
                 }}
               />
+              {errors.address && (
+                <motion.span
+                  className="!text-red-400 text-[12px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {errors.address}
+                </motion.span>
+              )}
             </Grid2>
           </Grid2>
         </Grid2>

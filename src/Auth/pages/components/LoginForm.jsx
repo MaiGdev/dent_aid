@@ -1,45 +1,51 @@
 import { Button, Grid2, Input, InputLabel } from "@mui/material";
+import { motion } from "framer-motion";
 import { useContext } from "react";
-import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
 import { useAuthStore } from "../../../hooks";
-
+import { accountSetupSchema } from "../../../helpers/yupSchemas";
 
 export const LoginForm = () => {
-  const { email, password, onInputChange } = useContext(FormContext);
+  const { email, password, onInputChange, validateForm, errors } =
+    useContext(FormContext);
   const { startLogin } = useAuthStore();
+
   const handleLogin = async () => {
+    const isValid = await validateForm(accountSetupSchema);
     console.log("handleLogin");
     console.log({ email: email, password: password });
-
-    try {
-      const login = await startLogin({ email: email, password: password });
-      if (login) {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Good to see you again! Enjoy your session.",
-        });
+    if (isValid) {
+      try {
+        const login = await startLogin({ email: email, password: password });
+        if (login) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Good to see you again! Enjoy your session.",
+          });
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      console.log("Errores de validación:", errors);
     }
   };
   return (
     <>
-      <Grid2 container direction="column" spacing={2}>
-        <form onSubmit={handleLogin}>
-          <Grid2 xs={12} sm={6}>
+      <Grid2 container direction="column">
+        <form onSubmit={handleLogin} className="flex flex-col gap-1">
+          <Grid2 xs={12} sm={6} paddingBottom={".5rem"}>
             <InputLabel
               htmlFor="email-input"
               sx={{
@@ -61,17 +67,27 @@ export const LoginForm = () => {
               fullWidth
               sx={{
                 fontSize: "0.875rem",
-
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${errors.email ? "#ff6467" : "#cccccc"}`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
                 position: "static",
+
                 "&:focus": {
                   borderColor: "#2A3E54",
                 },
               }}
             />
+            {errors.email && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.email}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <InputLabel
@@ -97,7 +113,7 @@ export const LoginForm = () => {
                 fontSize: "0.875rem",
 
                 borderRadius: ".5rem",
-                border: "1px solid #cccccc",
+                border: `1px solid ${errors.password ? "#ff6467" : "#cccccc"}`,
                 padding: "0.5rem 1rem",
                 marginTop: "0.5rem",
                 position: "static",
@@ -106,6 +122,16 @@ export const LoginForm = () => {
                 },
               }}
             />
+            {errors.password && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.password}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 container direction="row" justifyContent="end" size={12}>
             <Button

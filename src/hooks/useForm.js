@@ -1,8 +1,27 @@
+import dayjs from "dayjs";
 import { useState } from "react";
 
 export const useForm = (initialForm = {}) => {
   const [formState, setFormState] = useState(initialForm);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = async (schema) => {
+    try {
+      await schema.validate(formState, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      const validationErrors = {};
+      err.inner.forEach((error) => {
+        validationErrors[error.path] = error.message;
+      });
+      setErrors(validationErrors);
+      return false;
+    }
+  };
+
   const onInputChange = (eventOrValue) => {
+    if (!eventOrValue) return;
     if (eventOrValue.target) {
       if (Array.isArray(eventOrValue.target)) {
         const updatedState = { ...formState };
@@ -29,12 +48,20 @@ export const useForm = (initialForm = {}) => {
         }
       }
     } else {
-      const formattedDate = eventOrValue.toDate().toISOString();
-      setFormState({
-        ...formState,
-        dateOfBirth: eventOrValue,
-        dateOfBirthFormated: formattedDate,
-      });
+      if (eventOrValue?.isValid()) {
+        const formattedDate = eventOrValue.toDate().toISOString();
+        setFormState({
+          ...formState,
+          dateOfBirth: eventOrValue,
+          dateOfBirthFormated: formattedDate,
+        });
+      } else {
+        setFormState({
+          ...formState,
+          dateOfBirth: eventOrValue,
+          dateOfBirthFormated: dayjs().toDate().toISOString(),
+        });
+      }
     }
   };
 
@@ -57,9 +84,11 @@ export const useForm = (initialForm = {}) => {
   return {
     ...formState,
     formState,
+    errors,
     onInputChange,
     onMultipleSelectChange,
     onResetForm,
     setFormState,
+    validateForm,
   };
 };

@@ -82,64 +82,73 @@ export const GeneralInformation = () => {
       <Grid2
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent:
+            user.role === "DENTIST_ROLE" ? "center" : "space-between",
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "1.25rem", color: "#15192C" }}>
+        <Typography
+          sx={{
+            fontSize: user.role === "DENTIST_ROLE" ? "1.55rem" : "1.25rem",
+            paddingBottom: user.role === "DENTIST_ROLE" ? "2rem" : "0",
+            color: "#15192C",
+          }}
+        >
           General information
         </Typography>
-        {isEditing ? (
-          <Button
-            onClick={onSubmit}
-            sx={{
-              backgroundColor: "#fff",
-              color: "#4285CB",
-              border: "2px solid #4285CB",
-              fontSize: "0.875rem",
-              fontWeight: "600",
-              borderRadius: ".5rem",
-              textTransform: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#4285CB",
-                color: "#fff",
-              },
-              transition: "all 0.3s",
-            }}
-            endIcon={<Save />}
-          >
-            Save
-          </Button>
-        ) : (
-          <Button
-            onClick={() => setIsEditing((prev) => !prev)}
-            sx={{
-              backgroundColor: "#fff",
-              color: "#01448A",
-              border: "2px solid #01448A",
-              fontSize: "0.875rem",
-              fontWeight: "600",
-              borderRadius: ".5rem",
-              textTransform: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#01448A",
-                color: "#fff",
-              },
-              transition: "all 0.3s",
-            }}
-            endIcon={<Settings />}
-          >
-            Edit
-          </Button>
-        )}
+        {user.role !== "DENTIST_ROLE" ? (
+          isEditing ? (
+            <Button
+              onClick={onSubmit}
+              sx={{
+                backgroundColor: "#fff",
+                color: "#4285CB",
+                border: "2px solid #4285CB",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                borderRadius: ".5rem",
+                textTransform: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#4285CB",
+                  color: "#fff",
+                },
+                transition: "all 0.3s",
+              }}
+              endIcon={<Save />}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setIsEditing((prev) => !prev)}
+              sx={{
+                backgroundColor: "#fff",
+                color: "#01448A",
+                border: "2px solid #01448A",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                borderRadius: ".5rem",
+                textTransform: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#01448A",
+                  color: "#fff",
+                },
+                transition: "all 0.3s",
+              }}
+              endIcon={<Settings />}
+            >
+              Edit
+            </Button>
+          )
+        ) : null}
       </Grid2>
       <Box
         sx={{

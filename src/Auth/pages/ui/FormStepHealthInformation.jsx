@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Box,
-  Grid2,
-  Input,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Grid2, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 import {
@@ -13,15 +6,17 @@ import {
   dentalMedicalConditions,
   knownAllergiesOptions,
 } from "./constants";
+import { motion } from "framer-motion";
+
 
 export const FormStepHealthInformation = () => {
   const {
     medicalConditions,
     knownAllergies,
     bloodType,
-    emergencyPhoneNumber,
     onMultipleSelectChange,
     onInputChange,
+    errors,
   } = useContext(FormContext);
   return (
     <>
@@ -43,8 +38,12 @@ export const FormStepHealthInformation = () => {
             <Autocomplete
               sx={{
                 marginTop: "0.5rem",
+
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
+                  border: `${
+                    errors.medicalConditions ? "1px solid #ff6467" : ""
+                  }`,
                   padding: "0 14px",
                 },
               }}
@@ -74,6 +73,16 @@ export const FormStepHealthInformation = () => {
                 />
               )}
             />
+            {errors.medicalConditions && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.medicalConditions}
+              </motion.span>
+            )}
           </Grid2>
 
           <Grid2 size={12}>
@@ -83,6 +92,7 @@ export const FormStepHealthInformation = () => {
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
+                  border: `${errors.knownAllergies ? "1px solid #ff6467" : ""}`,
                 },
               }}
               fullWidth
@@ -111,6 +121,16 @@ export const FormStepHealthInformation = () => {
                 />
               )}
             />
+            {errors.knownAllergies && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.knownAllergies}
+              </motion.span>
+            )}
           </Grid2>
           <Grid2 size={12}>
             <Autocomplete
@@ -119,6 +139,7 @@ export const FormStepHealthInformation = () => {
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
+                  border: `${errors.bloodType ? "1px solid #ff6467" : ""}`,
                 },
               }}
               fullWidth
@@ -146,6 +167,16 @@ export const FormStepHealthInformation = () => {
                 />
               )}
             />
+            {errors.bloodType && (
+              <motion.span
+                className="!text-red-400 text-[12px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {errors.bloodType}
+              </motion.span>
+            )}
           </Grid2>
         </Grid2>
       </Box>

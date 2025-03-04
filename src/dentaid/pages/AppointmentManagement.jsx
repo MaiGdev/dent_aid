@@ -56,6 +56,11 @@ export const AppointmentManagement = () => {
             setIsLoading(false);
           });
         }
+      }
+      if (user.role === "DENTIST_ROLE") {
+        startGetDentistAppointments(fullLoggedUserData.id).finally(() => {
+          setIsLoading(false);
+        });
       } else {
         startGetAppointments().finally(() => {
           setIsLoading(false);

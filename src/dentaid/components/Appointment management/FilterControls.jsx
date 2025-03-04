@@ -47,53 +47,55 @@ export const FilterControls = ({
           alignItems: "center",
         }}
       >
-        <FormControl sx={{ width: "205px" }}>
-          <InputLabel
-            id="user-select-label"
-            sx={{
-              transform: "translate(14px, 5px) scale(1)",
-              transition: "all 0.2s ease-in-out",
-              "&.Mui-focused, &.MuiInputLabel-shrink": {
-                transform: "translate(14px, -8px) scale(0.75)",
-              },
-            }}
-          >
-            Dentist
-          </InputLabel>
-          <Select
-            labelId="user-select-label"
-            id="demo-simple-select"
-            value={selectedDentist}
-            onChange={(e) => {
-              handleFilterChange({
-                target: {
-                  name: "user-select",
-                  value: e.target.value,
-                },
-              });
-            }}
-            sx={{
-              fontSize: "0.875rem",
-              height: "2.063rem",
-              borderRadius: ".4rem",
-              color: "#5A6474",
-              textAlign: "left",
-              "& .MuiInputLabel-root": {
-                transform: "translate(14px, 5px) scale(1) !important",
+        {user.role !== "DENTIST_ROLE" && (
+          <FormControl sx={{ width: "205px" }}>
+            <InputLabel
+              id="user-select-label"
+              sx={{
+                transform: "translate(14px, 5px) scale(1)",
+                transition: "all 0.2s ease-in-out",
                 "&.Mui-focused, &.MuiInputLabel-shrink": {
-                  transform: "translate(14px, -8px) scale(0.75) !important",
+                  transform: "translate(14px, -8px) scale(0.75)",
                 },
-              },
-            }}
-            label="Dentist"
-          >
-            {dentists.map((dentist) => (
-              <MenuItem key={dentist.id} value={dentist.id}>
-                {dentist.user.fullName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              }}
+            >
+              Dentist
+            </InputLabel>
+            <Select
+              labelId="user-select-label"
+              id="demo-simple-select"
+              value={selectedDentist}
+              onChange={(e) => {
+                handleFilterChange({
+                  target: {
+                    name: "user-select",
+                    value: e.target.value,
+                  },
+                });
+              }}
+              sx={{
+                fontSize: "0.875rem",
+                height: "2.063rem",
+                borderRadius: ".4rem",
+                color: "#5A6474",
+                textAlign: "left",
+                "& .MuiInputLabel-root": {
+                  transform: "translate(14px, 5px) scale(1) !important",
+                  "&.Mui-focused, &.MuiInputLabel-shrink": {
+                    transform: "translate(14px, -8px) scale(0.75) !important",
+                  },
+                },
+              }}
+              label="Dentist"
+            >
+              {dentists.map((dentist) => (
+                <MenuItem key={dentist.id} value={dentist.id}>
+                  {dentist.user.fullName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
         <FormControl sx={{ width: "205px" }}>
           <InputLabel
             id="status-select-label"

@@ -29,8 +29,11 @@ export const NavBar = ({ drawerWidth }, props) => {
       href: "/dentaid/appointments",
     },
     { label: "Dashboard", href: "/dentaid/dashboard" },
-    { label: "Schedule", href: "/dentaid/schedule" },
-    { label: "Patient History", href: "/dentaid/patient-history" },
+    {
+      label: "Schedule",
+      href: `/dentaid/user/${user?.id}/schedule?account=true`,
+    },
+    { label: "Patient History", href: "/dentaid/user-management?account=true" },
   ];
 
   const patientOptions = [
@@ -63,23 +66,34 @@ export const NavBar = ({ drawerWidth }, props) => {
   };
 
   const isActive = (path) => {
+    const { pathname, search } = location;
+
     if (path === "/dentaid/user-management") {
       return (
-        location.pathname.startsWith("/dentaid/user-management") ||
-        (location.pathname.startsWith("/dentaid/user/") &&
-          !location.pathname.includes(`/dentaid/user/${user?.id}`))
+        pathname.startsWith("/dentaid/user-management") ||
+        (pathname.startsWith("/dentaid/user/") &&
+          !pathname.includes(`/dentaid/user/${user?.id}`))
       );
     }
+
     if (path === "/dentaid/appointments") {
       return (
-        location.pathname.startsWith("/dentaid/appointments") ||
-        location.pathname.startsWith("/dentaid/appointments/:id")
+        pathname.startsWith("/dentaid/appointments") ||
+        pathname.startsWith("/dentaid/appointments/:id")
       );
     }
-    if (location.pathname.startsWith(`/dentaid/user/${user?.id}`)) {
-      if (path.includes(`?usertype=${user.role}&account=true`)) return true;
+
+    if (pathname !== path.split("?")[0]) return false;
+
+
+    const pathQueryParams = new URLSearchParams(path.split("?")[1] || "");
+    const currentQueryParams = new URLSearchParams(search);
+
+    for (const [key, value] of pathQueryParams.entries()) {
+      if (currentQueryParams.get(key) !== value) return false;
     }
-    return location.pathname === path;
+
+    return true;
   };
 
   const handleLogout = () => {
