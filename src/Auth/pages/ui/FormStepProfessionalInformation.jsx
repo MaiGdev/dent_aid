@@ -24,17 +24,11 @@ export const FormStepProfessionalInformation = () => {
   } = useContext(FormContext);
   return (
     <>
-      <Box sx={{ width: "558.31px" }}>
+      <Box>
         <Grid2 container direction="column" spacing={2}>
           <Typography
             variant="h2"
-            sx={{
-              fontSize: "1.145rem",
-              fontWeight: "500",
-              color: "#404D61",
-              position: "static",
-              textAlign: "left",
-            }}
+            className="!text-base md:!text-lg lg:!text-2xl text-[#404D61]"
           >
             Professional Information
           </Typography>
@@ -48,16 +42,12 @@ export const FormStepProfessionalInformation = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.medicalLicenseNumber
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${
-                  errors.medicalLicenseNumber ? "#ff6467" : "#cccccc"
-                }`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
@@ -84,7 +74,6 @@ export const FormStepProfessionalInformation = () => {
             <Autocomplete
               sx={{
                 marginTop: "0.5rem",
-
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   padding: "0 14px",
@@ -143,16 +132,12 @@ export const FormStepProfessionalInformation = () => {
               }}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.yearsOfExperience
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${
-                  errors.yearsOfExperience ? "#ff6467" : "#cccccc"
-                }`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
@@ -185,16 +170,12 @@ export const FormStepProfessionalInformation = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.university
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${
-                  errors.university ? "#ff6467" : "#cccccc"
-                }`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
@@ -227,14 +208,12 @@ export const FormStepProfessionalInformation = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.workplace
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${errors.workplace ? "#ff6467" : "#cccccc"}`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },

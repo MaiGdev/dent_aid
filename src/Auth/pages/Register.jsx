@@ -65,23 +65,14 @@ export const RegisterPage = () => {
         }}
       >
         <Grid2 container sx={{ padding: "1.25rem" }}>
-          <Grid2 xs={12} className="flex items-center gap-4">
+          <Grid2
+            xs={12}
+            className="flex items-center gap-4 justify-between w-full md:justify-start"
+          >
             <Button
-              startIcon={<ArrowBack />}
+              startIcon={<ArrowBack className="h-[22px] lg:h-[27px]" />}
               onClick={handleLogin}
-              sx={{
-                width: "50px",
-                height: "44px",
-                color: "#fff",
-                backgroundColor: "#2A3E54",
-                borderRadius: "4rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                "& .MuiSvgIcon-root": {
-                  fontSize: "1.7rem",
-                },
-              }}
+              className="flex justify-center items-center !rounded-4xl !text-white !bg-[#2A3E54] !min-w-[45px] lg:!min-w-[50px] lg:h-[34px] hover:!bg-[#fff] hover:!outline-2 hover:!outline-[#2A3E54] hover:!text-[#2A3E54]"
             />
 
             <InputLabel sx={{ color: "#000", fontSize: "1.2em" }}>
@@ -92,71 +83,34 @@ export const RegisterPage = () => {
         <Divider />
 
         {!isUserSelected ? (
-          <Grid2
-            container
-            direction="column"
-            className="flex-1 flex items-center justify-center"
-          >
-            <Box sx={{ width: "558.31px" }} paddingBottom="84px">
-              <InputLabel
-                sx={{
-                  fontSize: "1.265rem",
-                  fontWeight: "500",
-                  color: "#404D61",
-                  position: "static",
-                  textAlign: "left",
-                }}
-              >
-                What type of user are you?
-              </InputLabel>
-              <Grid2>
-                <Select
-                  name="gender"
+          <Grid2 className="h-screen w-screen flex">
+            <Grid2 className="m-auto w-full px-7">
+              <Box className="md:w-[558.31px] pb-[84px] m-auto">
+                <InputLabel className="text-[#404D61] !text-base lg:!text-xl ">
+                  What type of user are you?
+                </InputLabel>
+                <Grid2>
+                  <Select
+                    name="gender"
+                    fullWidth
+                    value={typeUser}
+                    onChange={(e) => handleUserTypeChange(e.target.value)}
+                    className="text-sm h-[2.063rem] !rounded-lg text-[#5A6474] mt-2"
+                  >
+                    <MenuItem value="patient">Patient</MenuItem>
+                    <MenuItem value="dentist">Dentist</MenuItem>
+                  </Select>
+                </Grid2>
+                <Button
+                  endIcon={<ArrowForward />}
+                  onClick={handleContinue}
                   fullWidth
-                  value={typeUser}
-                  onChange={(e) => handleUserTypeChange(e.target.value)}
-                  sx={{
-                    fontSize: "0.875rem",
-                    height: "2.063rem",
-                    borderRadius: ".5rem",
-                    color: "#5A6474",
-                    border: "1px solid #cccccc",
-                    marginTop: "0.5rem",
-                    textAlign: "left",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                      textAlign: "left",
-                    },
-                  }}
+                  className="!bg-[#01448A] !text-white text-sm font-semibold !rounded-3xl !mt-10 !normal-case flex items-center justify-center gap-1.5 hover:!bg-[#fff] hover:!outline-2 hover:!outline-[#01448A] hover:!text-[#01448A]"
                 >
-                  <MenuItem value="patient">Patient</MenuItem>
-                  <MenuItem value="dentist">Dentist</MenuItem>
-                </Select>
-              </Grid2>
-              <Button
-                endIcon={<ArrowForward />}
-                onClick={handleContinue}
-                fullWidth
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "40px",
-                  textTransform: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "5px",
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-              >
-                Continue
-              </Button>
-            </Box>
+                  Continue
+                </Button>
+              </Box>
+            </Grid2>
           </Grid2>
         ) : (
           <Grid2

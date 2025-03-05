@@ -1,4 +1,5 @@
 import { Autocomplete, Box, Grid2, TextField, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
 import {
@@ -6,8 +7,6 @@ import {
   dentalMedicalConditions,
   knownAllergiesOptions,
 } from "./constants";
-import { motion } from "framer-motion";
-
 
 export const FormStepHealthInformation = () => {
   const {
@@ -20,17 +19,11 @@ export const FormStepHealthInformation = () => {
   } = useContext(FormContext);
   return (
     <>
-      <Box sx={{ width: "558.31px" }}>
+      <Box>
         <Grid2 container direction="column" spacing={2}>
           <Typography
             variant="h2"
-            sx={{
-              fontSize: "1.145rem",
-              fontWeight: "500",
-              color: "#404D61",
-              position: "static",
-              textAlign: "left",
-            }}
+            className="!text-base md:!text-lg lg:!text-2xl text-[#404D61]"
           >
             Health Information
           </Typography>
@@ -38,7 +31,6 @@ export const FormStepHealthInformation = () => {
             <Autocomplete
               sx={{
                 marginTop: "0.5rem",
-
                 "& .MuiInputBase-root": {
                   borderRadius: ".5rem",
                   border: `${
@@ -183,3 +175,4 @@ export const FormStepHealthInformation = () => {
     </>
   );
 };
+

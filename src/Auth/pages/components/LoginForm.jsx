@@ -44,8 +44,8 @@ export const LoginForm = () => {
   return (
     <>
       <Grid2 container direction="column">
-        <form onSubmit={handleLogin} className="flex flex-col gap-1">
-          <Grid2 xs={12} sm={6} paddingBottom={".5rem"}>
+        <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full">
+          <Grid2 paddingBottom={".5rem"}>
             <InputLabel
               htmlFor="email-input"
               sx={{
@@ -89,7 +89,7 @@ export const LoginForm = () => {
               </motion.span>
             )}
           </Grid2>
-          <Grid2 xs={12} sm={6}>
+          <Grid2>
             <InputLabel
               htmlFor="password-input"
               sx={{

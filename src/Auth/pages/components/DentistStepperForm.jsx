@@ -136,7 +136,7 @@ export const DentistStepperForm = ({
 
   return (
     <>
-      <Grid2 xs={12} md={12} lg={12} xl={12} paddingBottom="84px">
+      <Grid2 paddingBottom="84px" className="w-full">
         <motion.div
           key={step}
           initial="hidden"
@@ -144,7 +144,10 @@ export const DentistStepperForm = ({
           exit="hidden"
           variants={stepVariants}
         >
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            className="md:w-[558.31px] px-7 m-auto md:px-0"
+          >
             {step === 1 && <FormStepAccountSetup />}
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepProfessionalInformation />}

@@ -1,28 +1,21 @@
 import { Box, Grid2, Input, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
-import { motion } from "framer-motion";
-
 
 export const FormStepAccountSetup = () => {
   const { email, password, onInputChange, errors } = useContext(FormContext);
   return (
     <>
-      <Box sx={{ width: "558.31px" }}>
-        <Grid2 container direction="column" spacing={2}>
+      <Box className="">
+        <Grid2 className="flex flex-col gap-1.5 ">
           <Typography
             variant="h2"
-            sx={{
-              fontSize: "1.145rem",
-              fontWeight: "500",
-              color: "#404D61",
-              position: "static",
-              textAlign: "left",
-            }}
+            className="!text-base md:!text-lg lg:!text-2xl text-[#404D61]"
           >
             Account Setup
           </Typography>
-          <Grid2 xs={12} sm={6}>
+          <Grid2>
             <Input
               id="email"
               placeholder="Email Address"
@@ -32,14 +25,12 @@ export const FormStepAccountSetup = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.email
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${errors.email ? "#ff6467" : "#cccccc"}`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
@@ -62,7 +53,7 @@ export const FormStepAccountSetup = () => {
               </motion.span>
             )}
           </Grid2>
-          <Grid2 xs={12} sm={6}>
+          <Grid2>
             <Input
               id="password-input"
               placeholder="Password"
@@ -72,14 +63,12 @@ export const FormStepAccountSetup = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`text-sm h-8 rounded-lg ${
+                errors.password
+                  ? "border border-[#ff6467]"
+                  : "border border-[#cccccc]"
+              }  p-4 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: `1px solid ${errors.password ? "#ff6467" : "#cccccc"}`,
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },

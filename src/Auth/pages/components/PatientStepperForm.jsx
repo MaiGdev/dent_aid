@@ -23,7 +23,7 @@ export const PatientStepperForm = ({
 }) => {
   const navigate = useNavigate();
 
-  const { startRegisterUser, startRegisterPatient } = useAuthStore();
+  const { startRegisterUser } = useAuthStore();
 
   const {
     fullName,
@@ -134,7 +134,7 @@ export const PatientStepperForm = ({
 
   return (
     <>
-      <Grid2 xs={12} md={12} lg={12} xl={12} paddingBottom="84px">
+      <Grid2 paddingBottom="84px" className="w-full">
         <motion.div
           key={step}
           initial="hidden"
@@ -142,30 +142,20 @@ export const PatientStepperForm = ({
           exit="hidden"
           variants={stepVariants}
         >
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            className="md:w-[558.31px] px-7 m-auto md:px-0"
+          >
             {step === 1 && <FormStepAccountSetup />}
             {step === 2 && <FormStepPersonalInformation />}
             {step === 3 && <FormStepHealthInformation />}
 
-            <Grid2 sx={{ display: "flex", gap: "1rem" }}>
+            <Grid2 className="flex gap-4 ">
               <Button
                 startIcon={<ArrowBack />}
                 onClick={prevStep}
                 fullWidth
-                sx={{
-                  backgroundColor: "#fff",
-                  color: "#475B6F",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "40px",
-                  textTransform: "none",
-
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                    color: "#fff",
-                  },
-                }}
+                className="!border-2 !border-[#fff] !text-[#475B6F] text-sm font-semibold !rounded-3xl !mt-10 !normal-case flex items-center justify-center gap-1.5 hover:!bg-[#fff] hover:!border-[#475B6F] hover:!text-[#475B6F] transition-all duration-1000"
               >
                 Back
               </Button>
@@ -173,19 +163,7 @@ export const PatientStepperForm = ({
                 endIcon={<ArrowForward />}
                 onClick={nextStep}
                 fullWidth
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: "1.5rem",
-                  marginTop: "40px",
-                  textTransform: "none",
-
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
+                className="!bg-[#01448A] !text-white text-sm font-semibold !rounded-3xl !mt-10 !normal-case flex items-center justify-center gap-1.5 hover:!bg-[#fff] hover:!outline-2 hover:!outline-[#01448A] hover:!text-[#01448A]"
               >
                 {step === 3 ? "Submit" : "Continue"}
               </Button>

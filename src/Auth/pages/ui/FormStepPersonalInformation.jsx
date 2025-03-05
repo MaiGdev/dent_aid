@@ -28,31 +28,23 @@ export const FormStepPersonalInformation = () => {
   } = useContext(FormContext);
   return (
     <>
-      <Box sx={{ width: "558.31px" }}>
-        <Grid2 container direction="column" spacing={2}>
+      <Box>
+        <Grid2
+          container
+          direction="column"
+          spacing={2}
+          className={`${
+            Object.values(errors).some((value) => value !== "") ? "pt-11" : ""
+          }`}
+        >
           <Typography
             variant="h2"
-            sx={{
-              fontSize: "1.145rem",
-              fontWeight: "500", //
-              color: "#404D61",
-              position: "static",
-              textAlign: "left",
-            }}
+            className="!text-base md:!text-lg lg:!text-2xl text-[#404D61]"
           >
             Personal information
           </Typography>
-          <Grid2
-            container
-            direction={"row"}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "start",
-            }}
-            spacing={2}
-          >
-            <Grid2 size={6} sx={{ paddingRight: ".5rem" }}>
+          <Grid2 container>
+            <Grid2 size={{ xs: 12, md: 6 }} className="lg:pr-2">
               <Input
                 id="fullName"
                 placeholder="Full Name"
@@ -62,16 +54,12 @@ export const FormStepPersonalInformation = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`text-sm h-8 rounded-lg ${
+                  errors.fullName
+                    ? "border border-[#ff6467]"
+                    : "border border-[#cccccc]"
+                }  p-4 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${
-                    errors.fullName ? "#ff6467" : "#cccccc"
-                  }`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -94,7 +82,7 @@ export const FormStepPersonalInformation = () => {
                 </motion.span>
               )}
             </Grid2>
-            <Grid2 size={6} sx={{ paddingLeft: ".5rem" }}>
+            <Grid2 size={{ xs: 12, md: 6 }} className="lg:pr-2">
               <Input
                 id="identification"
                 placeholder="National ID / Passport Number"
@@ -104,16 +92,12 @@ export const FormStepPersonalInformation = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`text-sm h-8 rounded-lg ${
+                  errors.identification
+                    ? "border border-[#ff6467]"
+                    : "border border-[#cccccc]"
+                }  p-4 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${
-                    errors.identification ? "#ff6467" : "#cccccc"
-                  }`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -136,7 +120,7 @@ export const FormStepPersonalInformation = () => {
                 </motion.span>
               )}
             </Grid2>
-            <Grid2 size={6} sx={{ paddingRight: ".5rem" }}>
+            <Grid2 size={{ xs: 12, md: 6 }} className="lg:pr-2">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateField
                   label=" Date of birth"
@@ -168,7 +152,7 @@ export const FormStepPersonalInformation = () => {
                 </motion.span>
               )}
             </Grid2>
-            <Grid2 size={6} sx={{ paddingLeft: ".5rem", marginTop: ".5rem" }}>
+            <Grid2 size={{ xs: 12, md: 6 }} className="lg:pr-2 mt-2">
               <FormControl fullWidth>
                 <InputLabel
                   id="gender-label"
@@ -192,13 +176,7 @@ export const FormStepPersonalInformation = () => {
                     onInputChange({ target: { name: "gender", value } })
                   }
                   name="gender"
-                  sx={{
-                    fontSize: "0.875rem",
-                    height: "2.063rem",
-                    borderRadius: ".5rem",
-                    color: "#5A6474",
-                    textAlign: "left",
-                  }}
+                  className={`text-sm h-8 !rounded-lg text-[#5A6474] text-left`}
                 >
                   <MenuItem value="Male">Male</MenuItem>
                   <MenuItem value="Female">Female</MenuItem>
@@ -271,16 +249,12 @@ export const FormStepPersonalInformation = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`text-sm h-8 rounded-lg ${
+                  errors.emergencyPhoneNumber
+                    ? "border border-[#ff6467]"
+                    : "border border-[#cccccc]"
+                }  p-4 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${
-                    errors.emergencyPhoneNumber ? "#ff6467" : "#cccccc"
-                  }`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -327,14 +301,12 @@ export const FormStepPersonalInformation = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`text-sm h-8 rounded-lg ${
+                  errors.address
+                    ? "border border-[#ff6467]"
+                    : "border border-[#cccccc]"
+                }  p-4 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${errors.address ? "#ff6467" : "#cccccc"}`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -363,3 +335,4 @@ export const FormStepPersonalInformation = () => {
     </>
   );
 };
+
