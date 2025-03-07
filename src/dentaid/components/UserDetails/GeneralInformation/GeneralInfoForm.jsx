@@ -72,9 +72,12 @@ export const GeneralInfoForm = () => {
     <>
       {updatedUser && (
         <>
-          <Grid2>
-            <Grid2 sx={{ width: "100%", paddingBottom: "24px" }}>
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+          <Grid2 className="flex flex-col gap-8 items-start   md:justify-center w-full sm:!w-fit ">
+            {/*  */}
+            <Grid2
+              className={`w-full  lg:pb-0 md:!w-[490px] lg:!w-full xl:!w-[490px]`}
+            >
+              <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
                 Full name
               </Typography>
               <Input
@@ -92,16 +95,13 @@ export const GeneralInfoForm = () => {
                   });
                 }}
                 fullWidth
+                className={`!text-sm h-8 rounded-lg border  ${
+                  userUpdateErrors.fullName
+                    ? "border-[#ff6467]"
+                    : "border-[#cccccc]"
+                }
+                  px-4 py-2 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${
-                    userUpdateErrors.fullName ? "#ff6467" : "#cccccc"
-                  }`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-                  /*  width: `${boxUpdateWidth ? boxUpdateWidth : "100%"}px`, */
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -124,341 +124,291 @@ export const GeneralInfoForm = () => {
                 </motion.span>
               )}
             </Grid2>
-            <Grid2
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "start",
-                gap: "90px",
-              }}
-            >
-              <Grid2
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  gap: "35px",
-                }}
-              >
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Email
-                  </Typography>
-                  <Input
-                    id="email"
-                    placeholder="Email Address"
-                    type="text"
-                    name="email"
-                    disabled
-                    value={email}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: "1px solid #cccccc",
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                </Grid2>
-                <Grid2 size={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Date of Birth
-                  </Typography>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateField
-                      label="Date of birth"
+
+            {/* xxxxxxx */}
+
+            <Grid2 className="w-full ">
+              <Grid2 className="flex flex-col sm:flex-row gap-10 items-start  md:justify-center md:gap-[90px]  ">
+                <Grid2 className="flex flex-col justify-end gap-6 md:gap-8  w-full  md:w-fit ">
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+                      Email
+                    </Typography>
+                    <Input
+                      id="email"
+                      placeholder="Email Address"
+                      type="text"
+                      name="email"
+                      disabled
+                      value={email}
+                      variant="filled"
+                      fullWidth
+                      className={`!text-sm h-8 rounded-lg border border-[#cccccc]
+                  px-4 py-2 mt-2`}
                       sx={{
-                        marginTop: "0.5rem",
-                        "& .MuiInputBase-root": {
-                          fontSize: "0.875rem",
-                          height: "2.063rem",
-                          borderRadius: ".5rem",
-                          textAlign: "left",
-                          border: `${
-                            userUpdateErrors.dateOfBirth
-                              ? "1px solid #ff6467"
-                              : ""
-                          }`,
+                        "&::before, &::after": {
+                          borderBottom: "none !important",
                         },
-                        "& .MuiInputLabel-root": {
-                          transform: "translate(14px, 5px) scale(1)",
-                          "&.Mui-focused, &.MuiInputLabel-shrink": {
-                            transform:
-                              "translate(14px, -8px) scale(0.75) !important",
-                          },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "none !important",
+                        },
+                        "&:focus": {
+                          borderColor: "#2A3E54",
                         },
                       }}
-                      fullWidth
-                      value={dayjs(dateOfBirth) || dayjs()}
+                    />
+                  </Grid2>
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+                      Date of Birth
+                    </Typography>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateField
+                        label="Date of birth"
+                        sx={{
+                          marginTop: "0.5rem",
+                          "& .MuiInputBase-root": {
+                            fontSize: "0.875rem",
+                            height: "2.063rem",
+                            borderRadius: ".5rem",
+                            textAlign: "left",
+                            border: `${
+                              userUpdateErrors.dateOfBirth
+                                ? "1px solid #ff6467"
+                                : ""
+                            }`,
+                          },
+                          "& .MuiInputLabel-root": {
+                            transform: "translate(14px, 5px) scale(1)",
+                            "&.Mui-focused, &.MuiInputLabel-shrink": {
+                              transform:
+                                "translate(14px, -8px) scale(0.75) !important",
+                            },
+                          },
+                        }}
+                        fullWidth
+                        value={dayjs(dateOfBirth) || dayjs()}
+                        onChange={(e) => {
+                          onInputChange({
+                            target: {
+                              name: "dateOfBirth",
+                              value: dayjs(e).format("YYYY-MM-DD"),
+                            },
+                          });
+                        }}
+                      />
+                    </LocalizationProvider>
+                    {userUpdateErrors.dateOfBirth && (
+                      <motion.span
+                        className="!text-red-400 text-[12px]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {userUpdateErrors.dateOfBirth}
+                      </motion.span>
+                    )}
+                  </Grid2>
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+                      Phone number
+                    </Typography>
+                    <Input
+                      id="phoneNumber"
+                      placeholder="Phone number"
+                      type="text"
+                      name="phoneNumber"
+                      value={phoneNumber}
                       onChange={(e) => {
                         onInputChange({
                           target: {
-                            name: "dateOfBirth",
-                            value: dayjs(e).format("YYYY-MM-DD"),
+                            name: "phoneNumber",
+                            value: e.target.value,
                           },
                         });
                       }}
-                    />
-                  </LocalizationProvider>
-                  {userUpdateErrors.dateOfBirth && (
-                    <motion.span
-                      className="!text-red-400 text-[12px]"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {userUpdateErrors.dateOfBirth}
-                    </motion.span>
-                  )}
-                </Grid2>
-                <Grid2 xs={12}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Phone number
-                  </Typography>
-                  <Input
-                    id="phoneNumber"
-                    placeholder="Phone number"
-                    type="text"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "phoneNumber",
-                          value: e.target.value,
-                        },
-                      });
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: `1px solid ${
-                        userUpdateErrors.phoneNumber ? "#ff6467" : "#cccccc"
-                      }`,
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                  {userUpdateErrors.phoneNumber && (
-                    <motion.span
-                      className="!text-red-400 text-[12px]"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {userUpdateErrors.phoneNumber}
-                    </motion.span>
-                  )}
-                </Grid2>
-              </Grid2>
-              <Grid2
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  gap: "35px",
-                }}
-              >
-                <Grid2 xs={12}>
-                  <Typography
-                    sx={{
-                      fontSize: "1.20rem",
-                      color: "#15192C",
-                    }}
-                  >
-                    Identification
-                  </Typography>
-
-                  <Input
-                    id="identification"
-                    placeholder="Identification"
-                    type="text"
-                    name="identification"
-                    value={identification}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "identification",
-                          value: e.target.value,
-                        },
-                      });
-                    }}
-                    onBlur={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "identification",
-                          value: e.target.value,
-                        },
-                      })
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: `1px solid ${
-                        userUpdateErrors.identification ? "#ff6467" : "#cccccc"
-                      }`,
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                  {userUpdateErrors.identification && (
-                    <motion.span
-                      className="!text-red-400 text-[12px]"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {userUpdateErrors.identification}
-                    </motion.span>
-                  )}
-                </Grid2>
-
-                <Grid2 xs={12}>
-                  <Typography
-                    sx={{
-                      fontSize: "1.20rem",
-                      color: "#15192C",
-                      paddingBottom: ".5rem",
-                    }}
-                  >
-                    Gender
-                  </Typography>
-                  <FormControl fullWidth>
-                    <InputLabel
-                      id="gender-label"
-                      sx={{
-                        fontSize: "16px",
-                        color: "#5A6474",
-                        transform: "translate(14px, 5px) scale(1)",
-                        transition: "all 0.2s ease-in-out",
-                        "&.Mui-focused, &.MuiInputLabel-shrink": {
-                          transform: "translate(14px, -8px) scale(0.75)",
-                        },
-                      }}
-                    >
-                      Gender
-                    </InputLabel>
-                    <Select
-                      labelId="gender-label"
-                      id="gender"
-                      label="Gender"
-                      value={gender}
-                      onChange={({ target: { value } }) =>
-                        onInputChange({ target: { name: "gender", value } })
+                      variant="filled"
+                      fullWidth
+                      className={`!text-sm h-8 rounded-lg border  ${
+                        userUpdateErrors.phoneNumber
+                          ? "border-[#ff6467]"
+                          : "border-[#cccccc]"
                       }
-                      name="gender"
+                  px-4 py-2 mt-2`}
                       sx={{
-                        fontSize: "0.875rem",
-                        height: "2.063rem",
-                        borderRadius: ".5rem",
-                        color: "#5A6474",
-                        textAlign: "left",
-                      }}
-                    >
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                      <MenuItem value="Prefer Not to Say">
-                        Prefer Not to Say
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid2>
-                <Grid2 xs={12} paddingTop={""}>
-                  <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
-                    Emergency phone number
-                  </Typography>
-                  <Input
-                    id="emergencyPhoneNumber"
-                    placeholder="Emergency phone number"
-                    type="text"
-                    name="emergencyPhoneNumber"
-                    value={emergencyPhoneNumber}
-                    onChange={(e) => {
-                      onInputChange({
-                        target: {
-                          name: "emergencyPhoneNumber",
-                          value: e.target.value,
+                        "&::before, &::after": {
+                          borderBottom: "none !important",
                         },
-                      });
-                    }}
-                    variant="filled"
-                    fullWidth
-                    sx={{
-                      fontSize: "0.875rem",
-                      height: "2.063rem",
-                      borderRadius: ".5rem",
-                      border: `1px solid ${
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "none !important",
+                        },
+                        "&:focus": {
+                          borderColor: "#2A3E54",
+                        },
+                      }}
+                    />
+                    {userUpdateErrors.phoneNumber && (
+                      <motion.span
+                        className="!text-red-400 text-[12px]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {userUpdateErrors.phoneNumber}
+                      </motion.span>
+                    )}
+                  </Grid2>
+                </Grid2>
+                <Grid2 className="flex flex-col justify-end gap-6 md:gap-8 w-full md:w-fit">
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+                      Identification
+                    </Typography>
+
+                    <Input
+                      id="identification"
+                      placeholder="Identification"
+                      type="text"
+                      name="identification"
+                      value={identification}
+                      onChange={(e) => {
+                        onInputChange({
+                          target: {
+                            name: "identification",
+                            value: e.target.value,
+                          },
+                        });
+                      }}
+                      onBlur={(e) => {
+                        onInputChange({
+                          target: {
+                            name: "identification",
+                            value: e.target.value,
+                          },
+                        });
+                      }}
+                      variant="filled"
+                      fullWidth
+                      className={`!text-sm h-8 rounded-lg border  ${
+                        userUpdateErrors.identification
+                          ? "border-[#ff6467]"
+                          : "border-[#cccccc]"
+                      }
+                  px-4 py-2 mt-2`}
+                      sx={{
+                        "&::before, &::after": {
+                          borderBottom: "none !important",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "none !important",
+                        },
+                        "&:focus": {
+                          borderColor: "#2A3E54",
+                        },
+                      }}
+                    />
+                    {userUpdateErrors.identification && (
+                      <motion.span
+                        className="!text-red-400 text-[12px]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {userUpdateErrors.identification}
+                      </motion.span>
+                    )}
+                  </Grid2>
+
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C] pb-2">
+                      Gender
+                    </Typography>
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="gender-label"
+                        className="!text-base text-[#5A6474]"
+                      >
+                        Gender
+                      </InputLabel>
+                      <Select
+                        labelId="gender-label"
+                        id="gender"
+                        label="Gender"
+                        value={gender}
+                        onChange={({ target: { value } }) =>
+                          onInputChange({ target: { name: "gender", value } })
+                        }
+                        name="gender"
+                        className={`!text-sm h-8 !rounded-lg text-[#5A6474] text-left`}
+                      >
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                        <MenuItem value="Other">Other</MenuItem>
+                        <MenuItem value="Prefer Not to Say">
+                          Prefer Not to Say
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid2>
+                  <Grid2>
+                    <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+                      Emergency phone number
+                    </Typography>
+                    <Input
+                      id="emergencyPhoneNumber"
+                      placeholder="Emergency phone number"
+                      type="text"
+                      name="emergencyPhoneNumber"
+                      value={emergencyPhoneNumber}
+                      onChange={(e) => {
+                        onInputChange({
+                          target: {
+                            name: "emergencyPhoneNumber",
+                            value: e.target.value,
+                          },
+                        });
+                      }}
+                      variant="filled"
+                      fullWidth
+                      className={`!text-sm h-8 rounded-lg border  ${
                         userUpdateErrors.emergencyPhoneNumber
-                          ? "#ff6467"
-                          : "#cccccc"
-                      }`,
-                      padding: "0.5rem 1rem",
-                      marginTop: "0.5rem",
-                      "&::before, &::after": {
-                        borderBottom: "none !important",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "none !important",
-                      },
-                      "&:focus": {
-                        borderColor: "#2A3E54",
-                      },
-                    }}
-                  />
-                  {userUpdateErrors.emergencyPhoneNumber && (
-                    <motion.span
-                      className="!text-red-400 text-[12px]"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {userUpdateErrors.emergencyPhoneNumber}
-                    </motion.span>
-                  )}
+                          ? "border-[#ff6467]"
+                          : "border-[#cccccc]"
+                      }
+                  px-4 py-2 mt-2`}
+                      sx={{
+                        "&::before, &::after": {
+                          borderBottom: "none !important",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "none !important",
+                        },
+                        "&:focus": {
+                          borderColor: "#2A3E54",
+                        },
+                      }}
+                    />
+                    {userUpdateErrors.emergencyPhoneNumber && (
+                      <motion.span
+                        className="!text-red-400 text-[12px]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {userUpdateErrors.emergencyPhoneNumber}
+                      </motion.span>
+                    )}
+                  </Grid2>
                 </Grid2>
               </Grid2>
             </Grid2>
 
-            <Grid2 sx={{ width: "100%", paddingTop: "24px" }}>
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+            {/* iiiiiiiii */}
+
+            <Grid2
+              className={`w-full pb-6 lg:pb-0 md:!w-[490px] lg:!w-full xl:!w-[490px]`}
+            >
+              <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
                 Address
               </Typography>
               <Input
@@ -476,15 +426,13 @@ export const GeneralInfoForm = () => {
                     },
                   });
                 }}
+                className={`!text-sm h-8 rounded-lg border  ${
+                  userUpdateErrors.address
+                    ? "border-[#ff6467]"
+                    : "border-[#cccccc]"
+                }
+                  px-4 py-2 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: `1px solid ${
-                    userUpdateErrors.address ? "#ff6467" : "#cccccc"
-                  }`,
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -508,6 +456,8 @@ export const GeneralInfoForm = () => {
               )}
             </Grid2>
           </Grid2>
+
+          {/* ------- */}
         </>
       )}
     </>

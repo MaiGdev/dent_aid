@@ -42,11 +42,6 @@ export const GeneralInformation = () => {
         console.error("API Error:", error);
       }
     };
-
-    if (view === "patient-history") {
-      console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddd");
-    }
-
     fetchUser();
   }, [id, userType]);
 
@@ -95,13 +90,10 @@ export const GeneralInformation = () => {
     }
   };
 
-  /*   useEffect(() => {
-    console.log(location);
-  }, []); */
-
   return (
     <>
       <Grid2
+        className="sm:px-5 lg:px-1.5"
         sx={{
           display: "flex",
           justifyContent:
@@ -110,6 +102,7 @@ export const GeneralInformation = () => {
         }}
       >
         <Typography
+          /*     className={`text-center w-full sm:text-left !text-[18px] md:text-[1.25rem]`} */
           sx={{
             fontSize: view === "patient-history" ? "1.55rem" : "1.25rem",
             paddingBottom: view === "patient-history" ? "2rem" : "0",
@@ -122,24 +115,7 @@ export const GeneralInformation = () => {
           isEditing ? (
             <Button
               onClick={onSubmit}
-              sx={{
-                backgroundColor: "#fff",
-                color: "#4285CB",
-                border: "2px solid #4285CB",
-                fontSize: "0.875rem",
-                fontWeight: "600",
-                borderRadius: ".5rem",
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                "&:hover": {
-                  backgroundColor: "#4285CB",
-                  color: "#fff",
-                },
-                transition: "all 0.3s",
-              }}
+              className="bg-white !text-[#01448A] !border-2 border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 !hidden sm:!flex"
               endIcon={<Save />}
             >
               Save
@@ -147,24 +123,7 @@ export const GeneralInformation = () => {
           ) : (
             <Button
               onClick={() => setIsEditing((prev) => !prev)}
-              sx={{
-                backgroundColor: "#fff",
-                color: "#01448A",
-                border: "2px solid #01448A",
-                fontSize: "0.875rem",
-                fontWeight: "600",
-                borderRadius: ".5rem",
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                "&:hover": {
-                  backgroundColor: "#01448A",
-                  color: "#fff",
-                },
-                transition: "all 0.3s",
-              }}
+              className="bg-white !text-[#01448A] !border-2 border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 !hidden sm:!flex"
               endIcon={<Settings />}
             >
               Edit
@@ -172,20 +131,53 @@ export const GeneralInformation = () => {
           )
         ) : null}
       </Grid2>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: "35px",
-        }}
-      >
+      <Box className="flex  flex-col lg:gap-[25px] xl:gap-[35px] justify-start items-start sm:justify-center sm:items-center lg:!px-4.5">
         {isEditing && updatedUser ? (
-          <GeneralInfoForm />
+          <>
+            <GeneralInfoForm />
+            {view !== "patient-history" ? (
+              isEditing ? (
+                <Button
+                  onClick={onSubmit}
+                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 flex sm:!hidden"
+                  endIcon={<Save />}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => setIsEditing((prev) => !prev)}
+                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300  flex sm:!hidden"
+                  endIcon={<Settings />}
+                >
+                  Edit
+                </Button>
+              )
+            ) : null}
+          </>
         ) : (
-          /*   <></> */
-          <GeneralInformationDetails />
+          <>
+            <GeneralInformationDetails />
+            {view !== "patient-history" ? (
+              isEditing ? (
+                <Button
+                  onClick={onSubmit}
+                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 flex sm:!hidden"
+                  endIcon={<Save />}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => setIsEditing((prev) => !prev)}
+                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300  flex sm:!hidden"
+                  endIcon={<Settings />}
+                >
+                  Edit
+                </Button>
+              )
+            ) : null}
+          </>
         )}
       </Box>
     </>

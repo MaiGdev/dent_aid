@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Button, Grid2, Paper } from "@mui/material";
+import { Button, Grid2, Paper } from "@mui/material";
 import { useNavigate } from "react-router";
 
 export const CardContainer = ({
@@ -19,7 +19,7 @@ export const CardContainer = ({
   const navigator = useNavigate();
 
   return (
-    <Box
+    /*     <Box
       sx={{
         minHeight: minHeight,
         borderRadius: borderRadius,
@@ -32,8 +32,8 @@ export const CardContainer = ({
         padding: padding,
         gap: gap,
       }}
-    >
-      <Grid2
+    > */
+    /*       <Grid2
         container
         direction={"column"}
         spacing={3}
@@ -42,46 +42,46 @@ export const CardContainer = ({
           padding: "2.5rem",
           borderRadius: "1rem",
         }}
+      > */
+    <Paper sx={{ outline: "1px solid #cccccc", borderRadius: "1rem" }}>
+      <Grid2
+        sx={{
+          width: "100%",
+          backgroundColor: "#333333",
+          borderTopLeftRadius: "1rem",
+          borderTopRightRadius: "1rem",
+          padding: "4px 14px",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
-        <Paper sx={{ outline: "1px solid #cccccc", borderRadius: "1rem" }}>
-          <Grid2
-            sx={{
-              width: "100%",
-              backgroundColor: "#333333",
-              borderTopLeftRadius: "1rem",
-              borderTopRightRadius: "1rem",
-              padding: "4px 14px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              onClick={() => navigator(`${urlNavigate}`)}
-              startIcon={<ArrowBack />}
-              sx={{
-                color: "#fff",
-                minWidth: 0,
-                padding: "0 5px",
-                gap: "5px",
-                width: "fit-content",
-                height: "fit-content",
-                textTransform: "none",
-                outline: "0 solid transparent",
-                transition:
-                  "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
-                "&:hover": {
-                  color: "#fff",
-                  outline: "1.5px solid #fff",
-                  backgroundColor: "#01448A",
-                },
-              }}
-            >
-              Back
-            </Button>
-          </Grid2>
-          {children}
-        </Paper>
+        <Button
+          onClick={() => navigator(`${urlNavigate}`)}
+          startIcon={<ArrowBack />}
+          sx={{
+            color: "#fff",
+            minWidth: 0,
+            padding: "0 5px",
+            gap: "5px",
+            width: "fit-content",
+            height: "fit-content",
+            textTransform: "none",
+            outline: "0 solid transparent",
+            transition:
+              "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
+            "&:hover": {
+              color: "#fff",
+              outline: "1.5px solid #fff",
+              backgroundColor: "#01448A",
+            },
+          }}
+        >
+          Back
+        </Button>
       </Grid2>
-    </Box>
+      {children}
+    </Paper>
+    /*    </Grid2> */
+    /*    </Box> */
   );
 };

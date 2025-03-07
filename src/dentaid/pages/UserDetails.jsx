@@ -1,5 +1,5 @@
 import { Settings } from "@mui/icons-material";
-import { Button, Divider, Grid2, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid2, Typography } from "@mui/material";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,10 +12,10 @@ import Swal from "sweetalert2";
 import { useAuthStore } from "../../hooks";
 import { onUpdateUser } from "../../store";
 import { CardContainer } from "../components";
+
 import { GeneralInformation } from "../components/UserDetails/GeneralInformation";
-import { MedicalInformation } from "../components/UserDetails/MedicalInformation";
-import { ProfessionalInformation } from "../components/UserDetails/ProfessionalInformation";
 import { DentAidLayout } from "../layout/DentAidLayout";
+import { CalendarIcon } from "@mui/x-date-pickers";
 
 export const UserDetails = () => {
   const { id } = useParams();
@@ -77,80 +77,62 @@ export const UserDetails = () => {
 
   return (
     <DentAidLayout>
-      <CardContainer
-        minHeight="100%"
-        borderRadius="3rem"
-        display="flex"
-        flexDirection="column"
-        backgroundColor="#fff"
-        border="1px solid #cccccc"
-        padding="2.5rem"
-        gap="3.125rem"
-        urlNavigate="/dentaid/user-management"
-      >
-        <Grid2
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "2rem 3rem",
-          }}
-        >
-          <Grid2 sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography sx={{ fontSize: "1.875rem", color: "#15192C" }}>
-              {updatedUser?.fullName}
-            </Typography>
-            <Typography sx={{ fontSize: "1rem", color: "#92959E" }}>
-              {userType === "ADMIN_ROLE" && "ADMINISTRATOR"}
-              {userType === "DENTIST_ROLE" && "DENTIST"}
-              {userType === "PATIENT_ROLE" && "PATIENT"}
-            </Typography>
+      <Box className="flex flex-col gap-4 bg-white min-h-full rounded-[2rem] lg:rounded-[3rem] border border-[#cccccc] !p-5 md:!p-10 lg:p-6">
+        <CardContainer>
+          <Grid2 className="flex justify-between items-center mx-4 pt-5 pb-10 xl:px-[3rem] xl:py-[2rem]">
+            <Grid2
+              className={`flex flex-col justify-center ${
+                userType !== "DENTIST_ROLE" ? "items-center w-full" : ""
+              }  sm:!items-start`}
+            >
+              <Typography className="!text-[20px] xl:!text-3xl ">
+                {updatedUser?.fullName}
+              </Typography>
+              <Typography className="!text-sm lg:!text-base text-[#92959E] ">
+                {userType === "ADMIN_ROLE" && "ADMINISTRATOR"}
+                {userType === "DENTIST_ROLE" && "DENTIST"}
+                {userType === "PATIENT_ROLE" && "PATIENT"}
+              </Typography>
+            </Grid2>
+            {userType === "DENTIST_ROLE" && (
+              <Grid2 className="">
+                <Button
+                  onClick={() => {
+                    navigate(`/dentaid/user/${id}/schedule`);
+                  }}
+                  className="flex justify-center items-center gap-2 !bg-[#01448A] !text-white text-sm font-semibold !rounded-lg !normal-case hover:!bg-[#4A5D72] !min-w-0 !w-10 sm:!w-fit"
+                  endIcon={<CalendarIcon />}
+                >
+                  <span className="hidden sm:block">Schedule</span>
+                </Button>
+              </Grid2>
+            )}
           </Grid2>
-          {userType === "DENTIST_ROLE" && (
-            <Grid2>
+        {/*   {userType === "DENTIST_ROLE" && (
+            <Grid2 className=" flex justify-end sm:hidden">
               <Button
                 onClick={() => {
                   navigate(`/dentaid/user/${id}/schedule`);
                 }}
-                sx={{
-                  backgroundColor: "#01448A",
-                  color: "white",
-                  fontSize: "0.875rem",
-                  fontWeight: "600",
-                  borderRadius: ".5rem",
-                  textTransform: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  "&:hover": {
-                    backgroundColor: "#4A5D72",
-                  },
-                }}
-                endIcon={<Settings />}
+                className="flex justify-center items-center gap-2 !bg-[#01448A] !text-white text-sm font-semibold !rounded-lg !normal-case hover:!bg-[#4A5D72]"
+                endIcon={<CalendarIcon />}
               >
-                Schedule
+                <span className="hidden sm:block">Schedule</span>
               </Button>
             </Grid2>
-          )}
-        </Grid2>
+          )} */}
 
-        <Grid2
-          sx={{
-            padding: "0 5rem 5rem 5rem",
-            gap: "20px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <GeneralInformation />
-          {userType !== "ADMIN_ROLE" && <Divider sx={{ margin: "1rem 0" }} />}
+          <Grid2 className="flex flex-col gap-5 px-[1rem] pb-[2.5rem] lg:px-[1.5rem] xl:px-[5rem] lg:pb-[5rem] ">
+            <GeneralInformation />
+            {userType !== "ADMIN_ROLE" && <Divider sx={{ margin: "1rem 0" }} />}
+            {/*       {userType === "DENTIST_ROLE" && <ProfessionalInformation />} */}
 
-          {userType === "DENTIST_ROLE" && <ProfessionalInformation />}
+            {/*      {userType === "DENTIST_ROLE" && <ProfessionalInformation />}
 
-          {userType === "PATIENT_ROLE" && <MedicalInformation />}
-        </Grid2>
-      </CardContainer>
+            {userType === "PATIENT_ROLE" && <MedicalInformation />}} */}
+          </Grid2>
+        </CardContainer>
+      </Box>
     </DentAidLayout>
   );
 };
