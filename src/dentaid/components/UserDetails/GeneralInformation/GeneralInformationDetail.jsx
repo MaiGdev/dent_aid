@@ -36,7 +36,6 @@ export const GeneralInformationDetails = () => {
               </Typography>
             </Grid2>
 
-
             <Grid2>
               <Grid2 className="flex flex-col sm:flex-row gap-10 items-start  md:justify-center md:gap-[90px] ">
                 <Grid2 className="flex flex-col gap-8 items-start justify-start ">
@@ -67,7 +66,7 @@ export const GeneralInformationDetails = () => {
                 </Grid2>
 
                 <Grid2 className="flex flex-col gap-8 items-start justify-start ">
-                  <Grid2 className="flex flex-col gap-4">
+                  <Grid2 className="flex flex-col gap-4 sm:text-right w-full">
                     <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C]">
                       Identification
                     </Typography>
@@ -76,7 +75,7 @@ export const GeneralInformationDetails = () => {
                     </Typography>
                   </Grid2>
 
-                  <Grid2 className="flex flex-col gap-4">
+                  <Grid2 className="flex flex-col gap-4 sm:text-right w-full">
                     <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C]">
                       Gender
                     </Typography>
@@ -84,7 +83,7 @@ export const GeneralInformationDetails = () => {
                       {updatedUser.gender}
                     </Typography>
                   </Grid2>
-                  <Grid2 className="flex flex-col gap-4">
+                  <Grid2 className="flex flex-col gap-4 sm:text-right w-full">
                     <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C]">
                       Emergency phone number
                     </Typography>

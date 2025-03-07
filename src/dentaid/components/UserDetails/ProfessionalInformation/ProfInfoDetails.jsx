@@ -17,61 +17,30 @@ export const ProfInfoDetails = () => {
   return (
     <>
       {updatedDentist && (
-        <Grid2
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            gap: "35px",
-            width: "490px",
-          }}
-        >
-          <Grid2
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+        <Grid2 className="flex flex-col gap-8 sm:justify-center sm:items-center sm:flex-col sm:px-10 lg:px-5">
+          <Grid2 className="flex gap-10 flex-col justify-between sm:flex-row w-full xl:justify-center">
+            <Grid2 className="flex flex-col justify-start gap-4  xl:w-[350px]">
+              <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C] ">
                 Medical License
               </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
+              <Typography className="text-base md:!text-[1.20rem] text-[#00000099]">
                 {updatedDentist.medicalLicenseNumber}
               </Typography>
             </Grid2>
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+            <Grid2 className="flex flex-col gap-4 sm:text-end ">
+              <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C] ">
                 Workplace
               </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
+              <Typography className="text-base md:!text-[1.20rem] text-[#00000099]">
                 {updatedDentist.workplace}
               </Typography>
             </Grid2>
           </Grid2>
 
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
+          <Grid2 className="flex flex-col gap-4 w-full xl:w-[500px]">
             {updatedDentist.speciality && updatedDentist.speciality.length ? (
               <>
-                <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+                <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C] ">
                   Speciality
                 </Typography>
                 <Accordion sx={{ boxShadow: "none", width: "100%" }}>
@@ -103,54 +72,28 @@ export const ProfInfoDetails = () => {
                 </Accordion>
               </>
             ) : (
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
+              <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C] ">
                 There's no speciality available
               </Typography>
             )}
           </Grid2>
 
-          <Grid2
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                gap: "35px",
-                width: "300px",
-              }}
-            >
-              <Grid2
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "15px",
-                }}
-              >
+          <Grid2 className="flex gap-10 pb-6 flex-col justify-between sm:flex-row w-full xl:justify-center">
+            <Grid2 className="flex flex-col justify-start gap-4  sm:w-[290px]">
+              <Grid2 className="flex flex-col gap-4">
                 <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
                   University
                 </Typography>
-                <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
+                <Typography className="text-base md:!text-[1.20rem] text-[#00000099]">
                   {updatedDentist.university}
                 </Typography>
               </Grid2>
             </Grid2>
-
-            <Grid2
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
-              <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+            <Grid2 className="flex flex-col gap-4 sm:text-end">
+              <Typography className="!text-[18px] sm:!text-[1.20rem] text-[#15192C] ">
                 Years of experience
               </Typography>
-              <Typography sx={{ fontSize: "1.20rem", color: "#00000099" }}>
+              <Typography className="text-base md:!text-[1.20rem] text-[#00000099]">
                 {updatedDentist.yearsOfExperience}
               </Typography>
             </Grid2>

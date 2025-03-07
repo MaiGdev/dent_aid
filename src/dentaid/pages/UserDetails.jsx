@@ -1,4 +1,3 @@
-import { Settings } from "@mui/icons-material";
 import { Box, Button, Divider, Grid2, Typography } from "@mui/material";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,10 +11,11 @@ import Swal from "sweetalert2";
 import { useAuthStore } from "../../hooks";
 import { onUpdateUser } from "../../store";
 import { CardContainer } from "../components";
-
-import { GeneralInformation } from "../components/UserDetails/GeneralInformation";
-import { DentAidLayout } from "../layout/DentAidLayout";
 import { CalendarIcon } from "@mui/x-date-pickers";
+import { GeneralInformation } from "../components/UserDetails/GeneralInformation";
+import { ProfessionalInformation } from "../components/UserDetails/ProfessionalInformation";
+import { DentAidLayout } from "../layout/DentAidLayout";
+import { MedicalInformation } from "../components/UserDetails/MedicalInformation";
 
 export const UserDetails = () => {
   const { id } = useParams();
@@ -108,28 +108,11 @@ export const UserDetails = () => {
               </Grid2>
             )}
           </Grid2>
-        {/*   {userType === "DENTIST_ROLE" && (
-            <Grid2 className=" flex justify-end sm:hidden">
-              <Button
-                onClick={() => {
-                  navigate(`/dentaid/user/${id}/schedule`);
-                }}
-                className="flex justify-center items-center gap-2 !bg-[#01448A] !text-white text-sm font-semibold !rounded-lg !normal-case hover:!bg-[#4A5D72]"
-                endIcon={<CalendarIcon />}
-              >
-                <span className="hidden sm:block">Schedule</span>
-              </Button>
-            </Grid2>
-          )} */}
-
           <Grid2 className="flex flex-col gap-5 px-[1rem] pb-[2.5rem] lg:px-[1.5rem] xl:px-[5rem] lg:pb-[5rem] ">
             <GeneralInformation />
             {userType !== "ADMIN_ROLE" && <Divider sx={{ margin: "1rem 0" }} />}
-            {/*       {userType === "DENTIST_ROLE" && <ProfessionalInformation />} */}
-
-            {/*      {userType === "DENTIST_ROLE" && <ProfessionalInformation />}
-
-            {userType === "PATIENT_ROLE" && <MedicalInformation />}} */}
+            {userType === "DENTIST_ROLE" && <ProfessionalInformation />}
+            {userType === "PATIENT_ROLE" && <MedicalInformation />}
           </Grid2>
         </CardContainer>
       </Box>

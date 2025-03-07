@@ -129,20 +129,13 @@ export const MedicalInformation = () => {
   return (
     <Box>
       <Grid2
+        className=" flex items-center mb-8"
         sx={{
-          display: "flex",
           justifyContent:
             user.role === "DENTIST_ROLE" ? "center" : "space-between",
-          alignItems: "center",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: user.role === "DENTIST_ROLE" ? "1.55rem" : "1.25rem",
-            paddingBottom: user.role === "DENTIST_ROLE" ? "2rem" : "0",
-            color: "#15192C",
-          }}
-        >
+        <Typography className="!text-xl text-[#15192C]  w-full text-center sm:text-left ">
           Medical information
         </Typography>
 
@@ -150,24 +143,7 @@ export const MedicalInformation = () => {
           isEditing ? (
             <Button
               onClick={onSubmit}
-              sx={{
-                backgroundColor: "#fff",
-                color: "#4285CB",
-                border: "2px solid #4285CB",
-                fontSize: "0.875rem",
-                fontWeight: "600",
-                borderRadius: ".5rem",
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                "&:hover": {
-                  backgroundColor: "#4285CB",
-                  color: "#fff",
-                },
-                transition: "all 0.3s",
-              }}
+              className="bg-white !text-[#4285CB] !border-2 border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300 !hidden sm:!flex"
               endIcon={<Save />}
             >
               Save
@@ -175,24 +151,7 @@ export const MedicalInformation = () => {
           ) : (
             <Button
               onClick={() => setIsEditing((prev) => !prev)}
-              sx={{
-                backgroundColor: "#fff",
-                color: "#01448A",
-                border: "2px solid #01448A",
-                fontSize: "0.875rem",
-                fontWeight: "600",
-                borderRadius: ".5rem",
-                textTransform: "none",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                "&:hover": {
-                  backgroundColor: "#01448A",
-                  color: "#fff",
-                },
-                transition: "all 0.3s",
-              }}
+              className=" bg-white !text-[#4285CB] !border-2 border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300  !hidden sm:!flex"
               endIcon={<Settings />}
             >
               Edit
@@ -200,32 +159,14 @@ export const MedicalInformation = () => {
           )
         ) : null}
       </Grid2>
-      <Grid2
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: "35px",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              gap: "35px",
-              width: "490px",
-            }}
-          >
-            {isEditing ? <MedicalInfoForm /> : <MedicalInfoDetails />}
-          </Grid2>
-        </Box>
+      <Grid2>
+        {isEditing ? (
+          <MedicalInfoForm />
+        ) : (
+          <>
+            <MedicalInfoDetails />
+          </>
+        )}
       </Grid2>
     </Box>
   );

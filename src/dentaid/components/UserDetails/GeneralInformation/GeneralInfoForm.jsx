@@ -72,12 +72,12 @@ export const GeneralInfoForm = () => {
     <>
       {updatedUser && (
         <>
-          <Grid2 className="flex flex-col gap-8 items-start   md:justify-center w-full sm:!w-fit ">
+          <Grid2 className="flex flex-col gap-8 items-start   md:justify-center w-full md:!w-fit ">
             {/*  */}
             <Grid2
-              className={`w-full  lg:pb-0 md:!w-[490px] lg:!w-full xl:!w-[490px]`}
+              className="w-full"
             >
-              <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
+              <Typography className="!text-base md:!text-[1.20rem] text-[#15192C] w-full">
                 Full name
               </Typography>
               <Input
@@ -95,7 +95,7 @@ export const GeneralInfoForm = () => {
                   });
                 }}
                 fullWidth
-                className={`!text-sm h-8 rounded-lg border  ${
+                className={` !w-full !text-sm h-8 rounded-lg border  ${
                   userUpdateErrors.fullName
                     ? "border-[#ff6467]"
                     : "border-[#cccccc]"
@@ -406,7 +406,7 @@ export const GeneralInfoForm = () => {
             {/* iiiiiiiii */}
 
             <Grid2
-              className={`w-full pb-6 lg:pb-0 md:!w-[490px] lg:!w-full xl:!w-[490px]`}
+              className={`w-full pb-6 lg:pb-0 `}
             >
               <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
                 Address

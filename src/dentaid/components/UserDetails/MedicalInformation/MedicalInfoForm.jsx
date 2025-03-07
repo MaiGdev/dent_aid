@@ -41,11 +41,6 @@ export const MedicalInfoForm = () => {
   }, [updatedPatient]);
 
   useEffect(() => {
-    /*     const isFormStateEmpty = Object.values(formState).some(
-      (value) => value === "" || (Array.isArray(value) && value.length === 0)
-    );
-    if (isFormStateEmpty) return; */
-
     if (!compareObjects(formState, updatedPatient)) {
       dispatch(onUpdatePatient(formState));
     }
@@ -54,32 +49,19 @@ export const MedicalInfoForm = () => {
   return (
     <>
       {updatedPatient && (
-        <Grid2
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "35px",
-          }}
-        >
-          <Grid2
-            size={12}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
+        <Grid2 className="flex flex-col gap-8 sm:justify-center sm:items-center sm:flex-col sm:px-10 lg:px-5">
+          <Grid2 className="flex flex-col gap-4 w-full xl:w-[500px]">
             <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
               Blood type
             </Typography>
-            <Grid2 size={12}>
+            <Grid2>
               <Autocomplete
                 sx={{
                   marginTop: "0.5rem",
                   "& .MuiInputBase-root": {
                     borderRadius: ".5rem",
                     padding: "0 14px",
-
+                    height: "38px !important",
                     border: `${
                       patientUpdateErrors.bloodType ? "1px solid #ff6467" : ""
                     }`,
@@ -123,7 +105,7 @@ export const MedicalInfoForm = () => {
             </Grid2>
           </Grid2>
 
-          <Grid2 size={12}>
+          <Grid2 className="flex flex-col gap-4 w-full xl:w-[500px]">
             <Typography
               sx={{
                 fontSize: "1.20rem",
@@ -184,7 +166,7 @@ export const MedicalInfoForm = () => {
             )}
           </Grid2>
 
-          <Grid2 size={12}>
+          <Grid2 className="flex flex-col gap-4 w-full xl:w-[500px]">
             <Typography
               sx={{
                 fontSize: "1.20rem",

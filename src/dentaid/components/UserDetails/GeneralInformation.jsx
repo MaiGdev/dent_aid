@@ -93,21 +93,20 @@ export const GeneralInformation = () => {
   return (
     <>
       <Grid2
-        className="sm:px-5 lg:px-1.5"
+        className="flex items-center mb-4 sm:mb-0 sm:px-5 lg:px-1.5"
         sx={{
-          display: "flex",
           justifyContent:
             view === "patient-history" ? "center" : "space-between",
-          alignItems: "center",
         }}
       >
         <Typography
-          /*     className={`text-center w-full sm:text-left !text-[18px] md:text-[1.25rem]`} */
-          sx={{
-            fontSize: view === "patient-history" ? "1.55rem" : "1.25rem",
-            paddingBottom: view === "patient-history" ? "2rem" : "0",
-            color: "#15192C",
-          }}
+          className=" !text-xl text-[#15192C]  w-full text-center sm:text-left "
+          sx={
+            {
+              /*  fontSize: view === "patient-history" ? "1.55rem" : "1.25rem", */
+              /*   paddingBottom: view === "patient-history" ? "2rem" : "0", */
+            }
+          }
         >
           General information
         </Typography>
@@ -115,7 +114,7 @@ export const GeneralInformation = () => {
           isEditing ? (
             <Button
               onClick={onSubmit}
-              className="bg-white !text-[#01448A] !border-2 border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 !hidden sm:!flex"
+              className="bg-white !text-[#4285CB] !border-2 border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300 !hidden sm:!flex"
               endIcon={<Save />}
             >
               Save
@@ -123,7 +122,7 @@ export const GeneralInformation = () => {
           ) : (
             <Button
               onClick={() => setIsEditing((prev) => !prev)}
-              className="bg-white !text-[#01448A] !border-2 border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 !hidden sm:!flex"
+              className="bg-white !text-[#4285CB] !border-2 border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300 !hidden sm:!flex"
               endIcon={<Settings />}
             >
               Edit
@@ -139,7 +138,7 @@ export const GeneralInformation = () => {
               isEditing ? (
                 <Button
                   onClick={onSubmit}
-                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 flex sm:!hidden"
+                  className="w-full bg-white !text-[#4285CB] !border border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300 flex sm:!hidden"
                   endIcon={<Save />}
                 >
                   Save
@@ -147,7 +146,7 @@ export const GeneralInformation = () => {
               ) : (
                 <Button
                   onClick={() => setIsEditing((prev) => !prev)}
-                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300  flex sm:!hidden"
+                  className="w-full bg-white !text-[#4285CB] !border border-[#4285CB] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#4285CB] hover:!text-white transition-all duration-300  flex sm:!hidden"
                   endIcon={<Settings />}
                 >
                   Edit
@@ -162,7 +161,7 @@ export const GeneralInformation = () => {
               isEditing ? (
                 <Button
                   onClick={onSubmit}
-                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 flex sm:!hidden"
+                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300 flex sm:!hidden"
                   endIcon={<Save />}
                 >
                   Save
@@ -170,7 +169,7 @@ export const GeneralInformation = () => {
               ) : (
                 <Button
                   onClick={() => setIsEditing((prev) => !prev)}
-                  className="w-full bg-white !text-[#01448A] !border border-[#01448A] !text-sm font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300  flex sm:!hidden"
+                  className="w-full bg-white  !text-[#01448A] !border border-[#01448A] !text-sm !font-semibold !rounded-lg !normal-case  items-center justify-center gap-2 hover:!bg-[#01448A] hover:!text-white transition-all duration-300  flex sm:!hidden"
                   endIcon={<Settings />}
                 >
                   Edit

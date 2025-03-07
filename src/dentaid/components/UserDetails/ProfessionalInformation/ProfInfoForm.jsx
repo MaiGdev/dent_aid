@@ -56,32 +56,14 @@ export const ProfInfoForm = () => {
 
   return (
     <>
-      <Grid2
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          gap: "35px",
-          width: "490px",
-        }}
-      >
-        <Grid2
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
-            <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+      <Grid2 className="flex flex-col gap-8 sm:justify-center sm:items-center sm:flex-col sm:px-10 lg:px-5">
+        
+        <Grid2 className="flex gap-10 flex-col justify-between sm:flex-row w-full xl:w-[500px] ">
+          <Grid2 className="flex flex-col gap-4 w-full">
+            <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
               Medical License
             </Typography>
-            <Grid2 xs={12} sm={6}>
+            <Grid2>
               <Input
                 id="medicalLicenseNumber"
                 placeholder="Medical License Number"
@@ -91,14 +73,13 @@ export const ProfInfoForm = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`!text-sm h-8 rounded-lg border  ${
+                  dentistUpdateErrors.medicalLicenseNumber
+                    ? "border-[#ff6467]"
+                    : "border-[#cccccc]"
+                }
+                  px-4 py-2 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -122,17 +103,11 @@ export const ProfInfoForm = () => {
               )}
             </Grid2>
           </Grid2>
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
-            <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+          <Grid2 className="flex flex-col gap-4 w-full">
+            <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
               Workplace
             </Typography>
-            <Grid2 xs={12} sm={6}>
+            <Grid2>
               <Input
                 id="workplace"
                 placeholder="Workplace (Hospital/Clinic Name)"
@@ -142,14 +117,13 @@ export const ProfInfoForm = () => {
                 onChange={onInputChange}
                 variant="filled"
                 fullWidth
+                className={`!text-sm h-8 rounded-lg border  ${
+                  dentistUpdateErrors.workplace
+                    ? "border-[#ff6467]"
+                    : "border-[#cccccc]"
+                }
+                  px-4 py-2 mt-2`}
                 sx={{
-                  fontSize: "0.875rem",
-                  height: "2.063rem",
-                  borderRadius: ".5rem",
-                  border: "1px solid #cccccc",
-                  padding: "0.5rem 1rem",
-                  marginTop: "0.5rem",
-
                   "&::before, &::after": {
                     borderBottom: "none !important",
                   },
@@ -175,18 +149,13 @@ export const ProfInfoForm = () => {
           </Grid2>
         </Grid2>
 
-        <Grid2 size={12}>
-          <Typography
-            sx={{
-              fontSize: "1.20rem",
-              color: "#15192C",
-              paddingBottom: ".5rem",
-            }}
-          >
+        <Grid2 className="flex flex-col gap-4 w-full xl:w-[500px]">
+          <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
             Speciality
           </Typography>
 
           <Autocomplete
+            className="w-full"
             sx={{
               marginTop: "0.5rem",
               "& .MuiInputBase-root": {
@@ -233,21 +202,9 @@ export const ProfInfoForm = () => {
           )}
         </Grid2>
 
-        <Grid2
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Grid2
-            xs={12}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
-            <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+        <Grid2 className="flex gap-10 pb-6 flex-col justify-between sm:flex-row  w-full xl:w-[500px] xl:justify-center">
+          <Grid2 className="flex flex-col gap-4 w-full">
+            <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
               University
             </Typography>
             <Input
@@ -259,14 +216,13 @@ export const ProfInfoForm = () => {
               onChange={onInputChange}
               variant="filled"
               fullWidth
+              className={`!text-sm h-8 rounded-lg border  ${
+                dentistUpdateErrors.university
+                  ? "border-[#ff6467]"
+                  : "border-[#cccccc]"
+              }
+                  px-4 py-2 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: "1px solid #cccccc",
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
@@ -290,15 +246,8 @@ export const ProfInfoForm = () => {
             )}
           </Grid2>
 
-          <Grid2
-            xs={12}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px",
-            }}
-          >
-            <Typography sx={{ fontSize: "1.20rem", color: "#15192C" }}>
+          <Grid2 className="flex flex-col gap-4 w-full">
+            <Typography className="!text-base md:!text-[1.20rem] text-[#15192C]">
               Years of experience
             </Typography>
             <Input
@@ -315,14 +264,13 @@ export const ProfInfoForm = () => {
               }}
               variant="filled"
               fullWidth
+              className={`!text-sm h-8 rounded-lg border  ${
+                dentistUpdateErrors.yearsOfExperience
+                  ? "border-[#ff6467]"
+                  : "border-[#cccccc]"
+              }
+                  px-4 py-2 mt-2`}
               sx={{
-                fontSize: "0.875rem",
-                height: "2.063rem",
-                borderRadius: ".5rem",
-                border: "1px solid #cccccc",
-                padding: "0.5rem 1rem",
-                marginTop: "0.5rem",
-
                 "&::before, &::after": {
                   borderBottom: "none !important",
                 },
