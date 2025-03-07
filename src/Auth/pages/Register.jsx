@@ -56,14 +56,7 @@ export const RegisterPage = () => {
 
   return (
     <FormProvider schemaType={schemaType}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          margin: "0 auto",
-        }}
-      >
+      <Box className="flex flex-col h-svh lg:h-screen">
         <Grid2 container sx={{ padding: "1.25rem" }}>
           <Grid2
             xs={12}
@@ -72,7 +65,7 @@ export const RegisterPage = () => {
             <Button
               startIcon={<ArrowBack className="h-[22px] lg:h-[27px]" />}
               onClick={handleLogin}
-              className="flex justify-center items-center !rounded-4xl !text-white !bg-[#2A3E54] !min-w-[45px] lg:!min-w-[50px] lg:h-[34px] hover:!bg-[#fff] hover:!outline-2 hover:!outline-[#2A3E54] hover:!text-[#2A3E54]"
+              className="flex justify-center items-center !rounded-4xl !text-white !bg-[#2A3E54] !min-w-[55px] !h-[40px] lg:!min-w-[50px] hover:!bg-[#fff] hover:!outline-2 hover:!outline-[#2A3E54] hover:!text-[#2A3E54]"
             />
 
             <InputLabel sx={{ color: "#000", fontSize: "1.2em" }}>
@@ -83,7 +76,7 @@ export const RegisterPage = () => {
         <Divider />
 
         {!isUserSelected ? (
-          <Grid2 className="h-screen w-screen flex">
+          <Grid2 className="!h-full lg:h-screen w-screen flex">
             <Grid2 className="m-auto w-full px-7">
               <Box className="md:w-[558.31px] pb-[84px] m-auto">
                 <InputLabel className="text-[#404D61] !text-base lg:!text-xl ">

@@ -19,8 +19,8 @@ export const LoginPage = () => {
 
   return (
     <FormProvider>
-      <Box className=" lg:flex lg:justify-center lg:items-center lg:h-screen">
-        <Box className="h-screen flex justify-center items-center lg:w-[950px] lg:h-[656px] lg:mx-auto  lg:rounded-3xl m-auto px-4 md:p-0 loginDiv">
+      <Box className=" lg:flex lg:justify-center lg:items-center h-svh lg:h-screen">
+        <Box className="h-svh flex justify-center items-center lg:w-[950px] lg:h-[656px] lg:mx-auto  lg:rounded-3xl m-auto px-4 md:p-0 loginDiv">
           <div className="hidden lg:flex justify-center items-center flex-col text-center bg-[#ECF5FF] h-[656px] w-full rounded-l-3xl ">
             <div className=" w-[363.3px] flex justify-center items-center flex-col gap-[20px] ">
               <img src="/logo.png" alt="" />

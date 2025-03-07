@@ -1,9 +1,10 @@
 import { Button, Grid2, Input, InputLabel } from "@mui/material";
 import { motion } from "framer-motion";
 import { useContext } from "react";
+import Swal from "sweetalert2";
 import { FormContext } from "../../../context/FormContext";
-import { useAuthStore } from "../../../hooks";
 import { accountSetupSchema } from "../../../helpers/yupSchemas";
+import { useAuthStore } from "../../../hooks";
 
 export const LoginForm = () => {
   const { email, password, onInputChange, validateForm, errors } =

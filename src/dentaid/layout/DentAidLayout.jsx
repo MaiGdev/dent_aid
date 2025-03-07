@@ -12,10 +12,9 @@ export const DentAidLayout = ({ children }) => {
     startGetUsers();
   }, []);
 
-  const drawerWidth = 320;
-
   return (
     <Box
+      className="!p-0 sm:!p-5 md:!p-10 lg:!p-10"
       sx={{
         display: "flex",
         padding: "40px",
@@ -24,24 +23,21 @@ export const DentAidLayout = ({ children }) => {
         gap: "40px",
       }}
     >
-      <NavBar drawerWidth={drawerWidth} />
+      <NavBar />
 
-      <Box
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        /*    className=" !grow flex bg-[#F8F9FC] min-w-0 " */
+        className=" !grow bg-[#F8F9FC] min-w-0 "
         sx={{
           flexGrow: 1,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-        component="main"
       >
-        <motion.div
-          initial={{ height: "100%", opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
-          {children}
-        </motion.div>
-      </Box>
+        {children}
+      </motion.main>
     </Box>
   );
 };

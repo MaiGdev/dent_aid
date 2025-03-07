@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-
 * {
-/*   padding: 0;
+  /*   padding: 0;
   margin: 0; */
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
 #root {
@@ -51,6 +50,4 @@ button {
   max-height: 0;
   transition: all 300ms ease-out;
 }
-
-
 

@@ -4,32 +4,9 @@ import { DentAidLayout } from "../layout/DentAidLayout";
 export const DashBoard = () => {
   return (
     <DentAidLayout>
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          minHeight: "100%",
-          borderRadius: "3rem",
-          border: "1px solid #cccccc",
-          padding: "1.5rem",
-          gap: "1rem",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Grid2
-          sx={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              flexGrow: "1",
-            }}
-          >
+      <Box className="flex flex-col gap-4 bg-white min-h-full rounded-[2rem] lg:rounded-[3rem] border border-[#cccccc] p-4 lg:p-6">
+        <Grid2 className="flex lg:gap-4">
+          <Grid2 className="flex flex-col gap-4 grow">
             <Skeleton
               variant="rectangular"
               height={118}
@@ -42,16 +19,10 @@ export const DashBoard = () => {
               sx={{ borderRadius: "8px" }}
             />
           </Grid2>
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
+          <Grid2 className="flex flex-col gap-4">
             <Skeleton
               variant="rectangular"
-              width={375}
+              className="lg:w-[375px]"
               sx={{ borderRadius: "8px", height: "100%" }}
             />
           </Grid2>
@@ -61,33 +32,15 @@ export const DashBoard = () => {
           height={78}
           sx={{ borderRadius: "8px" }}
         />
-        <Grid2
-          sx={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
+        <Grid2 className="flex lg:gap-4">
+          <Grid2 className="flex flex-col gap-4 ">
             <Skeleton
               variant="rectangular"
-              width={375}
+              className="lg:w-[375px]"
               sx={{ borderRadius: "8px", height: "100%" }}
             />
           </Grid2>
-          <Grid2
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              flexGrow: "1",
-            }}
-          >
+          <Grid2 className="flex flex-col gap-4 grow">
             <Skeleton
               variant="rectangular"
               height={100}
