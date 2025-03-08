@@ -16,6 +16,7 @@ import {
   updateFormState,
 } from "../../store";
 import { DaySchedule, SlotDurationSelector } from "../components";
+import { CleanIcon } from "../icons/CleanIcon";
 import { DentAidLayout } from "../layout/DentAidLayout";
 
 dayjs.extend(isBetween);
@@ -59,6 +60,7 @@ export const DentistSchedule = () => {
       try {
         if (location.search.includes(`?account=true`)) {
           fetchingLoggedUserData();
+          if (!fullLoggedUserData) return;
           data = await startGetSchedule({
             idDentist: fullLoggedUserData.id,
           });
@@ -95,7 +97,7 @@ export const DentistSchedule = () => {
     };
 
     fetchSchedule();
-  }, [id, dispatch, fullLoggedUserData]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     const updatedFormState = {
@@ -172,9 +174,9 @@ export const DentistSchedule = () => {
       if (isStartEndValid(filterdSchedule)) return;
 
       // update schedule
-
       let form;
       if (location.search.includes(`?account=true`)) {
+        if (!fullLoggedUserData) return;
         form = await startUpdateSchedule({
           formState,
           id: fullLoggedUserData.id,
@@ -202,44 +204,16 @@ export const DentistSchedule = () => {
 
   return (
     <DentAidLayout>
-      <Box
-        sx={{
-          minHeight: "100%",
-          borderRadius: "3rem",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          backgroundColor: "#fff",
-          border: "1px solid #cccccc",
-          padding: "4rem",
-        }}
-      >
-        <Paper sx={{ outline: "1px solid #cccccc", borderRadius: "1rem" }}>
-          <Grid2
-            sx={{
-              width: "100%",
-              backgroundColor: "#333333",
-              borderTopLeftRadius: "1rem",
-              borderTopRightRadius: "1rem",
-              padding: "4px 14px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
+      <Box className="min-h-full rounded-[3rem] flex justify-center items-center w-full !bg-white border border-[#ccc] p-[4rem]">
+        <Paper className="outline outline-[#ccc] !rounded-2xl">
+          <Grid2 className="w-full !bg-[#333] rounded-tl-2xl rounded-tr-2xl px-[14px] py-[4px] flex items-center">
             <Button
               onClick={() => {
                 navigate(`/dentaid/user/${id}?usertype=DENTIST_ROLE`);
               }}
               startIcon={<ArrowBack />}
+              className="!text-white !min-w-0 !py-0 !px-[5px] gap-[5px] !w-fit !h-fit !normal-case"
               sx={{
-                color: "#fff",
-                minWidth: 0,
-                padding: "0 5px",
-                gap: "5px",
-                width: "fit-content",
-                height: "fit-content",
-                textTransform: "none",
                 outline: "0 solid transparent",
                 transition:
                   "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
@@ -257,35 +231,15 @@ export const DentistSchedule = () => {
             container
             direction={"column"}
             spacing={3}
-            sx={{
-              minWidth: "522px",
-              backgroundColor: "#fff",
-              padding: "1rem 2.5rem 2rem 2.5rem",
-              borderBottomLeftRadius: "1rem",
-              borderBottomRightRadius: "1rem",
-            }}
+            className="lg:!min-w-[522px] !bg-white pt-4 p-5 sm:px-10 pb-8 rounded-bl-2xl rounded-br-2xl"
           >
             <Grid2 xs={12}>
               {schedule.length !== 0 ? (
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: "1.875rem",
-                    textAlign: "center",
-                    padding: "1rem 0",
-                  }}
-                >
+                <Typography variant="h1" className="!text-3xl text-center py-4">
                   Update schedule
                 </Typography>
               ) : (
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: "1.875rem",
-                    textAlign: "center",
-                    padding: "1rem 0",
-                  }}
-                >
+                <Typography variant="h1" className="!text-3xl text-center py-4">
                   Schedule
                 </Typography>
               )}
@@ -294,14 +248,7 @@ export const DentistSchedule = () => {
             {formState &&
               days.map((day) => <DaySchedule key={day} day={day} />)}
 
-            <Grid2
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-                gap: "15px",
-              }}
-            >
+            <Grid2 className="flex justify-between flex-col gap-4">
               {schedule.length === 0 && (
                 <>
                   <SlotDurationSelector
@@ -319,84 +266,61 @@ export const DentistSchedule = () => {
                 </>
               )}
 
-              <Grid2
-                sx={{
-                  display: "flex",
-                  gap: ".5rem",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  startIcon={<ArrowBack />}
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#fff",
-                    color: "#475B6F",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
-                    borderRadius: ".5rem",
-                    textTransform: "none",
-                    padding: ".5rem 1.5rem",
-                    gap: "0.3rem",
-                    outline: "0 solid transparent",
-                    transition:
-                      "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
-                    "&:hover": {
-                      color: "#475B6F",
-                      outline: "1.5px solid #475B6F",
-                    },
-                  }}
-                >
-                  Cancel
-                </Button>
-
+              <Grid2 className="flex gap-[0.5rem] justify-center items-center">
                 {schedule.length !== 0 ? (
-                  <Button
-                    onClick={handleUpdateSubmit}
-                    endIcon={<Save />}
-                    fullWidth
-                    sx={{
-                      backgroundColor: "#01448A",
-                      color: "white",
-                      fontSize: "0.875rem",
-                      fontWeight: "600",
-                      borderRadius: ".5rem",
-                      textTransform: "none",
-                      padding: ".5rem 1.5rem",
-                      gap: "0.3rem",
-                      "&:hover": {
-                        backgroundColor: "#fff",
-                        color: "#01448A",
-                        outline: "1px solid #01448A",
-                      },
-                    }}
-                  >
-                    Update
-                  </Button>
+                  <>
+                    <Button
+                      startIcon={<CleanIcon />}
+                      fullWidth
+                      className="!bg-white !text-[#B72F2F] !text-sm !font-semibold !rounded-[.5rem] !normal-case !px-6 !py-[.5rem] !gap-[.3rem]"
+                      sx={{
+                        outline: "0 solid transparent",
+                        transition:
+                          "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
+                        "&:hover": {
+                          outline: "1.5px solid #B72F2F",
+                        },
+                      }}
+                    >
+                      Restart
+                    </Button>
+
+                    <Button
+                      onClick={handleUpdateSubmit}
+                      endIcon={<Save />}
+                      fullWidth
+                      className="!bg-[#01448A] !text-white !text-sm !font-semibold !rounded-[.5rem] !normal-case !px-6 !py-[.5rem] gap-[.3rem] hover:!bg-white hover:!text-[#01448A] hover:!outline hover:!outline-[#01448A]"
+                    >
+                      Update
+                    </Button>
+                  </>
                 ) : (
-                  <Button
-                    onClick={handleRegisterSubmit}
-                    endIcon={<Save />}
-                    fullWidth
-                    sx={{
-                      backgroundColor: "#01448A",
-                      color: "white",
-                      fontSize: "0.875rem",
-                      fontWeight: "600",
-                      borderRadius: ".5rem",
-                      textTransform: "none",
-                      padding: ".5rem 1.5rem",
-                      gap: "0.3rem",
-                      "&:hover": {
-                        backgroundColor: "#fff",
-                        color: "#01448A",
-                        outline: "1px solid #01448A",
-                      },
-                    }}
-                  >
-                    Save
-                  </Button>
+                  <>
+                    <Button
+                      startIcon={<ArrowBack />}
+                      fullWidth
+                      className="!bg-white !text-[#475B6F] !text-sm !font-semibold !rounded-[.5rem] !normal-case !px-6 !py-[.5rem] !gap-[.3rem]"
+                      sx={{
+                        outline: "0 solid transparent",
+                        transition:
+                          "outline 0.15s ease-in-out, background-color 0.3s ease-in-out",
+                        "&:hover": {
+                          color: "#475B6F",
+                          outline: "1.5px solid #475B6F",
+                        },
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleRegisterSubmit}
+                      endIcon={<Save />}
+                      fullWidth
+                      className="!bg-[#01448A] !text-white !text-sm !font-semibold !rounded-[.5rem] !normal-case !px-6 !py-[.5rem] !gap-[.3rem] hover:!bg-white hover:!text-[#01448A] hover:!outline hover:!outline-[#01448A]"
+                    >
+                      Save
+                    </Button>
+                  </>
                 )}
               </Grid2>
             </Grid2>

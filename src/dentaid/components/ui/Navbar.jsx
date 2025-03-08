@@ -10,7 +10,7 @@ import {
   dentistOptions,
   patientOptions,
 } from "./constants/navOptions";
-import { LogOutIcon } from "./icons/Logout";
+import { LogOutIcon } from "../../icons/Logout";
 
 export const NavBar = () => {
   const { startLogout, user, status } = useAuthStore();

@@ -7,6 +7,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { updateDayBreaks, updateFormState } from "../../../store";
+import { TrashIcon } from "../../icons/TrashIcon";
 
 export const DaySchedule = ({ day }) => {
   const dispatch = useDispatch();
@@ -14,7 +15,6 @@ export const DaySchedule = ({ day }) => {
 
   const startTime = dayjs(formState[day]?.start, "HH:mm");
   const endTime = dayjs(formState[day]?.end, "HH:mm");
-  
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -38,7 +38,7 @@ export const DaySchedule = ({ day }) => {
     dispatch(updateDayBreaks({ day, breaks: filteredBreaks }));
   };
 
-  const handleBreakTimeChange = ({day, index, field, value}) => {
+  const handleBreakTimeChange = ({ day, index, field, value }) => {
     const updatedBreaks =
       formState[day]?.breaks?.map((breakItem, i) =>
         i === index ? { ...breakItem, [field]: value } : breakItem
@@ -50,17 +50,8 @@ export const DaySchedule = ({ day }) => {
     <React.Fragment key={day}>
       {formState && (
         <>
-          <Grid2
-            sx={{ display: "flex", justifyContent: "center", gap: "15px" }}
-          >
-            <Grid2
-              sx={{
-                display: "flex",
-                justifyContent: "start",
-                alignItems: "start",
-                gap: "15px",
-              }}
-            >
+          <Grid2 className="flex justify-center gap-4 flex-wrap">
+            <Grid2 className="flex justify-start items-start gap-4">
               <Grid2 sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <Checkbox
                   checked={formState[day]?.isNonWorking || false}
@@ -77,14 +68,7 @@ export const DaySchedule = ({ day }) => {
                 />
                 <Typography>{day.substring(0, 3)}</Typography>
               </Grid2>
-              <Grid2
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  width: "165px",
-                }}
-              >
+              <Grid2 className="flex items-center gap-[4px] w-[165px]">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     label="Start"
@@ -170,11 +154,18 @@ export const DaySchedule = ({ day }) => {
                 </LocalizationProvider>
               </Grid2>
             </Grid2>
-            <Grid2 container direction="column" gap={1}>
+            <Grid2
+              container
+              direction="column"
+              gap={1}
+              className="w-full sm:w-fit"
+            >
               <>
-                <Divider orientation="vertical" sx={{ marginRight: ".5rem" }} />
+                <Divider
+                  orientation="vertical"
+                  className="mr-2 hidden md:block"
+                />
                 <TransitionGroup>
-                  {/* {formState[day]?.breaks?.map((breakItem, index) => ( */}
                   {formState[day]?.breaks &&
                     Object.entries(formState[day]?.breaks).map(
                       ([key, breakItem], index) => (
@@ -186,9 +177,10 @@ export const DaySchedule = ({ day }) => {
                         >
                           <Grid2
                             key={index}
-                            container
-                            gap={1}
-                            alignItems="center"
+                            /*          container */
+                            /*   gap={1}
+                            alignItems="center" */
+                            className="flex items-center gap-1"
                             paddingBottom=".8rem"
                             sx={{
                               width: "fit-content",
@@ -210,8 +202,8 @@ export const DaySchedule = ({ day }) => {
                                       .toString(),
                                   })
                                 }
+                                className="w-full sm:!w-[100px]"
                                 sx={{
-                                  width: "100px",
                                   "& .css-1xx0ik1-MuiInputBase-root-MuiOutlinedInput-root":
                                     {
                                       padding: 0,
@@ -255,8 +247,8 @@ export const DaySchedule = ({ day }) => {
                                       .toString(),
                                   })
                                 }
+                                className="w-full sm:!w-[100px]"
                                 sx={{
-                                  width: "100px",
                                   "& .css-1xx0ik1-MuiInputBase-root-MuiOutlinedInput-root":
                                     {
                                       padding: 0,
@@ -285,31 +277,11 @@ export const DaySchedule = ({ day }) => {
                               />
                             </LocalizationProvider>
                             <Button
-                              startIcon={
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="17"
-                                  height="17"
-                                  fill="none"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    fill="#B72F2F"
-                                    d="M7.498 16.115c.28 0 .549-.1.747-.278a.905.905 0 0 0 .309-.672v-5.7a.904.904 0 0 0-.31-.672 1.118 1.118 0 0 0-.746-.278c-.28 0-.548.1-.746.278a.905.905 0 0 0-.31.672v5.7c0 .252.112.494.31.672.198.178.466.278.746.278Zm10.556-11.4h-4.222v-.95c0-.756-.334-1.48-.928-2.015a3.354 3.354 0 0 0-2.24-.835h-2.11c-.84 0-1.645.3-2.24.835-.593.534-.927 1.26-.927 2.015v.95H1.165c-.28 0-.549.1-.746.278a.904.904 0 0 0-.31.672c0 .252.112.494.31.672.197.178.466.278.746.278H2.22v10.45c0 .756.334 1.48.928 2.015.594.535 1.4.835 2.24.835h8.444c.84 0 1.645-.3 2.239-.835.594-.534.927-1.26.927-2.015V6.615h1.056c.28 0 .548-.1.746-.278a.904.904 0 0 0 .31-.672.904.904 0 0 0-.31-.672 1.118 1.118 0 0 0-.746-.278Zm-10.556-.95c0-.252.111-.494.31-.672.197-.178.466-.278.746-.278h2.11c.28 0 .55.1.747.278.198.178.31.42.31.672v.95H7.497v-.95Zm7.39 13.3a.905.905 0 0 1-.31.672 1.118 1.118 0 0 1-.746.278H5.387c-.28 0-.548-.1-.746-.278a.905.905 0 0 1-.31-.672V6.615h10.556v10.45Zm-3.168-.95c.28 0 .549-.1.747-.278a.905.905 0 0 0 .309-.672v-5.7a.905.905 0 0 0-.31-.672 1.118 1.118 0 0 0-.745-.278c-.28 0-.549.1-.747.278a.904.904 0 0 0-.31.672v5.7c0 .252.112.494.31.672.198.178.466.278.746.278Z"
-                                  />
-                                </svg>
-                              }
+                              startIcon={<TrashIcon />}
                               onClick={() => handleRemoveBreak(day, index)}
-                              sx={{
-                                height: "40px",
-                                ml: 1,
-                                textTransform: "none",
-                                color: "#B72F2F",
-                                border: "1px solid #B72F2F",
-                                gap: "15px",
-                              }}
+                              className="!h-[40px] !ml-2 !normal-case !text-[#B72F2F] !border !border-[#B72F2F] !gap-[10px] flex]"
                             >
-                              Delete
+                              <span className="hidden sm:!block">Delete</span>
                             </Button>
                           </Grid2>
                         </CSSTransition>
@@ -317,24 +289,12 @@ export const DaySchedule = ({ day }) => {
                     )}
                 </TransitionGroup>
 
-                <Grid2
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "end",
-                  }}
-                >
+                <Grid2 className="w-full flex justify-end ">
                   <Button
                     disabled={formState[day]?.isNonWorking}
                     onClick={() => handleAddBreak(day)}
-                    startIcon={<Add></Add>}
-                    sx={{
-                      backgroundColor: "#4285CB",
-                      color: "white",
-                      textTransform: "none",
-                      gap: "8px",
-                      width: "100%",
-                    }}
+                    startIcon={<Add />}
+                    className="!bg-[#4285CB] !text-white !normal-case flex gap-1 w-full"
                   >
                     Add break
                   </Button>
