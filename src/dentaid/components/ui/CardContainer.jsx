@@ -2,57 +2,16 @@ import { ArrowBack } from "@mui/icons-material";
 import { Button, Grid2, Paper } from "@mui/material";
 import { useNavigate } from "react-router";
 
-export const CardContainer = ({
-  children,
-  minHeight = "100%",
-  borderRadius = "3rem",
-  display = "flex",
-  flexDirection = "",
-  justifyContent = "",
-  alignItems = "",
-  backgroundColor = "#fff",
-  border = "1px solid #cccccc",
-  padding = "2.5rem",
-  gap = "3.125rem",
-  urlNavigate = "/",
-}) => {
+export const CardContainer = ({ children, maxWidth, urlNavigate = "/" }) => {
   const navigator = useNavigate();
 
   return (
-    /*     <Box
-      sx={{
-        minHeight: minHeight,
-        borderRadius: borderRadius,
-        display: display,
-        flexDirection: flexDirection,
-        justifyContent: justifyContent,
-        alignItems: alignItems,
-        backgroundColor: backgroundColor,
-        border: border,
-        padding: padding,
-        gap: gap,
-      }}
-    > */
-    /*       <Grid2
-        container
-        direction={"column"}
-        spacing={3}
-        sx={{
-          backgroundColor: "#fff",
-          padding: "2.5rem",
-          borderRadius: "1rem",
-        }}
-      > */
     <Paper sx={{ outline: "1px solid #cccccc", borderRadius: "1rem" }}>
       <Grid2
+        className="w-full bg-[#333333] px-3.5 py-[4px] flex items-center"
         sx={{
-          width: "100%",
-          backgroundColor: "#333333",
           borderTopLeftRadius: "1rem",
           borderTopRightRadius: "1rem",
-          padding: "4px 14px",
-          display: "flex",
-          alignItems: "center",
         }}
       >
         <Button
@@ -81,7 +40,5 @@ export const CardContainer = ({
       </Grid2>
       {children}
     </Paper>
-    /*    </Grid2> */
-    /*    </Box> */
   );
 };

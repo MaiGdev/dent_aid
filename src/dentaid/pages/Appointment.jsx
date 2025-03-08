@@ -222,50 +222,63 @@ export const Appointment = () => {
 
   return (
     <DentAidLayout>
-      <CardContainer
-        justifyContent="center"
-        urlNavigate="/dentaid/appointments"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "30px",
-            padding: "3rem",
-          }}
+      <Grid2 className="flex items-center justify-center w-full h-full  ">
+        <CardContainer
+          justifyContent="center"
+          urlNavigate="/dentaid/appointments"
+          maxWidth="!max-w-4xl"
         >
-          <Grid2 xs={12}>
-            <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
-              New appointment
-            </Typography>
-          </Grid2>
-          <DentistSelect
-            dentists={dentists}
-            dentistId={dentistId}
-            onInputChange={onInputChange}
-          />
-          <PatientSelect
-            patients={patients}
-            patientId={patientId}
-            onInputChange={onInputChange}
-          />
-          <Box sx={{ display: "flex", gap: "20px" }}>
-            <DatePickerSection
+          <Box className="flex flex-col gap-8 py-10 px-4 lg:p-[3rem] ">
+            <Grid2 xs={12}>
+              <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
+                New appointment
+              </Typography>
+            </Grid2>
+            <DentistSelect
+              dentists={dentists}
               dentistId={dentistId}
-              setIsLoading={setIsLoading}
-              day={day}
-              setDay={setDay}
+              onInputChange={onInputChange}
             />
-            <TimeSlotList
-              selectedIndex={selectedIndex}
-              handleSelect={handleSelect}
-              dentistId={dentistId}
-              isLoading={isLoading}
+            <PatientSelect
+              patients={patients}
+              patientId={patientId}
+              onInputChange={onInputChange}
             />
+            {/*      <DaySelect /> */}
+            <Box className="flex justify-center items-center !w-full gap-5 flex-wrap">
+              <Grid2 className="!hidden md:!flex items-start">
+                <DatePickerSection
+                  dentistId={dentistId}
+                  setIsLoading={setIsLoading}
+                  day={day}
+                  setDay={setDay}
+                />
+                <TimeSlotList
+                  selectedIndex={selectedIndex}
+                  handleSelect={handleSelect}
+                  dentistId={dentistId}
+                  isLoading={isLoading}
+                />
+              </Grid2>
+              <Grid2 className="flex gap-7 flex-col md:!hidden">
+                <TimeSlotList
+                  selectedIndex={selectedIndex}
+                  handleSelect={handleSelect}
+                  dentistId={dentistId}
+                  isLoading={isLoading}
+                />
+                <DatePickerSection
+                  dentistId={dentistId}
+                  setIsLoading={setIsLoading}
+                  day={day}
+                  setDay={setDay}
+                />
+              </Grid2>
+            </Box>
+             <ActionButtons onSubmit={onSubmit} navigator={navigator} />
           </Box>
-          <ActionButtons onSubmit={onSubmit} navigator={navigator} />
-        </Box>
-      </CardContainer>
+        </CardContainer>
+      </Grid2>
     </DentAidLayout>
   );
 };

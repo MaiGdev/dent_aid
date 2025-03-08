@@ -31,7 +31,7 @@ export const DentAidLayout = ({ children }) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
         /*    className=" !grow flex bg-[#F8F9FC] min-w-0 " */
-        className=" !grow bg-[#F8F9FC] min-w-0 "
+        className=" !grow bg-white min-w-0 border border-[#ccc] rounded-[.5rem] lg:rounded-[3rem] "
         sx={{
           flexGrow: 1,
         }}

@@ -75,9 +75,10 @@ export const DatePickerSection = ({ dentistId, setIsLoading, day, setDay }) => {
   };
 
   return (
-    <Paper sx={{ border: "1px solid #92959E", borderRadius: "1rem" }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Paper className="  border border-[#92959E] !rounded-2xl !w-full">
+      <LocalizationProvider dateAdapter={AdapterDayjs} className="!w-full">
         <DateCalendar
+          className="!w-full"
           value={day}
           disabled={!dentistId}
           onChange={(newValue) => setDay(newValue)}
