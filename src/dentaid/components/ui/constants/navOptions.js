@@ -9,8 +9,7 @@ export const adminOptions = [
   },
 ];
 
-export const dentistOptions = () => {
-  const { user } = useAuthStore();
+export const dentistOptions = (user) => {
 
   return [
     {
@@ -34,9 +33,8 @@ export const patientOptions = [
   { label: "Dashboard", href: "/dentaid/dashboard" },
 ];
 
-export const defaultOptions = () => {
-  const { user } = useAuthStore();
-  return  [
+export const defaultOptions = (user) => {
+  return [
     {
       label: "Account",
       href: `/dentaid/user/${user?.id}?usertype=${user.role}&account=true`,

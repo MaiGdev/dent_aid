@@ -197,7 +197,7 @@ export const FilterControls = ({
               },
             })
           }
-          className="!bg-white !text-[#B72F2F] !rounded-[7px] !outline-2 !outline-[#B72F2F] gap-2 px-2.5  h-[33px] hover:!bg-[#B72F2F] hover:!text-white !normal-case !p-0 !min-w-0 w-30  2xl:!w-full 2xl:!px-2"
+          className="!bg-white !text-[#B72F2F] !rounded-[7px] !outline-2 !outline-[#B72F2F] gap-2 px-2.5  h-[32px] hover:!bg-[#B72F2F] hover:!text-white !normal-case !p-0 !min-w-0 w-30  2xl:!w-[85%] 2xl:!px-2"
           endIcon={<FilterListOff />}
         >
           <span className="hidden 2xl:block"> Clear filters</span>
@@ -210,7 +210,7 @@ export const FilterControls = ({
             navigator("/dentaid/appointments/847623985");
           }}
           startIcon={<EventNote />}
-          className="!bg-[#01448A] !text-white !text-sm !rounded-[7px] !font-semibold !normal-case hover:!bg-white hover:!text-[#01448A] h-[35px] gap-2 hover:!outline-2 hover:!outline-[#01448A] w-full md:w-fit"
+          className="!bg-[#01448A] !text-white !text-sm !rounded-[7px] !font-semibold !normal-case hover:!bg-white hover:!text-[#01448A] h-[35px] gap-2 !outline-2 hover:!outline-[#01448A] w-full md:w-fit"
         >
           Add
         </Button>

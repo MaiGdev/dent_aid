@@ -13,23 +13,9 @@ export const AppointmentCard = ({ appointment }) => {
   const { user } = useSelector((state) => state.authSlice);
 
   return (
-    <Card
-      sx={{
-        width: "auto",
-        outline: "1px solid #00000066",
-        borderRadius: "10px",
-        boxShadow: "none",
-      }}
-    >
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          padding: "20px 20px",
-        }}
-      >
-        <Typography sx={{ color: "#666666", fontSize: "14px" }}>
+    <Card className="w-auto outline outline-[#00000066] !rounded-[10px] shadow-none">
+      <CardContent className="flex flex-col !gap-2.5 !p-5">
+        <Typography className="text-[#666666] !text-[14px]">
           {formatDate(appointment.date)}
         </Typography>
         <Grid2>
@@ -46,28 +32,8 @@ export const AppointmentCard = ({ appointment }) => {
           </Grid2>
         </Grid2>
       </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          padding: "0 20px 20px 0",
-        }}
-      >
-        <Button
-          sx={{
-            backgroundColor: "#4285CB",
-            color: "white",
-            fontSize: "1rem",
-            fontWeight: "500",
-            borderRadius: "1rem",
-            textTransform: "none",
-            padding: ".2rem 1rem",
-            gap: "0.5rem",
-            "&:hover": {
-              backgroundColor: "#4A5D72",
-            },
-          }}
-        >
+      <CardActions className="flex justify-end  !pr-5 !pb-5">
+        <Button className="!bg-[#4285CB] !text-white !text-[1rem] !rounded-3xl !normal-case !px-4 !py-1 gap-2 hover:!bg-white hover:!text-[#4285CB] !border-2 !border-[#4285CB]">
           Details
         </Button>
       </CardActions>

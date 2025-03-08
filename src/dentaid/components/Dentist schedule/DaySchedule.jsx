@@ -7,7 +7,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { updateDayBreaks, updateFormState } from "../../../store";
-import { TrashIcon } from "../../icons/TrashIcon";
+import { TrashIcon } from "../../icons";
+
 
 export const DaySchedule = ({ day }) => {
   const dispatch = useDispatch();

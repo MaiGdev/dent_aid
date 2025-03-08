@@ -100,7 +100,7 @@ export const UserDetails = () => {
                   onClick={() => {
                     navigate(`/dentaid/user/${id}/schedule`);
                   }}
-                  className="flex justify-center items-center gap-2 !bg-[#01448A] !text-white text-sm font-semibold !rounded-lg !normal-case hover:!bg-[#4A5D72] !min-w-0 !w-10 sm:!w-fit"
+                  className="flex justify-center items-center gap-2 !bg-[#01448A] !text-white text-sm font-semibold !rounded-lg !normal-case hover:!bg-white hover:!text-[#01448A] hover:!outline-2 hover:!outline-[#01448A] !min-w-0 !w-10 sm:!w-fit"
                   endIcon={<CalendarIcon />}
                 >
                   <span className="hidden sm:block">Schedule</span>

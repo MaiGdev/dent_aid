@@ -16,8 +16,9 @@ import {
   updateFormState,
 } from "../../store";
 import { DaySchedule, SlotDurationSelector } from "../components";
-import { CleanIcon } from "../icons/CleanIcon";
+
 import { DentAidLayout } from "../layout/DentAidLayout";
+import { CleanIcon } from "../icons";
 
 dayjs.extend(isBetween);
 dayjs.locale("en");

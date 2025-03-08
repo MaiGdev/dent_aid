@@ -207,7 +207,7 @@ export const UserOptions = ({ userType, setUserType, setRows }) => {
             variant="contained"
             disableElevation
             onClick={handleClick}
-            className={`!h-[32px] !w-4 md:!w-full !bg-[#01448A]`}
+            className={`!h-[32px] !w-4 md:!w-full !rounded-lg !normal-case !py-4 !bg-[#01448A] !border-2 hover:!bg-white hover:!text-[#01448A] hover:!border-[#01448A]`}
             endIcon={<KeyboardArrowDownIcon />}
           >
             {screenSize > 1024 ? "Options" : <Settings />}
