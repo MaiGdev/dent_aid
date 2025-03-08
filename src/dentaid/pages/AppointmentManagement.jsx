@@ -6,10 +6,10 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAppointmentStore, useAuthStore, useUserStore } from "../../hooks";
-import { AppointmentList } from "../components/Appointment management/AppointmentList";
 import { FilterControls } from "../components/Appointment management/FilterControls";
-import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import { DentAidLayout } from "../layout/DentAidLayout";
+import { LoadingSpinner } from "../components";
+import { AppointmentList } from "../components/Appointment management/AppointmentList";
 
 dayjs.extend(utc);
 
@@ -97,16 +97,6 @@ export const AppointmentManagement = () => {
         (appointment) => appointment.status === selectedStatus
       );
     }
-    /*   if (selectedDate) {
-      const formattedDate = dayjs(selectedDate)
-        .utc(true)
-        .startOf("day")
-        .format("YYYY-MM-DD");
-      filtered = filtered.filter(
-        (appointment) =>
-          dayjs(appointment.date).utc().format("YYYY-MM-DD") === formattedDate
-      );
-    } */
 
     setFilteredAppointments(filtered);
   }, [patientInput, selectedDentist, selectedStatus, selectedDate]);
@@ -133,37 +123,29 @@ export const AppointmentManagement = () => {
 
   return (
     <DentAidLayout>
-      <Box
-        sx={{
-          minHeight: "100%",
-          borderRadius: "3rem",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "start",
-          backgroundColor: "#fff",
-          border: "1px solid #cccccc",
-        }}
-      >
-        <Grid2
-          container
-          direction={"column"}
-          spacing={3}
-          sx={{
-            backgroundColor: "#fff",
-            padding: "7rem 2.5rem",
-            borderRadius: "1rem",
-          }}
-        >
-          <Grid2 xs={12}>
-            <Typography variant="h1" sx={{ fontSize: "1.875rem" }}>
+      <Box className="min-w-full rounded-[3rem] flex justify-center items-start bg-white border border-[#cccccc]">
+        <Grid2 className="bg-white px-10 py-28 flex flex-col gap-10">
+          {/*           <Grid2>
+            <Typography variant="h1" className="!text-3xl text-center">
               Appointment management
             </Typography>
-            <Typography
-              sx={{ color: "#92959E", fontSize: "14px", fontWeight: "200" }}
-            >
-              Information about...
+            <Typography className="text-[#92959E] !text-sm !font-extralight text-center">
+              View and manage all scheduled appointments.
             </Typography>
           </Grid2>
+ */}
+          <Grid2 className="  md:w-full text-center">
+            <Typography
+              variant="h1"
+              className=" px-1.5  !text-3xl lg:!text-4xl bg-gradient-to-r from-[#5f83a9] lg:from-[#FFFFFF] to-[#8297ae] lg:to-[#024389] bg-clip-text text-transparent"
+            >
+              Appointment management
+            </Typography>
+            <Typography className="hidden md:block !text-sm text-[#92959E] font-extralight">
+              View and manage all scheduled appointments.
+            </Typography>
+          </Grid2>
+
           <FilterControls
             dentists={dentists}
             selectedDentist={selectedDentist}

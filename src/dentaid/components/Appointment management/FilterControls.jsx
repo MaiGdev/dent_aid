@@ -32,23 +32,10 @@ export const FilterControls = ({
   const { user } = useSelector((state) => state.authSlice);
 
   return (
-    <Grid2
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        gap: "clamp(0px,2vw,100px)",
-      }}
-    >
-      <Grid2
-        sx={{
-          display: "flex",
-          gap: "1rem",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    <Grid2 className="flex justify-between gap-4 !flex-wrap ">
+      <Grid2 className="flex gap-4 justify-center items-center grow">
         {user.role !== "DENTIST_ROLE" && (
-          <FormControl sx={{ width: "205px" }}>
+          <FormControl className="w-full !hidden sm:!flex">
             <InputLabel
               id="user-select-label"
               sx={{
@@ -96,7 +83,7 @@ export const FilterControls = ({
             </Select>
           </FormControl>
         )}
-        <FormControl sx={{ width: "205px" }}>
+        <FormControl className="w-full !hidden sm:!flex">
           <InputLabel
             id="status-select-label"
             sx={{
@@ -121,13 +108,7 @@ export const FilterControls = ({
                 },
               });
             }}
-            sx={{
-              fontSize: "0.875rem",
-              height: "2.063rem",
-              borderRadius: ".4rem",
-              color: "#5A6474",
-              textAlign: "left",
-            }}
+            className="text-sm h-8 !rounded-lg text-[#5A6474] text-left"
             label="Status"
           >
             {appointmentStatus.map((status, index) => (
@@ -151,11 +132,8 @@ export const FilterControls = ({
                 },
               });
             }}
+            className="text-sm h-8 text-[#5A6474] text-left w-full"
             sx={{
-              fontSize: "0.875rem",
-              height: "2.063rem",
-              color: "#5A6474",
-              textAlign: "left",
               "& .MuiInputBase-root": {
                 borderRadius: ".4rem",
                 height: "100%",
@@ -173,7 +151,7 @@ export const FilterControls = ({
           />
         )}
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} >
           <DatePicker
             value={selectedDate}
             onChange={(date) => {
@@ -184,13 +162,14 @@ export const FilterControls = ({
                 },
               });
             }}
+            className="w-full !hidden 2xl:!block"
             sx={{
               "& .MuiInputBase-root": {
                 fontSize: "0.875rem",
                 height: "2.063rem",
                 borderRadius: ".5rem",
                 textAlign: "left",
-                width: "140px",
+               /*  width: "140px", */
                 paddingRight: "8px",
               },
               "& .MuiInputLabel-root": {
@@ -218,45 +197,24 @@ export const FilterControls = ({
               },
             })
           }
-          sx={{
-            backgroundColor: "#fff",
-            color: "#B72F2F",
-            outline: "2px solid #B72F2F",
-            display: "flex",
-            gap: "8px",
-            padding: "2.5px 10px",
-            textTransform: "none",
-            "& .MuiButton-icon:hover": {
-              color: "black",
-            },
-          }}
+          className="!bg-white !text-[#B72F2F] !rounded-[7px] !outline-2 !outline-[#B72F2F] gap-2 px-2.5  h-[33px] hover:!bg-[#B72F2F] hover:!text-white !normal-case !p-0 !min-w-0 w-30  2xl:!w-full 2xl:!px-2"
           endIcon={<FilterListOff />}
         >
-          Clear filters
+          <span className="hidden 2xl:block"> Clear filters</span>
         </Button>
       </Grid2>
-      <Grid2>
+
+     
         <Button
           onClick={() => {
             navigator("/dentaid/appointments/847623985");
           }}
           startIcon={<EventNote />}
-          sx={{
-            backgroundColor: "#01448A",
-            color: "white",
-            fontSize: "clamp(0.75rem, 2.5vw, 0.875rem)",
-            fontWeight: "600",
-            borderRadius: ".5rem",
-            textTransform: "none",
-            gap: "0.5rem",
-            "&:hover": {
-              backgroundColor: "#4A5D72",
-            },
-          }}
+          className="!bg-[#01448A] !text-white !text-sm !rounded-[7px] !font-semibold !normal-case hover:!bg-white hover:!text-[#01448A] h-[35px] gap-2 hover:!outline-2 hover:!outline-[#01448A] w-full md:w-fit"
         >
-          New appointment
+          Add
         </Button>
-      </Grid2>
+     
     </Grid2>
   );
 };
