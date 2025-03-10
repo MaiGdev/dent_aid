@@ -1,6 +1,5 @@
 # 🦷 DentaID - Frontend
-
-DentaID is the frontend of a full-stack dental appointment management system. It provides an intuitive and responsive interface for patients, dentists, and administrators to manage appointments, schedules, and user information with ease.
+DentAid is the frontend of a full-stack dental appointment management system. It enables patients to schedule appointments with dentists, dentists to manage their schedules and view patient details, and administrators to oversee users and appointments. Administrators have full access to all system functionalities, including user management, appointment control, and schedule configuration.
 
 ## 🛠️ Technologies Used
 
