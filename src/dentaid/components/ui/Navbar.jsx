@@ -8,13 +8,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { useAuthStore } from "../../../hooks";
 
+import { LogOutIcon, NameIcon } from "../../icons";
 import {
   adminOptions,
   defaultOptions,
   dentistOptions,
   patientOptions,
 } from "./constants/navOptions";
-import { LogOutIcon, NameIcon } from "../../icons";
 
 export const NavBar = () => {
   const { startLogout, user, status } = useAuthStore();
@@ -136,39 +136,19 @@ export const NavBar = () => {
               container
               className="px-4 py-8 grow flex flex-col justify-center items-end"
             >
-              <motion.div
+              {/*  <motion.div
                 whileHover={{ x: -10 }}
                 className="w-full hover:!bg-[#F6FAFD]"
+              > */}
+              <motion.button
+                whileHover={{ x: -10 }}
+                onClick={() => startLogout()}
+                className="!text-2xl !normal-case justify-start gap-2 w-full hover:!bg-[#F6FAFD] flex items-center text-[#81A1C4] hover:text-[#024389]"
               >
-                <Button
-                  onClick={() => startLogout()}
-                  startIcon={<LogOutIcon />}
-                  className="!text-2xl !normal-case justify-start gap-2"
-                  sx={{
-                    color: isActive("/dentaid/settings")
-                      ? "#024389"
-                      : "#81A1C4",
-                    fontWeight: isActive("/dentaid/settings")
-                      ? "600"
-                      : "normal",
-                    "&::before": isActive("/dentaid/settings")
-                      ? {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          width: "4px",
-                          height: "60%",
-                          backgroundColor: "#024389",
-                          borderRadius: "5px",
-                        }
-                      : {},
-                  }}
-                >
-                  Logout
-                </Button>
-              </motion.div>
+                <LogOutIcon />
+                Logout
+              </motion.button>
+              {/*    </motion.div> */}
             </Grid2>
           </Box>
         </Box>
@@ -198,13 +178,20 @@ export const NavBar = () => {
                   {index === loggedUserOptions().length - 1 && <hr />}
                 </>
               ))}
+
+              <Button
+                className="flex items-center justify-center md:min-w-[240px] min-h-[100px] relative hover:!bg-[#ECF5FF]  hover:!text-[#132337] !text-white !normal-case"
+                onClick={() => startLogout()}
+              >
+                <span>LogOut</span>
+              </Button>
             </ul>
           </motion.div>
         </AnimatePresence>
       )}
 
       <motion.div className="fixed flex flex-row  gap-5 sm:gap-5 bottom-5 left-1/2 -translate-x-1/2 p-4 bg-[#132337] z-50 rounded-2xl lg:hidden min-w-[90%] sm:min-w-[80%] justify-between items-center border">
-      <NameIcon/>
+        <NameIcon />
 
         <button
           className="flex items-center border-2 text-[#ECF5FF] hover:bg-[#132337] transition duration-200 rounded-[10px] w-fit px-3 py-1.5 sm:px-5 sm:py-2.5  gap-2.5"

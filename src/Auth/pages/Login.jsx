@@ -37,7 +37,7 @@ export const LoginPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-center items-center flex-col rounded-2xl lg:rounded-r-3xl  lg:h-[656px] w-full sm:w-[424px] lg:w-full md:gap-[38px] border border-[#BCBCBC] lg:border-none py-8 m-auto gap-7">
+          <div className="flex justify-center items-center flex-col rounded-2xl lg:rounded-r-3xl  lg:h-[656px] w-full sm:w-[424px] lg:w-full md:gap-[38px] border border-[#BCBCBC] lg:border-none py-8 m-auto gap-7 relative">
             <h2 className="text-4xl ld:text-5xl font-medium">Sign In</h2>
 
             <div className="iconsLogin flex justify-center items-center  text-center gap-[12px] ">
@@ -52,7 +52,7 @@ export const LoginPage = () => {
               </button>
             </div>
 
-            <div className="w-full  lg:w-[338.58px] px-4 text-left gap-5 flex flex-col">
+            <div className="w-full  lg:w-[338.58px] px-4 text-left gap-5 flex flex-col lg:pb-20">
               <LoginForm />
 
               <Grid2 container direction="row" justifyContent="start" size={12}>
@@ -63,6 +63,38 @@ export const LoginPage = () => {
                   No account yet? Sign Up
                 </Button>
               </Grid2>
+            </div>
+
+            <div className=" flex-row absolute bottom-2 hidden lg:flex  !text-sm w-full justify-evenly ">
+              <div className="flex justify-between flex-col border-r border-r-[#Ccc] pr-2 min-w-0">
+                <span className="text-[#979797]">admin1@gmail.com</span>
+                <span className="text-[#979797]">Password: 123456</span>
+              </div>
+
+              <div className="flex justify-between flex-col  border-r border-r-[#Ccc] pr-2 min-w-0">
+                <span className="text-[#979797]">dentist1@gmail.com</span>
+                <span className="text-[#979797]">Password: 123456</span>
+              </div>
+              <div className="flex justify-between flex-col  min-w-0">
+                <span className="text-[#979797]">patient1@gmail.com</span>
+                <span className="text-[#979797]">Password: 123456</span>
+              </div>
+            </div>
+          </div>
+
+          <div className=" flex-row absolute bottom-2  flex lg:hidden !text-sm w-full justify-between px-2 ">
+            <div className="flex justify-between flex-col border-r border-r-[#Ccc] pr-2 min-w-0">
+              <span className="text-[#979797]">admin1@gmail.com</span>
+              <span className="text-[#979797]">Password: 123456</span>
+            </div>
+
+            <div className="flex justify-between flex-col  border-r border-r-[#Ccc] pl-2 pr-2 min-w-0">
+              <span className="text-[#979797]">dentist1@gmail.com</span>
+              <span className="text-[#979797]">Password: 123456</span>
+            </div>
+            <div className="flex justify-between flex-col  min-w-0 pl-2">
+              <span className="text-[#979797]">patient1@gmail.com</span>
+              <span className="text-[#979797]">Password: 123456</span>
             </div>
           </div>
         </Box>
